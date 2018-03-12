@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="DogsInOrder">
+    <Key>
+      <PropertyRef Name="OrderNumber" />
+      <PropertyRef Name="DogNumber" />
+    </Key>
+    <Property Name="OrderNumber" Type="int" Nullable="false" />
+    <Property Name="DogNumber" Type="int" Nullable="false" />
+    <Property Name="FromDate" Type="datetime" Nullable="false" />
+    <Property Name="ToDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="DogTraining" Type="bit" />
+    <Property Name="HomeFood" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OrdersTbl">
+    <Key>
+      <PropertyRef Name="OrderNumber" />
+    </Key>
+    <Property Name="OrderNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderUserId" Type="int" Nullable="false" />
+    <Property Name="OrderStatus" Type="int" Nullable="false" />
+    <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="OrderType" Type="int" Nullable="false" />
+    <Property Name="Price" Type="money" />
+  </EntityType>
+  <EntityType Name="OrderTypes">
+    <Key>
+      <PropertyRef Name="OrderTypeId" />
+    </Key>
+    <Property Name="OrderTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderTypeName" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PricesTbl">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Days" Type="int" Nullable="false" />
+    <Property Name="Dogs" Type="int" Nullable="false" />
+    <Property Name="Price" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoomSetting">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoomNumber" Type="int" Nullable="false" />
+    <Property Name="OrderNumber" Type="int" />
+    <Property Name="DogNumber" Type="int" Nullable="false" />
+    <Property Name="FromDate" Type="date" Nullable="false" />
+    <Property Name="ToDate" Type="date" Nullable="false" />
+    <Property Name="Comments" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="RoomsTbl">
+    <Key>
+      <PropertyRef Name="RoomID" />
+    </Key>
+    <Property Name="RoomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoomDescription" Type="nvarchar" MaxLength="50" />
+    <Property Name="RoomStatus" Type="int" Nullable="false" />
+    <Property Name="RoomCapacity" Type="int" />
+    <Property Name="RoomComments" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="StatusTbl">
+    <Key>
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="StatusName" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="StatusGroup" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserDogs">
+    <Key>
+      <PropertyRef Name="DogNumber" />
+    </Key>
+    <Property Name="DogNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DogName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DogShvav" Type="nvarchar" MaxLength="50" />
+    <Property Name="DogType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DogStatus" Type="int" Nullable="false" />
+    <Property Name="DogComments" Type="nvarchar(max)" />
+    <Property Name="DogUserID" Type="int" Nullable="false" />
+    <Property Name="DogImage" Type="varchar" MaxLength="50" />
+    <Property Name="DogGender" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="DogNeuter" Type="bit" Nullable="false" />
+    <Property Name="DogRabiesVaccine" Type="date" Nullable="false" />
+    <Property Name="DogJump" Type="bit" />
+    <Property Name="DogBirthDate" Type="date" Nullable="false" />
+    <Property Name="DogFriendlyWith" Type="int" />
+    <Property Name="DogDig" Type="bit" />
+  </EntityType>
+  <EntityType Name="UsersTbl">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserEmail" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserStatus" Type="int" Nullable="false" />
+    <Property Name="UserComments" Type="nvarchar(max)" />
+    <Property Name="UserFirstName" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserLastName" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserPaswrd" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="UserPhone1" Type="char" MaxLength="15" Nullable="false" />
+    <Property Name="UserPhone2" Type="char" MaxLength="15" />
+  </EntityType>
+  <Association Name="FK_DogsInOrder_ToOrdersTbl">
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
+    <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrdersTbl">
+        <PropertyRef Name="OrderNumber" />
+      </Principal>
+      <Dependent Role="DogsInOrder">
+        <PropertyRef Name="OrderNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DogsInOrder_ToStatusTbl">
+    <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+    <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusTbl">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="DogsInOrder">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DogsInOrder_ToUserDogsTbl">
+    <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="1" />
+    <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDogs">
+        <PropertyRef Name="DogNumber" />
+      </Principal>
+      <Dependent Role="DogsInOrder">
+        <PropertyRef Name="DogNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrdersTbl_ToOrderTypesTbl">
+    <End Role="OrderTypes" Type="Self.OrderTypes" Multiplicity="1" />
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderTypes">
+        <PropertyRef Name="OrderTypeId" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="OrderType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrdersTbl_ToStatusTbl">
+    <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusTbl">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="OrderStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrdersTbl_ToUsersTbl">
+    <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UsersTbl">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="OrderUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomSetting_ToOrdersTbl">
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="0..1" />
+    <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrdersTbl">
+        <PropertyRef Name="OrderNumber" />
+      </Principal>
+      <Dependent Role="RoomSetting">
+        <PropertyRef Name="OrderNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomSetting_ToRoomsTbl">
+    <End Role="RoomsTbl" Type="Self.RoomsTbl" Multiplicity="1" />
+    <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomsTbl">
+        <PropertyRef Name="RoomID" />
+      </Principal>
+      <Dependent Role="RoomSetting">
+        <PropertyRef Name="RoomNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomSetting_ToUserDogs">
+    <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="1" />
+    <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserDogs">
+        <PropertyRef Name="DogNumber" />
+      </Principal>
+      <Dependent Role="RoomSetting">
+        <PropertyRef Name="DogNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomsTbl_ToStatusTbl">
+    <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+    <End Role="RoomsTbl" Type="Self.RoomsTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusTbl">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="RoomsTbl">
+        <PropertyRef Name="RoomStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDogs_ToStatusTbl">
+    <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+    <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusTbl">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="UserDogs">
+        <PropertyRef Name="DogStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserDogs_ToUsersTbl">
+    <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
+    <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UsersTbl">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="UserDogs">
+        <PropertyRef Name="DogUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersTbl_ToStatusTbl">
+    <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+    <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusTbl">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="UsersTbl">
+        <PropertyRef Name="UserStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="DogsInOrder" EntityType="Self.DogsInOrder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrdersTbl" EntityType="Self.OrdersTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderTypes" EntityType="Self.OrderTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PricesTbl" EntityType="Self.PricesTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoomSetting" EntityType="Self.RoomSetting" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoomsTbl" EntityType="Self.RoomsTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StatusTbl" EntityType="Self.StatusTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserDogs" EntityType="Self.UserDogs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersTbl" EntityType="Self.UsersTbl" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DogsInOrder_ToOrdersTbl" Association="Self.FK_DogsInOrder_ToOrdersTbl">
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+      <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DogsInOrder_ToStatusTbl" Association="Self.FK_DogsInOrder_ToStatusTbl">
+      <End Role="StatusTbl" EntitySet="StatusTbl" />
+      <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DogsInOrder_ToUserDogsTbl" Association="Self.FK_DogsInOrder_ToUserDogsTbl">
+      <End Role="UserDogs" EntitySet="UserDogs" />
+      <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdersTbl_ToOrderTypesTbl" Association="Self.FK_OrdersTbl_ToOrderTypesTbl">
+      <End Role="OrderTypes" EntitySet="OrderTypes" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdersTbl_ToStatusTbl" Association="Self.FK_OrdersTbl_ToStatusTbl">
+      <End Role="StatusTbl" EntitySet="StatusTbl" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdersTbl_ToUsersTbl" Association="Self.FK_OrdersTbl_ToUsersTbl">
+      <End Role="UsersTbl" EntitySet="UsersTbl" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomSetting_ToOrdersTbl" Association="Self.FK_RoomSetting_ToOrdersTbl">
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+      <End Role="RoomSetting" EntitySet="RoomSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomSetting_ToRoomsTbl" Association="Self.FK_RoomSetting_ToRoomsTbl">
+      <End Role="RoomsTbl" EntitySet="RoomsTbl" />
+      <End Role="RoomSetting" EntitySet="RoomSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomSetting_ToUserDogs" Association="Self.FK_RoomSetting_ToUserDogs">
+      <End Role="UserDogs" EntitySet="UserDogs" />
+      <End Role="RoomSetting" EntitySet="RoomSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomsTbl_ToStatusTbl" Association="Self.FK_RoomsTbl_ToStatusTbl">
+      <End Role="StatusTbl" EntitySet="StatusTbl" />
+      <End Role="RoomsTbl" EntitySet="RoomsTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDogs_ToStatusTbl" Association="Self.FK_UserDogs_ToStatusTbl">
+      <End Role="StatusTbl" EntitySet="StatusTbl" />
+      <End Role="UserDogs" EntitySet="UserDogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserDogs_ToUsersTbl" Association="Self.FK_UserDogs_ToUsersTbl">
+      <End Role="UsersTbl" EntitySet="UsersTbl" />
+      <End Role="UserDogs" EntitySet="UserDogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersTbl_ToStatusTbl" Association="Self.FK_UsersTbl_ToStatusTbl">
+      <End Role="StatusTbl" EntitySet="StatusTbl" />
+      <End Role="UsersTbl" EntitySet="UsersTbl" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

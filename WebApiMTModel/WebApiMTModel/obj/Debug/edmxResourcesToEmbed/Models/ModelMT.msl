@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntitiesMT">
+    <EntitySetMapping Name="DogsInOrder">
+      <EntityTypeMapping TypeName="DatabaseModel.DogsInOrder">
+        <MappingFragment StoreEntitySet="DogsInOrder">
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+          <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DogTraining" ColumnName="DogTraining" />
+          <ScalarProperty Name="HomeFood" ColumnName="HomeFood" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrdersTbl">
+      <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
+        <MappingFragment StoreEntitySet="OrdersTbl">
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="OrderconfirmationNumber" ColumnName="OrderconfirmationNumber" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderTypes">
+      <EntityTypeMapping TypeName="DatabaseModel.OrderTypes">
+        <MappingFragment StoreEntitySet="OrderTypes">
+          <ScalarProperty Name="OrderTypeId" ColumnName="OrderTypeId" />
+          <ScalarProperty Name="OrderTypeName" ColumnName="OrderTypeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PricesTbl">
+      <EntityTypeMapping TypeName="DatabaseModel.PricesTbl">
+        <MappingFragment StoreEntitySet="PricesTbl">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="Dogs" ColumnName="Dogs" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomSetting">
+      <EntityTypeMapping TypeName="DatabaseModel.RoomSetting">
+        <MappingFragment StoreEntitySet="RoomSetting">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+          <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomsTbl">
+      <EntityTypeMapping TypeName="DatabaseModel.RoomsTbl">
+        <MappingFragment StoreEntitySet="RoomsTbl">
+          <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+          <ScalarProperty Name="RoomDescription" ColumnName="RoomDescription" />
+          <ScalarProperty Name="RoomStatus" ColumnName="RoomStatus" />
+          <ScalarProperty Name="RoomCapacity" ColumnName="RoomCapacity" />
+          <ScalarProperty Name="RoomComments" ColumnName="RoomComments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StatusTbl">
+      <EntityTypeMapping TypeName="DatabaseModel.StatusTbl">
+        <MappingFragment StoreEntitySet="StatusTbl">
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="StatusGroup" ColumnName="StatusGroup" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserDogs">
+      <EntityTypeMapping TypeName="DatabaseModel.UserDogs">
+        <MappingFragment StoreEntitySet="UserDogs">
+          <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+          <ScalarProperty Name="DogName" ColumnName="DogName" />
+          <ScalarProperty Name="DogShvav" ColumnName="DogShvav" />
+          <ScalarProperty Name="DogType" ColumnName="DogType" />
+          <ScalarProperty Name="DogStatus" ColumnName="DogStatus" />
+          <ScalarProperty Name="DogComments" ColumnName="DogComments" />
+          <ScalarProperty Name="DogUserID" ColumnName="DogUserID" />
+          <ScalarProperty Name="DogImage" ColumnName="DogImage" />
+          <ScalarProperty Name="DogGender" ColumnName="DogGender" />
+          <ScalarProperty Name="DogNeuter" ColumnName="DogNeuter" />
+          <ScalarProperty Name="DogRabiesVaccine" ColumnName="DogRabiesVaccine" />
+          <ScalarProperty Name="DogJump" ColumnName="DogJump" />
+          <ScalarProperty Name="DogBirthDate" ColumnName="DogBirthDate" />
+          <ScalarProperty Name="DogFriendlyWith" ColumnName="DogFriendlyWith" />
+          <ScalarProperty Name="DogDig" ColumnName="DogDig" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersTbl">
+      <EntityTypeMapping TypeName="DatabaseModel.UsersTbl">
+        <MappingFragment StoreEntitySet="UsersTbl">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+          <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+          <ScalarProperty Name="UserCity" ColumnName="UserCity" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserComments" ColumnName="UserComments" />
+          <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
+          <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+          <ScalarProperty Name="UserPaswrd" ColumnName="UserPaswrd" />
+          <ScalarProperty Name="UserPhone1" ColumnName="UserPhone1" />
+          <ScalarProperty Name="UserPhone2" ColumnName="UserPhone2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
