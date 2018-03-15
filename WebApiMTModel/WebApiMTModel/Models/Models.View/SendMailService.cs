@@ -10,10 +10,10 @@ namespace WebApiMTModel.Models.Models.View
 {
     public class SendMailService
     {
-        public  void  SendMail(string mailValues)
+        public  void  SendMail(SendMailRequest mail)
         {
-            SendMailRequest mail = new SendMailRequest();
-            string[] mailRequestValues = mailValues.Split(';');
+            
+           
            // mail.recipient=mailRequestValues.First()
             MailMessage msg = new MailMessage();
             // Separate the recipient array
@@ -60,8 +60,6 @@ namespace WebApiMTModel.Models.Models.View
             }
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-          
-           
            
 
             msg.From = new MailAddress("makomtovapp@gmail.com");
@@ -70,19 +68,27 @@ namespace WebApiMTModel.Models.Models.View
             msg.Body = mail.body;
             try
             {
+                SmtpServer.UseDefaultCredentials = false; ;
                 SmtpServer.Host = "smtp.gmail.com";
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = CredentialCache.DefaultNetworkCredentials; 
-                SmtpServer.EnableSsl = false;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("makomtovapp@gmail.com", "!Q2w3e4r");
+                SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+                SmtpServer.EnableSsl = true;
                 SmtpServer.SendCompleted += SmtpServer_SendCompleted;
-                SmtpServer.SendAsync(msg, msg);
-                msg.Dispose();
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw ex;
-
-            }
+                
+                    SmtpServer.Send(msg);
+                   
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    msg.Dispose();
+                }
+          
+           
         }
 
        

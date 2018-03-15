@@ -13,7 +13,7 @@ namespace WebApiMTModel.Controllers
     {
         [Route("")]
         [HttpPost]
-        public IHttpActionResult SendEmail(string mailModel)
+        public IHttpActionResult SendEmail(SendMailRequest mailModel)
         {
             try
             {
