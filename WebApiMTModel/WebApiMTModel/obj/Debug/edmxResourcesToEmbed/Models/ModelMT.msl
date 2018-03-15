@@ -17,6 +17,7 @@
     <EntitySetMapping Name="OrdersTbl">
       <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
         <MappingFragment StoreEntitySet="OrdersTbl">
+          <ScalarProperty Name="OrderCreateDate" ColumnName="OrderCreateDate" />
           <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
           <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
           <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />

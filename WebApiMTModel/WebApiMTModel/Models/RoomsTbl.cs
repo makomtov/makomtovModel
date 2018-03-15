@@ -28,6 +28,6 @@ namespace WebApiMTModel.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoomSetting> RoomSetting { get; set; }
-        public virtual StatusTbl StatusTbl { get; set; }
+        public virtual StatusTbl StatusTbl { internal get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace WebApiMTModel.Models
         public bool HomeFood { get; set; }
     
         public virtual OrdersTbl OrdersTbl { get; set; }
-        public virtual StatusTbl StatusTbl { get; set; }
+        public virtual StatusTbl StatusTbl { internal get; set; }
         public virtual UserDogs UserDogs { get; set; }
     }
 }

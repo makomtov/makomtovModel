@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DogsInOrder">
           <Key>
             <PropertyRef Name="OrderNumber" />
@@ -28,6 +28,7 @@
           <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="OrderType" Type="int" Nullable="false" />
           <Property Name="Price" Type="money" />
+          <Property Name="OrderCreateDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -331,8 +332,7 @@
             <End Role="UsersTbl" EntitySet="UsersTbl" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -349,7 +349,7 @@
           <Property Name="DogTraining" Type="Boolean" />
           <Property Name="HomeFood" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_DogsInOrder_ToOrdersTbl" FromRole="DogsInOrder" ToRole="OrdersTbl" />
-          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_DogsInOrder_ToStatusTbl" FromRole="DogsInOrder" ToRole="StatusTbl" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_DogsInOrder_ToStatusTbl" FromRole="DogsInOrder" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UserDogs" Relationship="Self.FK_DogsInOrder_ToUserDogsTbl" FromRole="DogsInOrder" ToRole="UserDogs" />
         </EntityType>
         <EntityType Name="OrdersTbl">
@@ -364,9 +364,10 @@
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="DogsInOrder" Relationship="Self.FK_DogsInOrder_ToOrdersTbl" FromRole="OrdersTbl" ToRole="DogsInOrder" />
           <NavigationProperty Name="OrderTypes" Relationship="Self.FK_OrdersTbl_ToOrderTypesTbl" FromRole="OrdersTbl" ToRole="OrderTypes" />
-          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_OrdersTbl_ToStatusTbl" FromRole="OrdersTbl" ToRole="StatusTbl" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_OrdersTbl_ToStatusTbl" FromRole="OrdersTbl" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UsersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="OrdersTbl" ToRole="UsersTbl" />
           <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="OrdersTbl" ToRole="RoomSetting" />
+          <Property Name="OrderCreateDate" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -410,7 +411,7 @@
           <Property Name="RoomCapacity" Type="Int32" />
           <Property Name="RoomComments" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToRoomsTbl" FromRole="RoomsTbl" ToRole="RoomSetting" />
-          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_RoomsTbl_ToStatusTbl" FromRole="RoomsTbl" ToRole="StatusTbl" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_RoomsTbl_ToStatusTbl" FromRole="RoomsTbl" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </EntityType>
         <EntityType Name="StatusTbl">
           <Key>
@@ -446,7 +447,7 @@
           <Property Name="DogDig" Type="Boolean" />
           <NavigationProperty Name="DogsInOrder" Relationship="Self.FK_DogsInOrder_ToUserDogsTbl" FromRole="UserDogs" ToRole="DogsInOrder" />
           <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="UserDogs" ToRole="RoomSetting" />
-          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="UserDogs" ToRole="StatusTbl" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="UserDogs" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UserDogs" ToRole="UsersTbl" />
         </EntityType>
         <EntityType Name="UsersTbl">
@@ -459,15 +460,15 @@
           <Property Name="UserAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserStatus" Type="Int32" Nullable="false" />
-          <Property Name="UserComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="true" />
           <Property Name="UserFirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserLastName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPaswrd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="UserPhone1" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="UserPhone2" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" />
-          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" />
-          <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </EntityType>
         <Association Name="FK_DogsInOrder_ToOrdersTbl">
           <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
@@ -710,6 +711,7 @@
           <EntitySetMapping Name="OrdersTbl">
             <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
               <MappingFragment StoreEntitySet="OrdersTbl">
+                <ScalarProperty Name="OrderCreateDate" ColumnName="OrderCreateDate" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />

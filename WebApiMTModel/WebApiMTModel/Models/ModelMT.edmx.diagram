@@ -13,7 +13,7 @@
         <EntityTypeShape EntityType="DatabaseModel.RoomsTbl" Width="1.5" PointX="3" PointY="15.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DatabaseModel.StatusTbl" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DatabaseModel.UserDogs" Width="1.5" PointX="8.25" PointY="17.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.UsersTbl" Width="1.5" PointX="3" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.UsersTbl" Width="1.5" PointX="3.375" PointY="22.625" IsExpanded="true" />
         <AssociationConnector Association="DatabaseModel.FK_DogsInOrder_ToOrdersTbl" ManuallyRouted="false" />
         <AssociationConnector Association="DatabaseModel.FK_DogsInOrder_ToStatusTbl" ManuallyRouted="false" />
         <AssociationConnector Association="DatabaseModel.FK_DogsInOrder_ToUserDogsTbl" ManuallyRouted="false" />

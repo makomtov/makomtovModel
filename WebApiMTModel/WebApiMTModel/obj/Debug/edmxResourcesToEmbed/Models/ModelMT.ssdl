@@ -23,6 +23,7 @@
     <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="OrderType" Type="int" Nullable="false" />
     <Property Name="Price" Type="money" />
+    <Property Name="OrderCreateDate" Type="date" Nullable="false" />
   </EntityType>
   <EntityType Name="OrderTypes">
     <Key>

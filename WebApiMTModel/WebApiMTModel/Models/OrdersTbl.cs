@@ -27,11 +27,12 @@ namespace WebApiMTModel.Models
         public string OrderconfirmationNumber { get; set; }
         public int OrderType { get; set; }
         public Nullable<decimal> Price { get; set; }
+        public System.DateTime OrderCreateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }
         public virtual OrderTypes OrderTypes { get; set; }
-        public virtual StatusTbl StatusTbl { get; set; }
+        public virtual StatusTbl StatusTbl { internal get; set; }
         public virtual UsersTbl UsersTbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoomSetting> RoomSetting { get; set; }

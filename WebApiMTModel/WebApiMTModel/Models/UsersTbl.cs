@@ -35,9 +35,9 @@ namespace WebApiMTModel.Models
         public string UserPhone2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrdersTbl> OrdersTbl { get; set; }
-        public virtual StatusTbl StatusTbl { get; set; }
+        public virtual ICollection<OrdersTbl> OrdersTbl { internal get; set; }
+        public virtual StatusTbl StatusTbl { internal get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserDogs> UserDogs { get; set; }
+        public virtual ICollection<UserDogs> UserDogs { internal get; set; }
     }
 }

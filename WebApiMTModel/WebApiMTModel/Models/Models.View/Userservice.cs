@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Configuration;//
+using System.Web;
 
 namespace WebApiMTModel.Models.Models.View
 {
@@ -49,7 +50,7 @@ namespace WebApiMTModel.Models.Models.View
             }
 
         }
-        //שליפת משתמש+ כלבים למשתמש
+        //שליפת משתמש+ כלבים למשתמש+הזמנות למשתמש
         public UserDetailsView GetUser(string usereMail, string password)
         {
 
@@ -78,8 +79,9 @@ namespace WebApiMTModel.Models.Models.View
                     userDetails.UserCityName = User.UserCity;
                     userDetails.UserAddress = User.UserAddress;
 
-                    GetUserDogs(userDetails); //שליפת כלבים למשתמש
-
+               //     GetUserDogs(userDetails); //שליפת כלבים למשתמש
+               //     GetUserOrders(userDetails);//שליפת הזמנות למשתמש
+                    HttpContext.Current.Session["userDetails"] = userDetails;
 
 
                 }
@@ -91,8 +93,159 @@ namespace WebApiMTModel.Models.Models.View
             }
 
         }
-        //שליפת כלבים למשתמש
+        //שליפת הזמנות למשתמש
+        
+        public void GetUserOrders(UserDetailsView userDetails)
+        {
+            try
+            {
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                //   שליפת כל ההזמנות מטבלתOrdersTbl
 
+                var orderslist = context.OrdersTbl.
+                   Join(context.OrderTypes,
+                   o => o.OrderType, ot => ot.OrderTypeId,
+                   (o, ot) => new
+                   {
+                       orderNumber = o.OrderNumber,
+                       orderCreateDate = o.OrderCreateDate,
+                       price = o.Price,
+                       orderconfirmationNumber = o.OrderconfirmationNumber,
+                       orderStatus = o.OrderStatus,
+                       orderUserId = o.OrderUserId,
+                       orderTypeName = ot.OrderTypeName
+                   }).Join(context.StatusTbl,
+                           a => a.orderStatus, s => s.StatusId,
+                           (a, s) => new
+                           {
+                               OrderNumber = a.orderNumber,
+                               OrderCreateDate = a.orderCreateDate,
+                               Price = a.price,
+                               OrderconfirmationNumber = a.orderconfirmationNumber,
+                               OrderStatus = a.orderStatus,
+                               OrderStatusName = s.StatusName,
+                               OrderTypeName = a.orderTypeName,
+                               OrderUserId = a.orderUserId
+                           }).Where(p => p.OrderUserId == userDetails.UserID);
+
+               // var orders = context.OrdersTbl.Where(p => p.OrderUserId == userDetails.UserID);
+                if (orderslist != null)
+                {
+                    userDetails.UserReservations= new List<OrderDetailsView>();
+                     
+                    foreach (var order in orderslist)
+                    {
+                        OrderDetailsView orderDetails = new OrderDetailsView();
+                        orderDetails.OrderNumber = order.OrderNumber;
+                        orderDetails.OrderDate = order.OrderCreateDate;
+                        orderDetails.OrderconfirmationNumber = order.OrderconfirmationNumber;
+                        orderDetails.Price = (decimal)order.Price;
+                        orderDetails.mDogs = new List<DogsInOrderView>();
+
+                        //שליפת כל הכלבים להזמנה מטבלת  DogsInOrder
+                        var dogsInOrder = context.DogsInOrder.Where(u => u.OrderNumber == order.OrderNumber);
+                        
+                        foreach (var dog in dogsInOrder)
+                        {
+                            DogsInOrderView dogsInOrderV = new DogsInOrderView();
+                            dogsInOrderV.DogNumber = dog.DogNumber;
+                            dogsInOrderV.DogName = dog.UserDogs.DogName;
+                            dogsInOrderV.FromDate = dog.FromDate;
+                            dogsInOrderV.ToDate = dog.ToDate;
+                            dogsInOrderV.DogImage = dog.UserDogs.DogImage;
+                            orderDetails.mDogs.Add(dogsInOrderV);
+                        }
+                        userDetails.UserReservations.Add(orderDetails);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        //שליפת הזמנות למשתמש
+
+        public UserDetailsView GetUserOrders(int userID)
+        {
+            UserDetailsView userDetails = new UserDetailsView();
+            userDetails.UserID = userID;
+            try
+            {
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                //   שליפת כל ההזמנות מטבלתOrdersTbl
+
+                var orderslist = context.OrdersTbl.
+                  Join(context.OrderTypes,
+                  o => o.OrderType, ot => ot.OrderTypeId,
+                  (o, ot) => new
+                  {
+                      orderNumber = o.OrderNumber,
+                      orderCreateDate = o.OrderCreateDate,
+                      price = o.Price,
+                      orderconfirmationNumber = o.OrderconfirmationNumber,
+                      orderStatus = o.OrderStatus,
+                      orderUserId = o.OrderUserId,
+                      orderTypeName = ot.OrderTypeName
+                  }).Join(context.StatusTbl,
+                          a => a.orderStatus, s => s.StatusId,
+                          (a, s) => new
+                          {
+                              OrderNumber = a.orderNumber,
+                              OrderCreateDate = a.orderCreateDate,
+                              Price = a.price,
+                              OrderconfirmationNumber = a.orderconfirmationNumber,
+                              OrderStatus = a.orderStatus,
+                              OrderStatusName = s.StatusName,
+                              OrderTypeName = a.orderTypeName,
+                              OrderUserId = a.orderUserId
+                          }).Where(p => p.OrderUserId == userID);
+
+                // var orders = context.OrdersTbl.Where(p => p.OrderUserId == userDetails.UserID);
+                if (orderslist != null)
+                {
+                    userDetails.UserReservations = new List<OrderDetailsView>();
+
+                    foreach (var order in orderslist)
+                    {
+                        OrderDetailsView orderDetails = new OrderDetailsView();
+                        orderDetails.OrderNumber = order.OrderNumber;
+                        orderDetails.OrderDate = order.OrderCreateDate;
+                        orderDetails.OrderconfirmationNumber = order.OrderconfirmationNumber;
+                        orderDetails.Price = (decimal)order.Price;
+                        orderDetails.OrderStatus = order.OrderStatus;
+                        orderDetails.OrderStatusName = order.OrderStatusName;
+                        orderDetails.mDogs = new List<DogsInOrderView>();
+
+                        //שליפת כל הכלבים להזמנה מטבלת  DogsInOrder
+                        var dogsInOrder = context.DogsInOrder.Where(u => u.OrderNumber == order.OrderNumber);
+
+                        foreach (var dog in dogsInOrder)
+                        {
+                            DogsInOrderView dogsInOrderV = new DogsInOrderView();
+                            dogsInOrderV.DogNumber = dog.DogNumber;
+                            dogsInOrderV.DogName = dog.UserDogs.DogName;
+                            dogsInOrderV.FromDate = dog.FromDate;
+                            dogsInOrderV.ToDate = dog.ToDate;
+                            dogsInOrderV.DogImage = dog.UserDogs.DogImage;
+                            orderDetails.mDogs.Add(dogsInOrderV);
+                        }
+                        userDetails.UserReservations.Add(orderDetails);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return userDetails;
+        }
+        //שליפת כלבים למשתמש
         private void GetUserDogs(UserDetailsView userDetails)
 
 
@@ -100,14 +253,14 @@ namespace WebApiMTModel.Models.Models.View
             try
             {
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-        var dogs = context.UserDogs.Where(p => p.DogUserID == userDetails.UserID);
+                var dogs = context.UserDogs.Where(p => p.DogUserID == userDetails.UserID);
                 if (dogs != null)
                 {
                     userDetails.UserarrayDogs = new List<DogDetailsView>();
                     foreach (var dog in dogs)
                     {
                         DogDetailsView dogDetails = new DogDetailsView();
-        dogDetails.DogNumber = dog.DogNumber;
+                        dogDetails.DogNumber = dog.DogNumber;
                         dogDetails.DogName = dog.DogName;
                         dogDetails.DogImage = dog.DogImage;
                         dogDetails.DogShvav = dog.DogShvav;
@@ -118,7 +271,7 @@ namespace WebApiMTModel.Models.Models.View
                         dogDetails.DogBirthDate = dog.DogBirthDate;
                         userDetails.UserarrayDogs.Add(dogDetails);
                     }
-}
+                }
 
 
             }
@@ -127,6 +280,38 @@ namespace WebApiMTModel.Models.Models.View
                 throw ex;
             }
         }
+//        public void GetUserDogs(UserDetailsView userDetails)
+//        {
+//            try
+//            {
+//                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+//        var dogs = context.UserDogs.Where(p => p.DogUserID == userDetails.UserID);
+//                if (dogs != null)
+//                {
+//                    userDetails.UserarrayDogs = new List<DogDetailsView>();
+//                    foreach (var dog in dogs)
+//                    {
+//                        DogDetailsView dogDetails = new DogDetailsView();
+//        dogDetails.DogNumber = dog.DogNumber;
+//                        dogDetails.DogName = dog.DogName;
+//                        dogDetails.DogImage = dog.DogImage;
+//                        dogDetails.DogShvav = dog.DogShvav;
+//                        dogDetails.DogType = dog.DogType;
+//                        dogDetails.DogStatus = dog.DogStatus;
+//                        dogDetails.DogComments = dog.DogComments;
+//                        dogDetails.DogUserID = dog.DogUserID;
+//                        dogDetails.DogBirthDate = dog.DogBirthDate;
+//                        userDetails.UserarrayDogs.Add(dogDetails);
+//                    }
+//}
+
+
+//            }
+//            catch (Exception ex)
+//            {
+//                throw ex;
+//            }
+//        }
         //שליפת משתמשים+כלבים
         //עדכון משתמש
         public void UpdateUserDetails(UserDetailsView user)
@@ -203,11 +388,20 @@ namespace WebApiMTModel.Models.Models.View
                 usersTbl.UserPhone1 = user.UserPhone1;
                 usersTbl.UserPhone2 = user.UserPhone2;
                 usersTbl.UserStatus = 21;
+                usersTbl.UserName = user.UserName;
 
                 context.UsersTbl.Add(usersTbl);
                 context.SaveChanges();
             }
 
+        }
+        //public bool CheckUserDetails(int userid)
+        //{
+        //    bool ok = true;
+        //    UserDetailsView userDetails = (UserDetailsView)HttpContext.Current.Session["userDetails"];
+        //    if (userDetails.UserAddress==""
+        //    return ok;
+        //}
 
             //    public UserDogs GetUserDogsL(UserDetails userDetails)
             //    {
@@ -228,5 +422,5 @@ namespace WebApiMTModel.Models.Models.View
             //}
         }
     }
-}
+
 

@@ -41,7 +41,7 @@ namespace WebApiMTModel.Models
         public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoomSetting> RoomSetting { get; set; }
-        public virtual StatusTbl StatusTbl { get; set; }
+        public virtual StatusTbl StatusTbl { internal get; set; }
         public virtual UsersTbl UsersTbl { get; set; }
     }
 }
