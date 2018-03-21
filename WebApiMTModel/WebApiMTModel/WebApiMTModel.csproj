@@ -213,6 +213,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelMT.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Models.View\OrdersForUserView.cs" />
+    <Compile Include="Models\Models.View\PricesView.cs" />
     <Compile Include="Models\Models.View\SendMailRequest.cs" />
     <Compile Include="Models\Models.View\SendMailService.cs" />
     <Compile Include="Models\Models.View\StatusView.cs" />

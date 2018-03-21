@@ -8,7 +8,9 @@
     <Property Name="OrderNumber" Type="int" Nullable="false" />
     <Property Name="DogNumber" Type="int" Nullable="false" />
     <Property Name="FromDate" Type="datetime" Nullable="false" />
+    <Property Name="ShiftNumberFrom" Type="int" Nullable="false" />
     <Property Name="ToDate" Type="datetime" Nullable="false" />
+    <Property Name="ShiftNumberTo" Type="int" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="DogTraining" Type="bit" />
     <Property Name="HomeFood" Type="bit" Nullable="false" />

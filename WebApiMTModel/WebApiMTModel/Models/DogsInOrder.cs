@@ -21,6 +21,8 @@ namespace WebApiMTModel.Models
         public int Status { get; set; }
         public Nullable<bool> DogTraining { get; set; }
         public bool HomeFood { get; set; }
+        public int ShiftNumberFrom { get; set; }
+        public int ShiftNumberTo { get; set; }
     
         public virtual OrdersTbl OrdersTbl { get; set; }
         public virtual StatusTbl StatusTbl { internal get; set; }

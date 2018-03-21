@@ -13,7 +13,9 @@
           <Property Name="OrderNumber" Type="int" Nullable="false" />
           <Property Name="DogNumber" Type="int" Nullable="false" />
           <Property Name="FromDate" Type="datetime" Nullable="false" />
+          <Property Name="ShiftNumberFrom" Type="int" Nullable="false" />
           <Property Name="ToDate" Type="datetime" Nullable="false" />
+          <Property Name="ShiftNumberTo" Type="int" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="DogTraining" Type="bit" />
           <Property Name="HomeFood" Type="bit" Nullable="false" />
@@ -351,6 +353,8 @@
           <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_DogsInOrder_ToOrdersTbl" FromRole="DogsInOrder" ToRole="OrdersTbl" />
           <NavigationProperty Name="StatusTbl" Relationship="Self.FK_DogsInOrder_ToStatusTbl" FromRole="DogsInOrder" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UserDogs" Relationship="Self.FK_DogsInOrder_ToUserDogsTbl" FromRole="DogsInOrder" ToRole="UserDogs" />
+          <Property Name="ShiftNumberFrom" Type="Int32" Nullable="false" />
+          <Property Name="ShiftNumberTo" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="OrdersTbl">
           <Key>
@@ -698,6 +702,8 @@
           <EntitySetMapping Name="DogsInOrder">
             <EntityTypeMapping TypeName="DatabaseModel.DogsInOrder">
               <MappingFragment StoreEntitySet="DogsInOrder">
+                <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
+                <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
                 <ScalarProperty Name="FromDate" ColumnName="FromDate" />

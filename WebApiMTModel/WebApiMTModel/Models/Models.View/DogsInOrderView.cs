@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 /// </summary>
 namespace WebApiMTModel.Models.Models.View
 {
+    
     public class DogsInOrderView : DogDetailsView
     {
 
@@ -32,5 +33,9 @@ namespace WebApiMTModel.Models.Models.View
         public decimal Price { get; set; }
         [JsonProperty("HomeFood")]
         public bool HomeFood { get; set; }  //אוכל בית/פנסיון?
+        [JsonProperty("ShiftNumberFrom")]
+        public int ShiftNumberFrom { get; set; }// 1 - בוקר 7-12
+        [JsonProperty("ShiftNumberTo")]
+        public int ShiftNumberTo { get; set; } // 2 - ערב 16-19
     }
 }

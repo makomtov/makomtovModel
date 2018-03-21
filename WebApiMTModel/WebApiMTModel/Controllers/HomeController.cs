@@ -13,11 +13,11 @@ namespace WebApiMTModel.Controllers
 
 
 
-        [System.Web.Http.HttpPost]
-        public UserDetailsView GetUserOrders(int userID)
-        {
-            Userservice userservice = new Userservice();
-            return userservice.GetUserOrders(userID);
-        }
+        //[System.Web.Http.HttpPost]
+        //public UserDetailsView GetUserOrders(int userID)
+        //{
+        //    Userservice userservice = new Userservice();
+        //    return userservice.GetUserOrders(userID);
+        //}
     }
 }

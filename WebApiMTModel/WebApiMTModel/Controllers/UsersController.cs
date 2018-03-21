@@ -15,8 +15,7 @@ using System.Threading.Tasks;
 using System.Text;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
-
-
+using Newtonsoft.Json.Linq;
 
 namespace WebApiMTModel.Controllers
 {
@@ -26,7 +25,7 @@ namespace WebApiMTModel.Controllers
         UsersController : ApiController
     {
         //api/Users/GetUsers
-        
+
         [System.Web.Http.Route("")]
         public IEnumerable<UserDetailsView> GetUsers()
         {
@@ -39,7 +38,7 @@ namespace WebApiMTModel.Controllers
 
         //api/Users/aaa@gmail.com/1234
         [System.Web.Http.Route("{usereMail}/{password}")]
-      
+
         public UserDetailsView GetUser(string usereMail, string password)
         {
             Userservice userservice = new Userservice();
@@ -52,29 +51,29 @@ namespace WebApiMTModel.Controllers
         //[System.Web.Http.Route("Users/{userID}")]
         //
 
-        // POST: /api/Users/PostUsersTbl/3
-        [ResponseType(typeof(UserDetailsView))]
-        public void PostUsersTbl(UserDetailsView user)
-        {
-           Userservice userservice = new Userservice();
-            userservice.InsertUserDetails(user);
-        }
-        //public void InsertUserDetails(int id)
-        //// public void InsertUserDetails(UserDetailsView user)
+        //[System.Web.Http.HttpPost]
+        //[System.Web.Http.Route("{InsertUserDetails}")]
+        ////public void InsertUserDetails(UserDetailsView user)
+        //// public void InsertUserDetails(JObject juser)
+        //public void InsertUserDetails([FromBody] UserDetailsView user)
         //{
-        //    UserDetailsView user = new UserDetailsView();
-        //    user.UserAddress = "הרצל 5"; ;
-        //    user.UserCityName = "תל אביב";
-        //    user.UserComments = "";
-        //    user.UserEmail = "bbb@gmail.com";
-        //    user.UserFirstName = "דני";
-        //    user.UserLastName = "כהן";
-        //    user.UserName = "bbb";
-        //    user.UserPaswrd = "1111";
-        //    user.UserPhone1 = "23213213";
-        //    user.UserPhone2 = "12321321";
+        //    // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(juser.ToString());
         //    Userservice userservice = new Userservice();
         //    userservice.InsertUserDetails(user);
+        //}
+
+        /// <summary>
+        /// add dogs for user
+        /// </summary>
+        /// <param name="userDetails"></param>
+        /// 
+        //// /api/Users/user/AddDogs
+        //[System.Web.Http.HttpPost]
+        //[System.Web.Http.Route("{user/AddDogs}")]
+        //public void AddDogsForUser(UserDetailsView userDetails)
+        //{
+        //    Userservice userservice = new Userservice();
+        //    userservice.InsertUserDetails(userDetails);
         //}
     }
 }
