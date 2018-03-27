@@ -29,8 +29,13 @@
           <Property Name="OrderStatus" Type="int" Nullable="false" />
           <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="OrderType" Type="int" Nullable="false" />
+          <Property Name="FromDate" Type="datetime" />
+          <Property Name="ShiftNumberFrom" Type="int" />
+          <Property Name="ToDate" Type="datetime" />
+          <Property Name="ShiftNumberTo" Type="int" />
           <Property Name="Price" Type="money" />
           <Property Name="OrderCreateDate" Type="date" Nullable="false" />
+          <Property Name="ManagerComments" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -97,13 +102,14 @@
           <Property Name="DogBirthDate" Type="date" Nullable="false" />
           <Property Name="DogFriendlyWith" Type="int" />
           <Property Name="DogDig" Type="bit" />
+          <Property Name="Manager Comments" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="UsersTbl">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
           <Property Name="UserEmail" Type="char" MaxLength="50" Nullable="false" />
           <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -372,6 +378,11 @@
           <NavigationProperty Name="UsersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="OrdersTbl" ToRole="UsersTbl" />
           <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="OrdersTbl" ToRole="RoomSetting" />
           <Property Name="OrderCreateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ManagerComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FromDate" Type="DateTime" Precision="3" />
+          <Property Name="ShiftNumberFrom" Type="Int32" />
+          <Property Name="ToDate" Type="DateTime" Precision="3" />
+          <Property Name="ShiftNumberTo" Type="Int32" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -453,13 +464,14 @@
           <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="UserDogs" ToRole="RoomSetting" />
           <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="UserDogs" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UserDogs" ToRole="UsersTbl" />
+          <Property Name="Manager_Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UsersTbl">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="UserAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -717,6 +729,11 @@
           <EntitySetMapping Name="OrdersTbl">
             <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
               <MappingFragment StoreEntitySet="OrdersTbl">
+                <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ManagerComments" ColumnName="ManagerComments" />
                 <ScalarProperty Name="OrderCreateDate" ColumnName="OrderCreateDate" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
@@ -781,6 +798,7 @@
           <EntitySetMapping Name="UserDogs">
             <EntityTypeMapping TypeName="DatabaseModel.UserDogs">
               <MappingFragment StoreEntitySet="UserDogs">
+                <ScalarProperty Name="Manager_Comments" ColumnName="Manager Comments" />
                 <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
                 <ScalarProperty Name="DogName" ColumnName="DogName" />
                 <ScalarProperty Name="DogShvav" ColumnName="DogShvav" />

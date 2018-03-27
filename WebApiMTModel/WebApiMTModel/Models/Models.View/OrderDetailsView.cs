@@ -26,6 +26,12 @@ namespace WebApiMTModel.Models.Models.View
         public DateTime OrderDate { get; set; }
         [JsonProperty("User")]
         public UserDetailsView User { get; set; }
+        [JsonProperty("Userid")]
+        public int Userid { get; set; }
+        [JsonProperty("userFirstName")]
+        public string userFirstName { get; set; }
+        [JsonProperty("userLastName")]
+        public string userLastName { get; set; }
         [JsonProperty("Price")]
         public decimal Price { get; set; }
         [JsonProperty("OrderconfirmationNumber")]
@@ -34,6 +40,18 @@ namespace WebApiMTModel.Models.Models.View
         public int OrderStatus { get; set; }
         [JsonProperty("OrderStatusName")]
         public string OrderStatusName { get; set; }
+        [JsonProperty("OrderType")]
+        public int OrderType { get; set; }
+        [JsonProperty("OrderTypeName")]
+        public string OrderTypeName { get; set; }
+        [JsonProperty("FromDate")]
+        public DateTime FromDate { get; set; }
+        [JsonProperty("ShiftNumberFrom")]
+        public int ShiftNumberFrom { get; set; }
+        [JsonProperty("ToDate")]
+        public DateTime ToDate { get; set; }
+        [JsonProperty("ShiftNumberTo")]
+        public int ShiftNumberTo { get; set; }
         [JsonProperty("mDogs")]
         public List<DogsInOrderView> mDogs { get; set; }
     }

@@ -22,5 +22,14 @@ namespace WebApiMTModel.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("d:\\mailTemp")]
+        public string TempFile {
+            get {
+                return ((string)(this["TempFile"]));
+            }
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace WebApiMTModel.Models.Models.View
 
         public DateTime DogRabiesVaccine { get; set; } //תאריך חיסון כלבת
 
-        public string DogFood { get; set; } //מזון מועדף
+       // public string DogFood { get; set; } //מזון מועדף
 
         public DateTime DogBirthDate { get; set; } //תאריך לידה
 

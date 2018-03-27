@@ -21,6 +21,8 @@ namespace WebApiMTModel.Models.Models.View
             // TODO: Add constructor logic here
             //
         }
+        [JsonProperty("OrderNumber")]
+        public int OrderNumber { get; set; }
         [JsonProperty("Training")]
         public bool Training { get; set; } //אילוף? כן/לא
         [JsonProperty("Pension")]

@@ -36,6 +36,7 @@ namespace WebApiMTModel.Models
         public System.DateTime DogBirthDate { get; set; }
         public Nullable<int> DogFriendlyWith { get; set; }
         public Nullable<bool> DogDig { get; set; }
+        public string Manager_Comments { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }

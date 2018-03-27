@@ -36,6 +36,13 @@ namespace WebApiMTModel.Models.Models.View
                         ud.UserName = user.UserName;
                         ud.UserPhone1 = user.UserPhone1;
                         ud.UserPhone2 = user.UserPhone2;
+                        var dogs = context.UserDogs
+                                     .Where(userDog => userDog.DogUserID == user.UserID).Count();
+                        ud.DogsNumber = dogs;
+
+                        var reservations = context.OrdersTbl
+                                     .Where(userres => userres.OrderUserId == user.UserID).Count();
+                        ud.ReservationsNumber = reservations;
                         list.Add(ud);
                     }
                 }
@@ -50,7 +57,7 @@ namespace WebApiMTModel.Models.Models.View
             }
 
         }
-        //שליפת משתמש+ כלבים למשתמש+הזמנות למשתמש
+        //שליפת משתמש
         public UserDetailsView GetUser(string usereMail, string password)
         {
 
@@ -78,9 +85,113 @@ namespace WebApiMTModel.Models.Models.View
                     userDetails.UserComments = User.UserComments;
                     userDetails.UserCityName = User.UserCity;
                     userDetails.UserAddress = User.UserAddress;
+                    var dogs = context.UserDogs
+                                    .Where(userDog => userDog.DogUserID == User.UserID).Count();
+                    userDetails.DogsNumber = dogs;
 
-                    //     GetUserDogs(userDetails); //שליפת כלבים למשתמש
-                 //   OrderService orderService = new OrderService();
+                    var reservations = context.OrdersTbl
+                                 .Where(userres => userres.OrderUserId == User.UserID).Count();
+                    userDetails.ReservationsNumber = context.OrdersTbl.Count();
+                  
+                    HttpContext.Current.Session["userDetails"] = userDetails;
+
+
+                }
+                return userDetails;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        //+כלבים שלו שליפת משתמש
+        public UserDetailsView GetUserWithDogs(string usereMail, string password)
+        {
+
+            try
+            {
+                UserDetailsView userDetails = null;
+
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+
+
+                var User = context.UsersTbl
+              .Where(user => user.UserEmail == usereMail && user.UserPaswrd == password).FirstOrDefault();
+
+
+                if (User != null)
+                {
+                    userDetails = new UserDetailsView();
+
+                    userDetails.UserFirstName = User.UserFirstName;
+                    userDetails.UserLastName = User.UserLastName;
+                    userDetails.UserEmail = User.UserEmail;
+                    userDetails.UserID = User.UserID;
+                    userDetails.UserPhone2 = User.UserPhone2;
+                    userDetails.UserPhone1 = User.UserPhone1;
+                    userDetails.UserComments = User.UserComments;
+                    userDetails.UserCityName = User.UserCity;
+                    userDetails.UserAddress = User.UserAddress;
+                    var dogs = context.UserDogs
+                                    .Where(userDog => userDog.DogUserID == User.UserID).Count();
+                    userDetails.DogsNumber = dogs;
+
+                    var reservations = context.OrdersTbl
+                                 .Where(userres => userres.OrderUserId == User.UserID).Count();
+                    userDetails.ReservationsNumber = context.OrdersTbl.Count();
+                     GetUserDogs(userDetails); //שליפת כלבים למשתמש
+                   
+                    HttpContext.Current.Session["userDetails"] = userDetails;
+
+
+                }
+                return userDetails;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        //שליפת משתמש
+        public UserDetailsView GetUser(int userid)
+        {
+
+            try
+            {
+                UserDetailsView userDetails = null;
+
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+
+
+                var User = context.UsersTbl
+              .Where(user => user.UserID == userid && user.UserStatus!=22).FirstOrDefault();
+
+
+                if (User != null)
+                {
+                    userDetails = new UserDetailsView();
+
+                    userDetails.UserFirstName = User.UserFirstName;
+                    userDetails.UserLastName = User.UserLastName;
+                    userDetails.UserEmail = User.UserEmail;
+                    userDetails.UserID = User.UserID;
+                    userDetails.UserPhone2 = User.UserPhone2;
+                    userDetails.UserPhone1 = User.UserPhone1;
+                    userDetails.UserComments = User.UserComments;
+                    userDetails.UserCityName = User.UserCity;
+                    userDetails.UserAddress = User.UserAddress;
+                    var dogs = context.UserDogs
+                                    .Where(userDog => userDog.DogUserID == User.UserID).Count();
+                    userDetails.DogsNumber = dogs;
+
+                    var reservations = context.OrdersTbl
+                                 .Where(userres => userres.OrderUserId == User.UserID).Count();
+                    userDetails.ReservationsNumber = context.OrdersTbl.Count();
+                    //  GetUserDogs(userDetails); //שליפת כלבים למשתמש
+                    //   OrderService orderService = new OrderService();
                     //    orderService.GetUserOrders(userDetails);//שליפת הזמנות למשתמש
                     HttpContext.Current.Session["userDetails"] = userDetails;
 
@@ -94,8 +205,23 @@ namespace WebApiMTModel.Models.Models.View
             }
 
         }
-       
+
+        public List<DogDetailsView> GetUserDogs(int userid)
         
+        {
+            try
+            {
+                UserDetailsView userDetailsView = new UserDetailsView(userid);
+                GetUserDogs(userDetailsView);
+
+                return userDetailsView.UserarrayDogs;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         //שליפת כלבים למשתמש
         private void GetUserDogs(UserDetailsView userDetails)
 

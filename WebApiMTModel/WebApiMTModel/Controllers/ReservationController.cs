@@ -17,7 +17,7 @@ namespace WebApiMTModel.Controllers
     {
         //api/Reservation
         [Route("")]
-        public IQueryable GetOrders()
+        public List<OrderDetailsView> GetOrders()
         {
 
             OrderService orderService = new OrderService();
@@ -33,20 +33,26 @@ namespace WebApiMTModel.Controllers
         }
 
         //  /api/Reservation/CalculateOrderPrice/calc
-        [Route("CalculateOrderPrice/calc")]
+        //[Route("CalculateOrderPrice/calc")]
+        //[HttpGet]
+        //public decimal CalculateOrderPrice()
+        //{
+        //    OrderService orderService = new OrderService();
+        //    return orderService.CalculateOrderPrice();
+        //}
+
+        // /api/Reservation/CreateOrder
+        [Route("CreateOrder")]
         [HttpGet]
-        public decimal CalculateOrderPrice()
-        {
-            OrderService orderService = new OrderService();
-            return orderService.CalculateOrderPrice();
-        } 
-        public int CreateOrder(OrderDetailsView orderDetailsView)
+      //  public void CreateOrder()
+         public int CreateOrder(OrderDetailsView orderDetailsView)
         {
             //אם מחזיר -1 חסרים פרטים על המשתמש בטבלת משתמשים
             //Userservice userservice = new Userservice();
             //bool ok = userservice.CheckUserDetails(orderDetailsView.User.UserID);
             //if (!ok) return -1;
             OrderService orderService = new OrderService();
+          //  orderService.createOrder(orderDetailsView);
             return orderService.createOrder(orderDetailsView);
         }
         // /api/Reservation/GetUserOrders/1
@@ -71,15 +77,23 @@ namespace WebApiMTModel.Controllers
         public List<OrderDetailsView> GetAllOrdersAndDogs()
         {
             OrderService orderService = new OrderService();
-            return orderService.GetAllOrdersAndDogs();
+            List<OrderDetailsView> list= orderService.GetAllOrdersAndDogs();
+            return list;
         }
-        // /api/Reservation/UpdateOrdersByManager/Manager
 
-          
-        [Route("UpdateOrdersByManager")]
-       
+    // /api/Reservation/GetAllOrdersAndDogsManager
+    [Route("GetAllOrdersAndDogsManager")]
+    public List<OrderDetailsViewManager> GetAllOrdersAndDogsManager()
+    {
+        OrderService orderService = new OrderService();
+        return orderService.GetAllOrdersAndDogsManager();
+    }
+    // /api/Reservation/UpdateOrdersByManager/Manager
+
+
+    [Route("UpdateOrdersByManager")]
         [HttpPut]
-    public void UpdateOrdersByManager(HttpRequestMessage Orders)
+         public void UpdateOrdersByManager(HttpRequestMessage Orders)
         {
             var jsonString = Orders.Content.ReadAsStringAsync().Result;
 

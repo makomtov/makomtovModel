@@ -192,6 +192,7 @@
     <Compile Include="Controllers\SendMailController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\XMLController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -213,6 +214,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelMT.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Models.View\DogDetailsViewManager.cs" />
+    <Compile Include="Models\Models.View\OrderDetailsViewManager.cs" />
     <Compile Include="Models\Models.View\OrdersForUserView.cs" />
     <Compile Include="Models\Models.View\PricesView.cs" />
     <Compile Include="Models\Models.View\SendMailRequest.cs" />

@@ -21,60 +21,100 @@ namespace WebApiMTModel.Models.Models.View
 
             context = new DatabaseEntitiesMT();
         }
+        //שליפת כל ההזמנות של כל המשתמשים
+        private List<OrderDetailsView> GetOrdersFromDB()
+        {
+
+
+            List<OrderDetailsViewManager> orderslistManager = context.OrdersTbl.
+                       Join(context.OrderTypes,
+                       o => o.OrderType, ot => ot.OrderTypeId,
+                       (o, ot) => new
+                       {
+                           o.OrderNumber,
+                           OrderDate = o.OrderCreateDate,
+                           Price = (decimal)o.Price,
+                           o.OrderconfirmationNumber,
+                           o.OrderStatus,
+                           Userid = o.UsersTbl.UserID,
+                           OrderType = ot.OrderTypeId,
+                           ot.OrderTypeName,
+                           o.ManagerComments
+
+                       }).Join(context.StatusTbl,
+                               a => a.OrderStatus, s => s.StatusId,
+                               (a, s) => new
+                               {
+                                   a.OrderNumber,
+                                   a.OrderDate,
+                                   Price = (decimal)a.Price,
+                                   a.OrderconfirmationNumber,
+                                   a.OrderStatus,
+                                   a.Userid,
+                                   OrderStatusName = s.StatusName,
+                                   a.OrderType,
+                                   a.OrderTypeName,
+                                   a.ManagerComments
+
+                               }).Join(context.UsersTbl,
+                               o => o.Userid, u => u.UserID,
+                               (o, u) => new OrderDetailsViewManager
+                               {
+                                   OrderNumber = o.OrderNumber,
+                                   OrderDate = o.OrderDate,
+                                   Price = (decimal)o.Price,
+                                   OrderconfirmationNumber = o.OrderconfirmationNumber,
+                                   OrderStatus = o.OrderStatus,
+                                   Userid = o.Userid,
+                                   userFirstName = u.UserFirstName,
+                                   userLastName = u.UserLastName,
+                                   OrderStatusName = o.OrderStatusName,
+                                   OrderType = o.OrderType,
+                                   OrderTypeName = o.OrderTypeName,
+                                   ManagerComments = o.ManagerComments
+
+                               }
+
+                               ).Distinct()
+                         .ToList();
+
+
+            List<OrderDetailsView> orderslist = new List<OrderDetailsView>();
+            for (int i = 0; i < orderslistManager.Count; i++)
+            {
+                OrderDetailsView detailsView = orderslistManager[i];
+                orderslist.Add(detailsView);
+            }
+            return orderslist;
+        }
+
+        private List<OrderDetailsViewManager> GetOrdersFromDBManager()
+        {
+            List<OrderDetailsView> list = GetOrdersFromDB();
+
+            List<OrderDetailsViewManager> listManager = new List<OrderDetailsViewManager>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                OrderDetailsViewManager lm = (OrderDetailsViewManager)list[i];
+
+                listManager.Add(lm);
+
+
+            }
+            return listManager;
+        }
+
         //שליפת כל ההזמנות 
-        public IQueryable GetOrders()
+        public List<OrderDetailsView> GetOrders()
+
         {
             try
             {
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-
-                var orderslist = context.OrdersTbl.
-                    Join(context.OrderTypes,
-                    o => o.OrderType, ot => ot.OrderTypeId,
-                    (o, ot) => new
-                    {
-                        orderNumber = o.OrderNumber,
-                        orderCreateDate = o.OrderCreateDate,
-                        price = o.Price,
-                        orderconfirmationNumber = o.OrderconfirmationNumber,
-                        orderStatus = o.OrderStatus,
-                        orderUserId = o.OrderUserId,
-                        orderTypeName = ot.OrderTypeName
-                    }).Join(context.StatusTbl,
-                            a => a.orderStatus, s => s.StatusId,
-                            (a, s) => new
-                            {
-                                OrderNumber = a.orderNumber,
-                                OrderCreateDate = a.orderCreateDate,
-                                Price = a.price,
-                                OrderconfirmationNumber = a.orderconfirmationNumber,
-                                OrderStatus = a.orderStatus,
-                                OrderStatusName = s.StatusName,
-                                OrderTypeName = a.orderTypeName,
-                                OrderUserId = a.orderUserId
-                            }).Join(context.UsersTbl,
-                            o => o.OrderUserId, u => u.UserID,
-                            (o, u) => new
-                            {
-                                orderNumber = o.OrderNumber,
-                                orderCreateDate = o.OrderCreateDate,
-                                price = o.Price,
-                                orderconfirmationNumber = o.OrderconfirmationNumber,
-                                orderStatus = o.OrderStatus,
-                                orderStatusName = o.OrderStatusName,
-                                orderTypeName = o.OrderTypeName,
-                                orderUserId = u.UserID,
-                                orderUserName = u.UserFirstName + " " + u.UserLastName,
-
-
-
-                            });
-
-
+                List<OrderDetailsView> orderslist = GetOrdersFromDB();
 
 
                 return orderslist;
-
 
             }
             catch (Exception ex)
@@ -88,91 +128,64 @@ namespace WebApiMTModel.Models.Models.View
         //שליפת כל ההזמנות וכל הכלבים בהזמנות
         public List<OrderDetailsView> GetAllOrdersAndDogs()
         {
-            List<OrderDetailsView> orders = null;
-            //var orderslist = GetOrders();
 
             try
             {
+
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-
-                var orderslist = context.OrdersTbl.
-                    Join(context.OrderTypes,
-                    o => o.OrderType, ot => ot.OrderTypeId,
-                    (o, ot) => new
-                    {
-                        orderNumber = o.OrderNumber,
-                        orderCreateDate = o.OrderCreateDate,
-                        price = o.Price,
-                        orderconfirmationNumber = o.OrderconfirmationNumber,
-                        orderStatus = o.OrderStatus,
-                        orderUserId = o.OrderUserId,
-                        orderTypeName = ot.OrderTypeName
-                    }).Join(context.StatusTbl,
-                            a => a.orderStatus, s => s.StatusId,
-                            (a, s) => new
-                            {
-                                OrderNumber = a.orderNumber,
-                                OrderCreateDate = a.orderCreateDate,
-                                Price = a.price,
-                                OrderconfirmationNumber = a.orderconfirmationNumber,
-                                OrderStatus = a.orderStatus,
-                                OrderStatusName = s.StatusName,
-                                OrderTypeName = a.orderTypeName,
-                                OrderUserId = a.orderUserId
-                            }).Join(context.UsersTbl,
-                            o => o.OrderUserId, u => u.UserID,
-                            (o, u) => new
-                            {
-                                orderNumber = o.OrderNumber,
-                                orderCreateDate = o.OrderCreateDate,
-                                price = o.Price,
-                                orderconfirmationNumber = o.OrderconfirmationNumber,
-                                orderStatus = o.OrderStatus,
-                                orderStatusName = o.OrderStatusName,
-                                orderTypeName = o.OrderTypeName,
-                                orderUserId = u.UserID,
-                                orderUserName = u.UserFirstName + " " + u.UserLastName,
-
-
-
-                            });
-
-
+                List<OrderDetailsView> orderslist = GetOrdersFromDB();
                 if (orderslist != null)
                 {
-                    orders = new List<OrderDetailsView>();
 
-                    foreach (var order in orderslist)
+
+
+                    for (int i = 0; i < orderslist.Count; i++)
                     {
-                        OrderDetailsView orderDetails = new OrderDetailsView();
-                        orderDetails.OrderNumber = order.orderNumber;
-                        orderDetails.OrderDate = order.orderCreateDate;
-                        orderDetails.OrderconfirmationNumber = order.orderconfirmationNumber;
-                        orderDetails.Price = (decimal)order.price;
-                        orderDetails.OrderStatus = order.orderStatus;
-                        orderDetails.OrderStatusName = order.orderStatusName;
 
-                        orderDetails.mDogs = new List<DogsInOrderView>();
 
                         //שליפת כל הכלבים להזמנה מטבלת  DogsInOrder
-                        var dogsInOrder = context.DogsInOrder.Where(u => u.OrderNumber == order.orderNumber);
+                        orderslist[i].mDogs = GetDogsForOrder(orderslist[i].OrderNumber);
 
-                        foreach (var dog in dogsInOrder)
-                        {
-                            DogsInOrderView dogsInOrderV = new DogsInOrderView();
-                            dogsInOrderV.DogNumber = dog.DogNumber;
-                            dogsInOrderV.DogName = dog.UserDogs.DogName;
-                            dogsInOrderV.FromDate = dog.FromDate;
-                            dogsInOrderV.ToDate = dog.ToDate;
-                            dogsInOrderV.DogImage = dog.UserDogs.DogImage;
-                            dogsInOrderV.ShiftNumberFrom = (int)dog.ShiftNumberFrom;
-                            dogsInOrderV.ShiftNumberTo = (int)dog.ShiftNumberTo;
-                            orderDetails.mDogs.Add(dogsInOrderV);
-                        }
-                        orders.Add(orderDetails);
+
                     }
                 }
-                return orders;
+                return orderslist;
+            }
+
+
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        // שליפת כל ההזמנות וכל הכלבים בהזמנות- מנהל
+        public List<OrderDetailsViewManager> GetAllOrdersAndDogsManager()
+        {
+
+            try
+            {
+
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                List<OrderDetailsViewManager> orderslist = GetOrdersFromDBManager();
+                if (orderslist != null)
+                {
+
+
+
+                    for (int i = 0; i < orderslist.Count; i++)
+                    {
+
+
+                        //שליפת כל הכלבים להזמנה מטבלת  DogsInOrder
+                        orderslist[i].mDogs = GetDogsForOrder(orderslist[i].OrderNumber);
+
+
+                    }
+                }
+                return orderslist;
             }
 
 
@@ -184,15 +197,33 @@ namespace WebApiMTModel.Models.Models.View
 
         }
         //הכנסת הזמנה
-        public int createOrder(OrderDetailsView orderDetailsView)
+         public int createOrder(OrderDetailsView orderDetailsView)
+       
         {
             Userservice userservice = new Userservice();
-
+            //OrderDetailsView orderDetailsView = new OrderDetailsView();
+            //orderDetailsView.Userid = 1;
+            //orderDetailsView.FromDate = new DateTime(2018, 3, 28);
+            //orderDetailsView.ToDate = new DateTime(2018, 4, 3);
+            //orderDetailsView.mDogs = new List<DogsInOrderView>();
+            //orderDetailsView.mDogs.Add(new DogsInOrderView());
+          //  orderDetailsView.mDogs.Add(new DogsInOrderView());
+            //orderDetailsView.mDogs[0].DogNumber = 1;
+         //   orderDetailsView.mDogs[1].DogNumber = 8;
             OrdersTbl ordersTbl = new OrdersTbl();
+            if (orderDetailsView.mDogs.Count > 2)
+                ordersTbl.Price = -999;  //יותר מ 2 כלבים. מחיר ינתן בתיאום עם יוסף
+           //if(orderDetailsView.mDogs.Count==2)
+           //     ordersTbl.Price = CalculateOrderPrice(orderDetailsView);
+
+            decimal result = checkForAnotherParallelOrder(orderDetailsView);
+           
             ordersTbl.OrderStatus = 11;
             ordersTbl.OrderUserId = ((UserDetailsView)HttpContext.Current.Session["userDetails"]).UserID;
             ordersTbl.OrderType = 1;
-            ordersTbl.Price = CalculateOrderPrice();
+            // List<OrderDetailsView> list = checkForAnotherParallelOrder(orderDetailsView);
+
+           
             for (int i = 0; i < orderDetailsView.mDogs.Count; i++)
             {
                 if (orderDetailsView.mDogs[i].Pension == true || orderDetailsView.mDogs[i].Training == true)
@@ -210,20 +241,90 @@ namespace WebApiMTModel.Models.Models.View
                 }
 
             }
-            //   string x = form["item.training"].ToString();
-            // orderViewDetailsCreate.mDogs=form["mDogs"]
-
 
 
             context.OrdersTbl.Add(ordersTbl);
             context.SaveChanges();
             //שליפת מספר ההזמנה שנוצרה
             int orderID = GetLastOrder(orderDetailsView.User.UserID);
+            //שליחת מייל למשתמש
+            SendMailService sendMailService = new SendMailService();
+            SendMailRequest mailRequest = new SendMailRequest();
+            mailRequest.recipient = orderDetailsView.User.UserEmail;
+            mailRequest.subject = "קליטת הזמנה - " + orderID + "מקום טוב- יוסף טוויטו";
+            mailRequest.body = " הזמנתך נקלטה";
+            sendMailService.SendMail(mailRequest);
             return orderID;
 
         }
+        private decimal checkForAnotherParallelOrder(OrderDetailsView orderDetailsView)
+        //private List<OrderDetailsView> checkForAnotherParallelOrder(OrderDetailsView orderDetailsView)
+        {
+            decimal result = 1;
+            //orderDetailsView.FromDate = new DateTime(2018, 1, 20);
+            //orderDetailsView.ToDate = new DateTime(2018, 2, 20);
+            List<OrderDetailsView> list = new List<OrderDetailsView>();
+            try
+            {
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+                    List<OrdersTbl> orders = context.OrdersTbl.Where(p => p.OrderUserId == orderDetailsView.Userid
+                                                                      && (orderDetailsView.FromDate >= p.FromDate && orderDetailsView.FromDate <= orderDetailsView.ToDate)
+                                                                       || (orderDetailsView.ToDate >= p.FromDate && orderDetailsView.ToDate <= orderDetailsView.ToDate)
+                                                                      || (orderDetailsView.FromDate <= p.FromDate && orderDetailsView.ToDate > orderDetailsView.ToDate)
+                                                                     ).ToList();
 
+                    if (orders != null) //יש הזמנות חופפות
+                    {
+                        if (orderDetailsView.mDogs.Count == 2)
+                            return -998; // מספר כלבים בהזמנה = 2 ויש הזמנות חופפות.
+                        OrderDetailsView orderDetailsViewDB = new OrderDetailsView();
+                        foreach (var order in orders)
+                        {
+                            orderDetailsViewDB.mDogs = GetDogsForOrder(order.OrderNumber); //שליפת כלבים בהזמנה החופפת
+                            List<int> nums = new List<int>();
+                            foreach (DogsInOrderView d in orderDetailsViewDB.mDogs)
+                            {
+                                nums.Add(d.DogNumber);
+                            }
+                           
+                           
+                            foreach (DogsInOrderView dog in orderDetailsView.mDogs)
+                            {
+                                var found = nums.Where(d => d == dog.DogNumber); //בדיקה אם יש כלב משותף בהזמנה הנוכחית ןבהזמנות קודמות
+                                if (found.Count()>0)  //   אם כן מחזיר שגיאה
+                                    return 3;
+                               
 
+                            }
+
+                           
+                            orderDetailsViewDB.FromDate = (DateTime)order.FromDate;
+                            orderDetailsViewDB.OrderNumber = order.OrderNumber;
+                            orderDetailsViewDB.ShiftNumberFrom = (int)order.ShiftNumberFrom;
+                            orderDetailsViewDB.ShiftNumberTo = (int)order.ShiftNumberTo;
+                            
+                            orderDetailsViewDB.ToDate = (DateTime)order.ToDate;
+                            
+                            list.Add(orderDetailsViewDB);
+                           
+
+                        }
+                        result = CalculateOrderPriceParallel(orderDetailsView, list);
+                    }
+                    result = CalculateOrderPrice(orderDetailsView); //חישוב רגיל
+
+                }
+               ; //נמצאה בבסיס הנתונים הזמנה חופפת עם כלבים אחרים
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            //return list;
+        }
         //שליפת הזמנה אחרונה למשתמש
         private int GetLastOrder(int CustomerID)
         {
@@ -257,12 +358,12 @@ namespace WebApiMTModel.Models.Models.View
                     {
                         var ordert = context.Set<OrdersTbl>().Find(order.OrderNumber);
 
-                        
+
                         context.Entry(ordert).CurrentValues.SetValues(order);
                         context.SaveChanges();
                     }
                 }
-               context.Dispose();
+                context.Dispose();
             }
             catch (Exception ex)
             {
@@ -271,11 +372,11 @@ namespace WebApiMTModel.Models.Models.View
             }
         }
 
-           
-   
-               
-            //שליפת סטטוסים של הזמנה
-            public IQueryable GetOrderStatusList()
+
+
+
+        //שליפת סטטוסים של הזמנה
+        public IQueryable GetOrderStatusList()
         {
             DatabaseEntitiesMT context = new DatabaseEntitiesMT();
 
@@ -295,112 +396,173 @@ namespace WebApiMTModel.Models.Models.View
 
         //חישוב ההזמנה
         // public decimal CalculateOrderPrice(OrderDetailsView order)
-        public decimal CalculateOrderPrice()
-
+        public decimal CalculateOrderPrice(OrderDetailsView order)
         {
-            OrderDetailsView order = new OrderDetailsView();
-            order.mDogs = new List<DogsInOrderView>();
-            order.mDogs.Add(new DogsInOrderView());
-            order.mDogs.Add(new DogsInOrderView());
-            order.mDogs[0].FromDate = new DateTime(2018, 1, 1);
-            order.mDogs[0].ToDate = new DateTime(2018, 1, 15);
-            order.mDogs[1].FromDate = new DateTime(2018, 1, 20);
-            order.mDogs[1].ToDate = new DateTime(2018, 2, 20);
+            // חישוב ההזמנה ללא הזמנות אחרות חופפות
+            //OrderDetailsView order = new OrderDetailsView();
+            //order.mDogs = new List<DogsInOrderView>();
+            //order.mDogs.Add(new DogsInOrderView());
+            //order.mDogs.Add(new DogsInOrderView());
+            //order.mDogs[0].FromDate = new DateTime(2018, 1, 1);
+            //order.mDogs[0].ToDate = new DateTime(2018, 1, 15);
+            //order.mDogs[1].FromDate = new DateTime(2018, 1, 20);
+            //order.mDogs[1].ToDate = new DateTime(2018, 2, 20);
             DatabaseEntitiesMT context = new DatabaseEntitiesMT();
 
             Decimal price = 0;
             var prices = context.PricesTbl
-            .OrderBy(p => p.Days).Select(np => new PricesView
+            .OrderBy(px => px.Days).Select(np => new PricesView
             {
                 Days = np.Days,
                 Dogs = np.Dogs,
                 Price = np.Price
             });
             int days = 0;
-            if ((order.mDogs.Count == 2 && order.mDogs[0].FromDate == order.mDogs[1].FromDate && order.mDogs[0].ToDate == order.mDogs[1].ToDate) || order.mDogs.Count == 1)
-            {
+            // if ((order.mDogs.Count == 2 && order.mDogs[0].FromDate == order.mDogs[1].FromDate && order.mDogs[0].ToDate == order.mDogs[1].ToDate) || order.mDogs.Count == 1)
+            //if ((order.mDogs.Count == 2  || order.mDogs.Count == 1)
+            //{
 
-                days = order.mDogs[0].ToDate.Subtract(order.mDogs[0].FromDate).Days;
-                if (order.mDogs[0].ShiftNumberTo == 2)
+                days = order.ToDate.Subtract(order.FromDate).Days;
+                if (order.ShiftNumberTo == 2)  //אם לוקח את הכלבים בערב - מחושב יום נוסף בתשלום
                     days++;
                 List<PricesView> p = prices.Where(o => o.Dogs == order.mDogs.Count).ToList();
                 price = Calculte(days, p);
 
-            }
-
-            //לטפל ב 2 כלבים עם תאריכים שונים  
-            else
-            {
-                DateTime dateTimeFrom, dateTimeTo;
-                if (order.mDogs[0].FromDate.CompareTo(order.mDogs[1].FromDate) < 0)
-                {
-                    dateTimeFrom = order.mDogs[0].FromDate;
-                }
-                else
-                {
-                    dateTimeFrom = order.mDogs[1].FromDate;
-                }
-                if (order.mDogs[0].ToDate.CompareTo(order.mDogs[1].ToDate) < 0)
-                {
-                    dateTimeTo = order.mDogs[1].ToDate;
-                }
-                else
-                {
-                    dateTimeTo = order.mDogs[0].ToDate;
-                }
-
-                days = dateTimeTo.Subtract(dateTimeFrom).Days;
-                if (order.mDogs[0].ShiftNumberTo == 2)
-                    days++;
-                int[] arr = new int[days];
-                for (int i = 0; i < arr.Length; i++)
-                {
-                    arr[i] = -1;
-                }
-                DateTime date = order.mDogs[0].ToDate;
-
-                //טיפול בהחזרה במשמרת בוקר- לא מחשיבים את היום לתשלום
-                if (order.mDogs[0].ShiftNumberTo == 1)
-                    date.AddDays(-1);
-                changeArr(arr, order.mDogs[0].FromDate, date, dateTimeFrom);
-                if (order.mDogs[1].ShiftNumberTo == 1)
-                    date.AddDays(-1);
-                changeArr(arr, order.mDogs[1].FromDate, date, dateTimeFrom);
-
-                int dogs2 = 0;
-                for (int i = 0; i < arr.Length; i++)
-                {
-                    dogs2 += arr[i];
-                }
-                List<PricesView> p;
-
-                if (dogs2 > 0) //פתרון הבעיה שיש בהזמנה 2 כלבים אבל התאריכים לא חופפים ולכן יש בעצם פעמיים כלב 1
-                {
-                    //חישוב מספר הימים ל 2 כלבים
-                    p = prices.Where(o => o.Dogs == 2).ToList();
-                    price += Calculte(dogs2, p);
-                }
-                else
-                    dogs2 *= -1;
-
-                int dogs1 = arr.Length - dogs2;
-                //חישוב מספר הימים לכלב 1
-                p = prices.Where(o => o.Dogs == 1).ToList();
-                price = Calculte(dogs1, p);
-
-
-
-
-            }
+            //}
             return price;
         }
-        private void changeArr(int[] arr, DateTime min, DateTime max, DateTime first)
+
+        public decimal CalculateOrderPriceParallel(OrderDetailsView order,List<OrderDetailsView>  orderDetailsViewDBList)
+
+        {// חישוב עבור הזמנות חופפות
+            int days = 0;
+            decimal price = 0;
+            days = order.ToDate.Subtract(order.FromDate).Days;
+            if (order.ShiftNumberTo == 2)  //אם לוקח את הכלבים בערב - מחושב יום נוסף בתשלום
+                days++;
+            int orderShift = order.ShiftNumberTo - 1;
+            int[] arr = new int[days];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = 1;
+            }
+            int dbshift;
+            for (int i = 0; i < orderDetailsViewDBList.Count; i++)
+            {
+                 dbshift = orderDetailsViewDBList[i].ShiftNumberTo - 1;
+                if (orderDetailsViewDBList[i].FromDate.CompareTo(order.FromDate) >= 0 && orderDetailsViewDBList[i].FromDate.CompareTo(order.ToDate.AddDays(orderShift)) <= 0 &&
+                   orderDetailsViewDBList[i].ToDate.AddDays(dbshift).CompareTo(order.FromDate) >= 0 && orderDetailsViewDBList[i].ToDate.AddDays(dbshift).CompareTo(order.ToDate.AddDays(orderShift)) <= 0)  // תאריך תחילת ההזמנה בבסיס הנתונים נופל בתוך תאריך ההזמנה החדשה
+                {
+                    changeArr(arr, orderDetailsViewDBList[i].FromDate, orderDetailsViewDBList[i].ToDate.AddDays(dbshift), order.FromDate, orderDetailsViewDBList[i].mDogs.Count);
+                }
+
+                else
+                if (order.FromDate.CompareTo(orderDetailsViewDBList[i].FromDate) >= 0 && order.FromDate.CompareTo(orderDetailsViewDBList[i].ToDate.AddDays(dbshift)) <= 0 &&
+                   order.ToDate.AddDays(orderShift).CompareTo(orderDetailsViewDBList[i].FromDate) >= 0 && order.ToDate.AddDays(orderShift).CompareTo(orderDetailsViewDBList[i].ToDate.AddDays(dbshift)) <= 0)
+                {
+                    changeArr(arr, order.FromDate, order.ToDate.AddDays(orderShift), order.FromDate, orderDetailsViewDBList[i].mDogs.Count);
+                }
+                else
+                if (orderDetailsViewDBList[i].FromDate.CompareTo(order.FromDate) >= 0 && orderDetailsViewDBList[i].FromDate.CompareTo(order.ToDate.AddDays(orderShift)) <= 0)
+                { changeArr(arr, orderDetailsViewDBList[i].FromDate, order.ToDate.AddDays(orderShift), order.FromDate, orderDetailsViewDBList[i].mDogs.Count); }
+                else
+                    if (orderDetailsViewDBList[i].ToDate.AddDays(dbshift).CompareTo(order.FromDate) >= 0 && orderDetailsViewDBList[i].ToDate.AddDays(dbshift).CompareTo(order.ToDate.AddDays(orderShift)) <= 0)
+                { changeArr(arr, order.FromDate, orderDetailsViewDBList[i].ToDate.AddDays(dbshift), order.FromDate, orderDetailsViewDBList[i].mDogs.Count); }
+            }
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] > 2) return -997;  //הזמנה נוכחית + קודמות- יותר מ 2 כלבים
+            }
+            int dog1 = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] == 1) dog1++;
+            }
+
+            DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+            var prices = context.PricesTbl
+           .OrderBy(px => px.Days).Select(np => new PricesView
+           {
+               Days = np.Days,
+               Dogs = np.Dogs,
+               Price = np.Price
+           });
+            List<PricesView> p = prices.Where(o => o.Dogs == 1).ToList();
+            price += Calculte(dog1, p);
+            p= prices.Where(o => o.Dogs == 2).ToList();
+            for(int i=0;i<p.Count();i++)
+            { p[i].Price = p[i].Price / 2; }
+            price += Calculte(arr.Length-dog1, p);
+            return price;
+
+            //DateTime dateTimeFrom, dateTimeTo;
+            //if (order.mDogs[0].FromDate.CompareTo(order.mDogs[1].FromDate) < 0)
+            //{
+            //    dateTimeFrom = order.mDogs[0].FromDate;
+            //}
+            //else
+            //{
+            //    dateTimeFrom = order.mDogs[1].FromDate;
+            //}
+            //if (order.mDogs[0].ToDate.CompareTo(order.mDogs[1].ToDate) < 0)
+            //{
+            //    dateTimeTo = order.mDogs[1].ToDate;
+            //}
+            //else
+            //{
+            //    dateTimeTo = order.mDogs[0].ToDate;
+            //}
+
+            // days = dateTimeTo.Subtract(dateTimeFrom).Days;
+            //if (order.mDogs[0].ShiftNumberTo == 2)
+            //    days++;
+
+            //DateTime date = order.mDogs[0].ToDate;
+
+            //טיפול בהחזרה במשמרת בוקר- לא מחשיבים את היום לתשלום
+            //if (order.mDogs[0].ShiftNumberTo == 1)
+            //    date.AddDays(-1);
+            //changeArr(arr, order.mDogs[0].FromDate, date, dateTimeFrom);
+            //if (order.mDogs[1].ShiftNumberTo == 1)
+            //    date.AddDays(-1);
+            //changeArr(arr, order.mDogs[1].FromDate, date, dateTimeFrom);
+
+            //int dogs2 = 0;
+            //for (int i = 0; i < arr.Length; i++)
+            //{
+            //    dogs2 += arr[i];
+            //}
+
+
+            //if (dogs2 > 0) //פתרון הבעיה שיש בהזמנה 2 כלבים אבל התאריכים לא חופפים ולכן יש בעצם פעמיים כלב 1
+            //{
+            //    //חישוב מספר הימים ל 2 כלבים
+            //    p = prices.Where(o => o.Dogs == 2).ToList();
+            //    price += Calculte(dogs2, p);
+            //}
+            //else
+            //    dogs2 *= -1;
+
+            //int dogs1 = arr.Length - dogs2;
+            ////חישוב מספר הימים לכלב 1
+            //p = prices.Where(o => o.Dogs == 1).ToList();
+            //price = Calculte(dogs1, p);
+
+
+
+
+        }
+           
+       
+
+        private void changeArr(int[] arr, DateTime min, DateTime max, DateTime first,int numDogsInDBOrder)
         {
             int i = 0;
             for (DateTime d = min; d <= max; d = d.AddDays(1))
             {
                 i = d.Subtract(first).Days;
-                arr[i]++;
+                arr[i]+=numDogsInDBOrder;
             }
         }
         private decimal Calculte(int days, List<PricesView> listPrices)
@@ -428,68 +590,28 @@ namespace WebApiMTModel.Models.Models.View
 
         public OrdersForUserView GetUserOrdersList(int userid)
         {
+
+
+            //   שליפת כל ההזמנות מטבלתOrdersTbl
+
+          
             try
             {
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-                //   שליפת כל ההזמנות מטבלתOrdersTbl
-
-                var orderslist = context.OrdersTbl.
-                   Join(context.OrderTypes,
-                   o => o.OrderType, ot => ot.OrderTypeId,
-                   (o, ot) => new
-                   {
-                       orderNumber = o.OrderNumber,
-                       orderCreateDate = o.OrderCreateDate,
-                       price = o.Price,
-                       orderconfirmationNumber = o.OrderconfirmationNumber,
-                       orderStatus = o.OrderStatus,
-                       orderUserId = o.OrderUserId,
-                       orderTypeName = ot.OrderTypeName
-                   }).Join(context.StatusTbl,
-                           a => a.orderStatus, s => s.StatusId,
-                           (a, s) => new
-                           {
-                               OrderNumber = a.orderNumber,
-                               OrderCreateDate = a.orderCreateDate,
-                               Price = a.price,
-                               OrderconfirmationNumber = a.orderconfirmationNumber,
-                               OrderStatus = a.orderStatus,
-                               OrderStatusName = s.StatusName,
-                               OrderTypeName = a.orderTypeName,
-                               OrderUserId = a.orderUserId
-                           }).Where(p => p.OrderUserId == userid);
-
-                // var orders = context.OrdersTbl.Where(p => p.OrderUserId == userDetails.UserID);
-                OrdersForUserView ordersForUser = null;
+               
+                    List<OrderDetailsView> orderslist = GetOrdersFromDB();
+                    OrdersForUserView ordersForUser = null;
                 if (orderslist != null)
                 {
                     ordersForUser = new OrdersForUserView();
-
-                    foreach (var order in orderslist)
+                    ordersForUser.UserReservations = orderslist.Where(p => p.Userid == userid).ToList();
+                    for(int i=0;i< ordersForUser.UserReservations.Count;i++) 
                     {
-                        OrderDetailsView orderDetails = new OrderDetailsView();
-                        orderDetails.OrderNumber = order.OrderNumber;
-                        orderDetails.OrderDate = order.OrderCreateDate;
-                        orderDetails.OrderconfirmationNumber = order.OrderconfirmationNumber;
-                        orderDetails.Price = (decimal)order.Price;
-                        orderDetails.mDogs = new List<DogsInOrderView>();
-
-                        //שליפת כל הכלבים להזמנה מטבלת  DogsInOrder
-                        var dogsInOrder = context.DogsInOrder.Where(u => u.OrderNumber == order.OrderNumber);
-
-                        foreach (var dog in dogsInOrder)
-                        {
-                            DogsInOrderView dogsInOrderV = new DogsInOrderView();
-                            dogsInOrderV.DogNumber = dog.DogNumber;
-                            dogsInOrderV.DogName = dog.UserDogs.DogName;
-                            dogsInOrderV.FromDate = dog.FromDate;
-                            dogsInOrderV.ToDate = dog.ToDate;
-                            dogsInOrderV.DogImage = dog.UserDogs.DogImage;
-                            dogsInOrderV.ShiftNumberFrom = (int)dog.ShiftNumberFrom;
-                            dogsInOrderV.ShiftNumberTo = (int)dog.ShiftNumberTo;
-                            orderDetails.mDogs.Add(dogsInOrderV);
-                        }
-                        ordersForUser.UserReservations.Add(orderDetails);
+                      
+                        int orderNum = ordersForUser.UserReservations[i].OrderNumber;
+                      
+                        ordersForUser.UserReservations[i].mDogs = GetDogsForOrder(orderNum);
+                       
                     }
                 }
                 return ordersForUser;
@@ -501,78 +623,80 @@ namespace WebApiMTModel.Models.Models.View
                 throw ex;
             }
         }
+        public List<DogsInOrderView> GetDogsForOrder(int orderNumber)
+        {
+            try
+            {
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                List<DogsInOrderView> dogsInOrderList = new List<DogsInOrderView>();
+                var dogsInOrder = context.DogsInOrder.Join(context.UserDogs,
+                         d => d.DogNumber, ud => ud.DogNumber,
+                         (d, ud) => new
+                         {
+                             d.OrderNumber,
+                             d.DogNumber,
+                             d.UserDogs.DogName,
+                             d.FromDate,
+                             d.ToDate,
+                             d.UserDogs.DogImage,
+                             d.ShiftNumberFrom,
+                             d.ShiftNumberTo,
+                             d.UserDogs.DogRabiesVaccine,
+                             ud.DogType,
+                             ud.DogBirthDate,
+                             ud.DogComments,
+                             ud.DogDig,
+                             ud.DogFriendlyWith,
+                             ud.DogGender,
+                             ud.DogJump,
+                             ud.DogNeuter,
+                             ud.DogShvav
+                         }).Where(or => orderNumber == or.OrderNumber);
+                // ordersForUser.UserReservations[i].mDogs = dogsInOrder.ToList();
+                foreach (var dog in dogsInOrder)
+                {
+                    DogsInOrderView dogsInOrderV = new DogsInOrderView();
+                    dogsInOrderV.DogRabiesVaccine = dog.DogRabiesVaccine;
+                    dogsInOrderV.DogNumber = dog.DogNumber;
+                    dogsInOrderV.DogName = dog.DogName; ;
+                    dogsInOrderV.FromDate = dog.FromDate;
+                    dogsInOrderV.ToDate = dog.ToDate;
+                    dogsInOrderV.DogImage = dog.DogImage;
+                    dogsInOrderV.ShiftNumberFrom = dog.ShiftNumberFrom;
+                    dogsInOrderV.ShiftNumberTo = dog.ShiftNumberTo;
+                    dogsInOrderV.DogBirthDate = dog.DogBirthDate;
+
+                    dogsInOrderV.DogComments = dog.DogComments;
+                    dogsInOrderV.DogDig = (bool)dog.DogDig;
+                    dogsInOrderV.DogFriendlyWith = (int)dog.DogFriendlyWith;
+                    dogsInOrderV.DogGender = dog.DogGender;
+                    dogsInOrderV.DogJump = (bool)dog.DogJump;
+                    dogsInOrderV.DogNeuter = dog.DogNeuter;
+                    dogsInOrderV.DogShvav = dog.DogShvav;
+                    dogsInOrderList.Add(dogsInOrderV);
+                }
+                return dogsInOrderList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public UserDetailsView GetUserOrders(int UserID)
         {
             UserDetailsView userDetails = new UserDetailsView();
-            try
-            {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+           
                 //   שליפת כל ההזמנות מטבלתOrdersTbl
-
-                var orderslist = context.OrdersTbl.
-                   Join(context.OrderTypes,
-                   o => o.OrderType, ot => ot.OrderTypeId,
-                   (o, ot) => new
-                   {
-                       orderNumber = o.OrderNumber,
-                       orderCreateDate = o.OrderCreateDate,
-                       price = o.Price,
-                       orderconfirmationNumber = o.OrderconfirmationNumber,
-                       orderStatus = o.OrderStatus,
-                       orderUserId = o.OrderUserId,
-                       orderTypeName = ot.OrderTypeName
-                   }).Join(context.StatusTbl,
-                           a => a.orderStatus, s => s.StatusId,
-                           (a, s) => new
-                           {
-                               OrderNumber = a.orderNumber,
-                               OrderCreateDate = a.orderCreateDate,
-                               Price = a.price,
-                               OrderconfirmationNumber = a.orderconfirmationNumber,
-                               OrderStatus = a.orderStatus,
-                               OrderStatusName = s.StatusName,
-                               OrderTypeName = a.orderTypeName,
-                               OrderUserId = a.orderUserId
-                           }).Where(p => p.OrderUserId == UserID);
-
-                // var orders = context.OrdersTbl.Where(p => p.OrderUserId == userDetails.UserID);
-
-                if (orderslist != null)
+                try
                 {
-                    userDetails.UserReservations = new List<OrderDetailsView>();
-
-                    foreach (var order in orderslist)
-                    {
-                        OrderDetailsView orderDetails = new OrderDetailsView();
-                        orderDetails.OrderNumber = order.OrderNumber;
-                        orderDetails.OrderDate = order.OrderCreateDate;
-                        orderDetails.OrderconfirmationNumber = order.OrderconfirmationNumber;
-                        orderDetails.Price = (decimal)order.Price;
-                        orderDetails.OrderStatus = order.OrderStatus;
-                        orderDetails.OrderStatusName = order.OrderStatusName;
-
-                        orderDetails.mDogs = new List<DogsInOrderView>();
-
-                        //שליפת כל הכלבים להזמנה מטבלת  DogsInOrder
-                        var dogsInOrder = context.DogsInOrder.Where(u => u.OrderNumber == order.OrderNumber);
-
-                        foreach (var dog in dogsInOrder)
-                        {
-                            DogsInOrderView dogsInOrderV = new DogsInOrderView();
-                            dogsInOrderV.DogNumber = dog.DogNumber;
-                            dogsInOrderV.DogName = dog.UserDogs.DogName;
-                            dogsInOrderV.FromDate = dog.FromDate;
-                            dogsInOrderV.ToDate = dog.ToDate;
-                            dogsInOrderV.DogImage = dog.UserDogs.DogImage;
-                            dogsInOrderV.ShiftNumberFrom = (int)dog.ShiftNumberFrom;
-                            dogsInOrderV.ShiftNumberTo = (int)dog.ShiftNumberTo;
-                            orderDetails.mDogs.Add(dogsInOrderV);
-                        }
-                        userDetails.UserReservations.Add(orderDetails);
-                    }
-                }
+                Userservice userservice = new Userservice();
+                userDetails = userservice.GetUser(UserID);
+                OrdersForUserView ordersForUserView = GetUserOrdersList(UserID);
+                userDetails.UserReservations = ordersForUserView.UserReservations;
+                
                 return userDetails;
+               
 
             }
 

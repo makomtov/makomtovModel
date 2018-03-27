@@ -24,8 +24,13 @@
     <Property Name="OrderStatus" Type="int" Nullable="false" />
     <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="OrderType" Type="int" Nullable="false" />
+    <Property Name="FromDate" Type="datetime" />
+    <Property Name="ShiftNumberFrom" Type="int" />
+    <Property Name="ToDate" Type="datetime" />
+    <Property Name="ShiftNumberTo" Type="int" />
     <Property Name="Price" Type="money" />
     <Property Name="OrderCreateDate" Type="date" Nullable="false" />
+    <Property Name="ManagerComments" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="OrderTypes">
     <Key>
@@ -92,13 +97,14 @@
     <Property Name="DogBirthDate" Type="date" Nullable="false" />
     <Property Name="DogFriendlyWith" Type="int" />
     <Property Name="DogDig" Type="bit" />
+    <Property Name="Manager Comments" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="UsersTbl">
     <Key>
       <PropertyRef Name="UserID" />
     </Key>
     <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" />
     <Property Name="UserEmail" Type="char" MaxLength="50" Nullable="false" />
     <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />

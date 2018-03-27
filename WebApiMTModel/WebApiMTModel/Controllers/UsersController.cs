@@ -36,24 +36,47 @@ namespace WebApiMTModel.Controllers
 
 
 
-        //api/Users/aaa@gmail.com/1234
+        // /api/Users/aaa@gmail.com/1234
         [System.Web.Http.Route("{usereMail}/{password}")]
 
         public UserDetailsView GetUser(string usereMail, string password)
         {
             Userservice userservice = new Userservice();
             return userservice.GetUser(usereMail, password);
-            //string msg = JsonConvert.SerializeObject(userservice.GetUser(usereMail, password));
-            //return msg;
-            // return WebOperationContext.Current.CreateTextResponse(msg, "application/json; charset=utf-8", Encoding.UTF8);
+           
         }
-        //api/Users/GetUserOrders?id=1
-        //[System.Web.Http.Route("Users/{userID}")]
-        //
+        // /api/Users/1
+        [System.Web.Http.Route("{userid}")]
 
-        //[System.Web.Http.HttpPost]
-        //[System.Web.Http.Route("{InsertUserDetails}")]
-        ////public void InsertUserDetails(UserDetailsView user)
+        public UserDetailsView GetUser(int userid)
+        {
+            Userservice userservice = new Userservice();
+            return userservice.GetUser(userid);
+
+        }
+
+        // /api/Users/GetUserDogs/1
+        [System.Web.Http.Route("GetUserDogs/{userid}")]
+        public List<DogDetailsView> GetUserDogs(int userid)
+
+        {
+            Userservice userservice = new Userservice();
+            return userservice.GetUserDogs(userid);
+
+        }
+       
+        // /api/Users/InsertUserDetails
+        [System.Web.Http.Route("InsertUserDetails")]
+        [System.Web.Http.HttpPut]
+        public void InsertUserDetails(HttpRequestMessage userNew)
+        {
+            var jsonString = userNew.Content.ReadAsStringAsync().Result;
+
+            UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+            Userservice userservice = new Userservice();
+            userservice.InsertUserDetails(user);
+        
+        }
         //// public void InsertUserDetails(JObject juser)
         //public void InsertUserDetails([FromBody] UserDetailsView user)
         //{
