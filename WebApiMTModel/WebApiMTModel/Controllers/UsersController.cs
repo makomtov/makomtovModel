@@ -44,10 +44,15 @@ namespace WebApiMTModel.Controllers
         // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
         [System.Web.Http.Route("GetUser")]
         [System.Web.Http.HttpPost]
-        public UserDetailsView GetUser(string usereMail, string password)
+        // public UserDetailsView GetUser(string usereMail, string password)
+
+        public UserDetailsView GetUser( HttpRequestMessage httpLogin)
         {
+            var jsonString = httpLogin.Content.ReadAsStringAsync().Result;
+
+            LoginView loginView = JsonConvert.DeserializeObject<LoginView>(jsonString);
             Userservice userservice = new Userservice();
-            return userservice.GetUser(usereMail, password);
+            return userservice.GetUser(loginView.UserEmail,loginView.UserPassword);
            
         }
         // /api/Users/1
