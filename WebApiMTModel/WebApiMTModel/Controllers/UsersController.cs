@@ -34,11 +34,16 @@ namespace WebApiMTModel.Controllers
             return users;
         }
 
-
+        /// <summary>
+        /// שליפת משתמש
+        /// </summary>
+        /// <param name="usereMail"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
 
         // /api/Users/aaa@gmail.com/1234
-        [System.Web.Http.Route("{usereMail}/{password}")]
-
+        [System.Web.Http.Route("GetUser")]
+        [System.Web.Http.HttpPost]
         public UserDetailsView GetUser(string usereMail, string password)
         {
             Userservice userservice = new Userservice();

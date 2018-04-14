@@ -12,9 +12,16 @@ using WebApiMTModel.Models.Models.View;
 
 namespace WebApiMTModel.Controllers
 {
+    /// <summary>
+    /// פעולות על הזמנות
+    /// </summary>
     [RoutePrefix("api/Reservation")]
     public class ReservationController : ApiController
     {
+        /// <summary>
+        /// שליפת כל ההזמנות
+        /// </summary>
+        /// <returns></returns>
         //api/Reservation
         [Route("")]
         public List<OrderDetailsView> GetOrders()
@@ -24,6 +31,11 @@ namespace WebApiMTModel.Controllers
             return orderService.GetOrders();
 
         }
+
+        /// <summary>
+        /// שליפת כל הסטטוסים להזמנה
+        /// </summary>
+        /// <returns></returns>
         //  /api/Reservation/OrderStatusList
         [Route("OrderStatusList")]
         public IQueryable GetOrderStatusList()
@@ -41,6 +53,11 @@ namespace WebApiMTModel.Controllers
         //    return orderService.CalculateOrderPrice();
         //}
 
+        /// <summary>
+        ///  יצירת הזמנה חדשה
+        /// </summary>
+        /// <param name="orderDetailsView"></param>
+        /// <returns></returns>
         // /api/Reservation/CreateOrder
         [Route("CreateOrder")]
         [HttpGet]
@@ -56,6 +73,11 @@ namespace WebApiMTModel.Controllers
              return orderService.createOrder(orderDetailsView);
            // return orderService.CreateOrder();
         }
+        /// <summary>
+        /// שליפת כל ההזמנות למשתמש
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         // /api/Reservation/GetUserOrders/1
         [Route("GetUserOrders")]
        
@@ -65,7 +87,11 @@ namespace WebApiMTModel.Controllers
             return orderService.GetUserOrdersList(userID);
         }
 
-
+        /// <summary>
+        /// שליפת כל ההזמנות למשתמש
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <returns></returns>
         // /api/Reservation/1
         [Route("{userID}")]
         public UserDetailsView GetUserOrders(int UserID)
@@ -73,6 +99,11 @@ namespace WebApiMTModel.Controllers
             OrderService orderService = new OrderService();
             return orderService.GetUserOrders(UserID);
         }
+
+        /// <summary>
+        /// שליפת כל ההזמנות 
+        /// </summary>
+        /// <returns></returns>
         // /api/Reservation/GetAllOrdersAndDogs
         [Route("GetAllOrdersAndDogs")]
         public List<OrderDetailsView> GetAllOrdersAndDogs()
@@ -82,6 +113,10 @@ namespace WebApiMTModel.Controllers
             return list;
         }
 
+        /// <summary>
+        /// שליפת כל ההזמנות למנהלי הכלביה
+        /// </summary>
+        /// <returns></returns>
     // /api/Reservation/GetAllOrdersAndDogsManager
     [Route("GetAllOrdersAndDogsManager")]
     public List<OrderDetailsViewManager> GetAllOrdersAndDogsManager()
@@ -91,6 +126,10 @@ namespace WebApiMTModel.Controllers
     }
     // /api/Reservation/UpdateOrdersByManager/Manager
 
+            /// <summary>
+            /// עדכון הזמנות על ידי הכלביה
+            /// </summary>
+            /// <param name="Orders"></param>
 
     [Route("UpdateOrdersByManager")]
         [HttpPut]
