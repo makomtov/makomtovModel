@@ -46,11 +46,11 @@ namespace WebApiMTModel.Controllers
         [System.Web.Http.HttpPost]
         // public UserDetailsView GetUser(string usereMail, string password)
 
-        public UserDetailsView GetUser( HttpRequestMessage httpLogin)
+        public UserDetailsView GetUser([FromBody]LoginView loginView)
         {
-            var jsonString = httpLogin.Content.ReadAsStringAsync().Result;
+            //var jsonString = httpLogin.Content.ReadAsStringAsync().Result;
 
-            LoginView loginView = JsonConvert.DeserializeObject<LoginView>(jsonString);
+            //LoginView loginView = JsonConvert.DeserializeObject<LoginView>(jsonString);
             Userservice userservice = new Userservice();
             return userservice.GetUser(loginView.UserEmail,loginView.UserPassword);
            
