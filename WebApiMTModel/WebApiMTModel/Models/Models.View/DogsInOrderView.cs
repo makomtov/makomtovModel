@@ -21,23 +21,17 @@ namespace WebApiMTModel.Models.Models.View
             // TODO: Add constructor logic here
             //
         }
+        //[JsonProperty("DogNumber")]
+        //public int DogNumber { get; set; }
         [JsonProperty("OrderNumber")]
         public int OrderNumber { get; set; }
         [JsonProperty("Training")]
         public bool Training { get; set; } //אילוף? כן/לא
         [JsonProperty("Pension")]
         public bool Pension { get; set; }
-        [JsonProperty("FromDate")]
-        public DateTime FromDate { get; set; }   //תאריך השהייה בפנסיון
-        [JsonProperty("ToDate")]
-        public DateTime ToDate { get; set; }
-        [JsonProperty("Price")]
-        public decimal Price { get; set; }
         [JsonProperty("HomeFood")]
         public bool HomeFood { get; set; }  //אוכל בית/פנסיון?
-        [JsonProperty("ShiftNumberFrom")]
-        public int ShiftNumberFrom { get; set; }// 1 - בוקר 7-12
-        [JsonProperty("ShiftNumberTo")]
-        public int ShiftNumberTo { get; set; } // 2 - ערב 16-19
+        [JsonProperty("Status")]
+        public int Status { get; set; }   //( ב21 - בהזמנה, 23-לא הגיע/בוטל)
     }
 }

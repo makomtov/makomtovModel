@@ -77,6 +77,17 @@ namespace WebApiMTModel.Controllers
             userservice.InsertUserDetails(user);
         
         }
+
+        [System.Web.Http.Route("UpdateUserDogsByManager")]
+        [System.Web.Http.HttpPut]
+        public void UpdateUserDogsByManager(HttpRequestMessage userDogs)
+        {
+            var jsonString = userDogs.Content.ReadAsStringAsync().Result;
+            UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+            //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+            Userservice userservice = new Userservice();
+            userservice.UpdateDogsByManager(user);
+        }
         //// public void InsertUserDetails(JObject juser)
         //public void InsertUserDetails([FromBody] UserDetailsView user)
         //{

@@ -33,11 +33,15 @@ namespace WebApiMTModel.Models
         public string UserPaswrd { get; set; }
         public string UserPhone1 { get; set; }
         public string UserPhone2 { get; set; }
+        public int DaysSumForDiscount { get; set; }
+        public bool Acceptmessages { get; set; }
+        public int UserVeterinarId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrdersTbl> OrdersTbl { internal get; set; }
         public virtual StatusTbl StatusTbl { internal get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserDogs> UserDogs { internal get; set; }
+        public virtual veterinarTbl veterinarTbl { get; set; }
     }
 }

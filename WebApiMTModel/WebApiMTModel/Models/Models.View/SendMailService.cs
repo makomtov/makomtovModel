@@ -38,20 +38,26 @@ namespace WebApiMTModel.Models.Models.View
             // Include the file attachment if the filename is not null
             if (mail.filename != null)
             {
-               // Declare a temp file path where we can assemble our file
-                string tempPath = Properties.Settings.Default["TempFile"].ToString();
-
-                string filePath = Path.Combine(tempPath, mail.filename);
-
-                using (System.IO.FileStream reader = System.IO.File.Create(filePath))
+                string[] files = mail.filename.Split(',');
+                // Declare a temp file path where we can assemble our file
+                foreach (string currentfiles in files)
                 {
-                    
-                    byte[] buffer = Convert.FromBase64String(mail.filecontent);
-                    reader.Write(buffer, 0, buffer.Length);
-                    reader.Dispose();
-                }
+                  //  msg.CC.Add(new MailAddress(currentCCAddress.Trim()));
+                    string tempPath = Properties.Settings.Default["TempFile"].ToString();
 
-                msg.Attachments.Add(new Attachment(filePath));
+                    string filePath = Path.Combine(tempPath, currentfiles);
+
+                    using (System.IO.FileStream reader = System.IO.File.Create(filePath))
+                    {
+
+                        byte[] buffer = Convert.FromBase64String(mail.filecontent);
+                        reader.Write(buffer, 0, buffer.Length);
+                        reader.Dispose();
+                    }
+
+                    msg.Attachments.Add(new Attachment(filePath));
+                }
+               
 
             }
             // Include the reply to if not null

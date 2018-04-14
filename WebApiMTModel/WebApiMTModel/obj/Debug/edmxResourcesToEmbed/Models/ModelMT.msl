@@ -4,12 +4,8 @@
     <EntitySetMapping Name="DogsInOrder">
       <EntityTypeMapping TypeName="DatabaseModel.DogsInOrder">
         <MappingFragment StoreEntitySet="DogsInOrder">
-          <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
-          <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
           <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
           <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
-          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-          <ScalarProperty Name="ToDate" ColumnName="ToDate" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DogTraining" ColumnName="DogTraining" />
           <ScalarProperty Name="HomeFood" ColumnName="HomeFood" />
@@ -19,6 +15,7 @@
     <EntitySetMapping Name="OrdersTbl">
       <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
         <MappingFragment StoreEntitySet="OrdersTbl">
+          <ScalarProperty Name="discount" ColumnName="discount" />
           <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
           <ScalarProperty Name="ToDate" ColumnName="ToDate" />
           <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
@@ -110,6 +107,9 @@
     <EntitySetMapping Name="UsersTbl">
       <EntityTypeMapping TypeName="DatabaseModel.UsersTbl">
         <MappingFragment StoreEntitySet="UsersTbl">
+          <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
+          <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
+          <ScalarProperty Name="DaysSumForDiscount" ColumnName="DaysSumForDiscount" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
           <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
@@ -122,6 +122,18 @@
           <ScalarProperty Name="UserPaswrd" ColumnName="UserPaswrd" />
           <ScalarProperty Name="UserPhone1" ColumnName="UserPhone1" />
           <ScalarProperty Name="UserPhone2" ColumnName="UserPhone2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="veterinarTbl">
+      <EntityTypeMapping TypeName="DatabaseModel.veterinarTbl">
+        <MappingFragment StoreEntitySet="veterinarTbl">
+          <ScalarProperty Name="VeterinarPhone1" ColumnName="VeterinarPhone1" />
+          <ScalarProperty Name="VeterinarCity" ColumnName="VeterinarCity" />
+          <ScalarProperty Name="VeterinarAddress" ColumnName="VeterinarAddress" />
+          <ScalarProperty Name="VeterinarEmail" ColumnName="VeterinarEmail" />
+          <ScalarProperty Name="VeterinarName" ColumnName="VeterinarName" />
+          <ScalarProperty Name="VeterinarId" ColumnName="VeterinarId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -19,33 +19,67 @@ namespace WebApiMTModel.Models.Models.View
             {
 
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-                List<UserDetailsView> list = new List<UserDetailsView>();
-                List<UsersTbl> users = context.UsersTbl.ToList();
-                foreach (UsersTbl user in users)
-                {
-                    if (user.UserStatus == 21)
-                    {
-                        UserDetailsView ud = new UserDetailsView();
-                        ud.UserAddress = user.UserAddress;
-                        ud.UserCityName = user.UserCity;
-                        ud.UserComments = user.UserComments;
-                        ud.UserEmail = user.UserEmail;
-                        ud.UserFirstName = user.UserFirstName;
-                        ud.UserID = user.UserID;
-                        ud.UserLastName = user.UserLastName;
-                        ud.UserName = user.UserName;
-                        ud.UserPhone1 = user.UserPhone1;
-                        ud.UserPhone2 = user.UserPhone2;
-                        var dogs = context.UserDogs
-                                     .Where(userDog => userDog.DogUserID == user.UserID).Count();
-                        ud.DogsNumber = dogs;
+                //  List<UserDetailsView> list = new List<UserDetailsView>();
 
-                        var reservations = context.OrdersTbl
-                                     .Where(userres => userres.OrderUserId == user.UserID).Count();
-                        ud.ReservationsNumber = reservations;
-                        list.Add(ud);
-                    }
-                }
+                List<UserDetailsView> list = context.UsersTbl.
+                      Join(context.veterinarTbl,
+                      u => u.UserVeterinarId, v => v.VeterinarId,
+                      (u, v) => new UserDetailsView
+                      {
+                          Acceptmessages = u.Acceptmessages,
+                          DaysSumForDiscount = u.DaysSumForDiscount,
+                          DogsNumber = u.UserDogs.Count,
+                          UserAddress = u.UserAddress,
+                          UserCityName = u.UserCity,
+                          UserEmail = u.UserEmail,
+                          UserComments = u.UserComments,
+                          UserFirstName = u.UserFirstName,
+                          UserName = u.UserName,
+                          UserLastName = u.UserLastName,
+                          UserID = u.UserID,
+                          UserStatusCode = u.UserStatus,
+                          UserPhone1 = u.UserPhone1,
+                          UserPhone2 = u.UserPhone2,
+                          UserVeterinarId = v.VeterinarId,
+                          VeterinarAddress = v.VeterinarAddress,
+                          VeterinarEmail = v.VeterinarEmail,
+                          VeterinarCity = v.VeterinarCity,
+                          VeterinarName = v.VeterinarName,
+                          VeterinarPhone1 = v.VeterinarPhone1,
+                          
+                          ReservationsNumber=u.OrdersTbl.Count,
+
+                      }).Where(users => users.UserStatusCode == 21).ToList();
+
+               
+               //List <UsersTbl> users = context.UsersTbl.ToList();
+               // foreach (UsersTbl user in users)
+               // {
+               //     if (user.UserStatus == 21)
+               //     {
+               //         UserDetailsView ud = new UserDetailsView();
+               //         ud.UserAddress = user.UserAddress;
+               //         ud.UserCityName = user.UserCity;
+               //         ud.UserComments = user.UserComments;
+               //         ud.UserEmail = user.UserEmail;
+               //         ud.UserFirstName = user.UserFirstName;
+               //         ud.UserID = user.UserID;
+               //         ud.UserLastName = user.UserLastName;
+               //         ud.UserName = user.UserName;
+               //         ud.UserPhone1 = user.UserPhone1;
+               //         ud.UserPhone2 = user.UserPhone2;
+               //         ud.UserComments = user.UserComments;
+               //         
+               //         var dogs = context.UserDogs
+               //                      .Where(userDog => userDog.DogUserID == user.UserID).Count();
+               //         ud.DogsNumber = dogs;
+
+                      //         var reservations = context.OrdersTbl
+                      //                      .Where(userres => userres.OrderUserId == user.UserID).Count();
+                      //         ud.ReservationsNumber = reservations;
+                      //         list.Add(ud);
+                      //     }
+                      // }
                 return list;
                 //}
 
@@ -69,13 +103,14 @@ namespace WebApiMTModel.Models.Models.View
 
 
                 var User = context.UsersTbl
-              .Where(user => user.UserEmail == usereMail && user.UserPaswrd == password).FirstOrDefault();
+              .Where(user => user.UserEmail == usereMail && user.UserPaswrd == password && user.UserStatus != 22).FirstOrDefault();
 
 
                 if (User != null)
                 {
                     userDetails = new UserDetailsView();
-
+                    userDetails.DaysSumForDiscount = User.DaysSumForDiscount;
+                    userDetails.Acceptmessages = User.Acceptmessages;
                     userDetails.UserFirstName = User.UserFirstName;
                     userDetails.UserLastName = User.UserLastName;
                     userDetails.UserEmail = User.UserEmail;
@@ -85,6 +120,17 @@ namespace WebApiMTModel.Models.Models.View
                     userDetails.UserComments = User.UserComments;
                     userDetails.UserCityName = User.UserCity;
                     userDetails.UserAddress = User.UserAddress;
+                    userDetails.UserName = User.UserName;
+                    userDetails.UserStatusCode = User.UserStatus;
+                    var vet = context.veterinarTbl
+                        .Where(v => v.VeterinarId == User.UserVeterinarId).FirstOrDefault();
+                    userDetails.UserVeterinarId = User.UserVeterinarId;
+                    userDetails.VeterinarAddress = vet.VeterinarAddress;
+                    userDetails.VeterinarCity = vet.VeterinarCity;
+                    userDetails.VeterinarEmail = vet.VeterinarEmail;
+                    userDetails.VeterinarName = vet.VeterinarName;
+                    userDetails.VeterinarPhone1 = vet.VeterinarPhone1;
+                   
                     var dogs = context.UserDogs
                                     .Where(userDog => userDog.DogUserID == User.UserID).Count();
                     userDetails.DogsNumber = dogs;
@@ -110,43 +156,45 @@ namespace WebApiMTModel.Models.Models.View
         public UserDetailsView GetUserWithDogs(string usereMail, string password)
         {
 
+
+
+            //  DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+
+
+            //  var User = context.UsersTbl
+            //.Where(user => user.UserEmail == usereMail && user.UserPaswrd == password).FirstOrDefault();
+
+
+            //  if (User != null)
+            //  {
+            //      userDetails = new UserDetailsView();
+
+            //      userDetails.UserFirstName = User.UserFirstName;
+            //      userDetails.UserLastName = User.UserLastName;
+            //      userDetails.UserEmail = User.UserEmail;
+            //      userDetails.UserID = User.UserID;
+            //      userDetails.UserPhone2 = User.UserPhone2;
+            //      userDetails.UserPhone1 = User.UserPhone1;
+            //      userDetails.UserComments = User.UserComments;
+            //      userDetails.UserCityName = User.UserCity;
+            //      userDetails.UserAddress = User.UserAddress;
+            //      var dogs = context.UserDogs
+            //                      .Where(userDog => userDog.DogUserID == User.UserID).Count();
+            //      userDetails.DogsNumber = dogs;
+
+            //      var reservations = context.OrdersTbl
+            //                   .Where(userres => userres.OrderUserId == User.UserID).Count();
+            //      userDetails.ReservationsNumber = context.OrdersTbl.Count();
             try
             {
-                UserDetailsView userDetails = null;
-
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-
-
-                var User = context.UsersTbl
-              .Where(user => user.UserEmail == usereMail && user.UserPaswrd == password).FirstOrDefault();
-
-
-                if (User != null)
-                {
-                    userDetails = new UserDetailsView();
-
-                    userDetails.UserFirstName = User.UserFirstName;
-                    userDetails.UserLastName = User.UserLastName;
-                    userDetails.UserEmail = User.UserEmail;
-                    userDetails.UserID = User.UserID;
-                    userDetails.UserPhone2 = User.UserPhone2;
-                    userDetails.UserPhone1 = User.UserPhone1;
-                    userDetails.UserComments = User.UserComments;
-                    userDetails.UserCityName = User.UserCity;
-                    userDetails.UserAddress = User.UserAddress;
-                    var dogs = context.UserDogs
-                                    .Where(userDog => userDog.DogUserID == User.UserID).Count();
-                    userDetails.DogsNumber = dogs;
-
-                    var reservations = context.OrdersTbl
-                                 .Where(userres => userres.OrderUserId == User.UserID).Count();
-                    userDetails.ReservationsNumber = context.OrdersTbl.Count();
-                     GetUserDogs(userDetails); //שליפת כלבים למשתמש
+                UserDetailsView userDetails = GetUser(usereMail, password);
+               
+                GetUserDogs(userDetails); //שליפת כלבים למשתמש
                    
                     HttpContext.Current.Session["userDetails"] = userDetails;
 
 
-                }
+             
                 return userDetails;
             }
             catch (Exception ex)
@@ -173,7 +221,8 @@ namespace WebApiMTModel.Models.Models.View
                 if (User != null)
                 {
                     userDetails = new UserDetailsView();
-
+                    userDetails.Acceptmessages = User.Acceptmessages;
+                    userDetails.DaysSumForDiscount = User.DaysSumForDiscount;
                     userDetails.UserFirstName = User.UserFirstName;
                     userDetails.UserLastName = User.UserLastName;
                     userDetails.UserEmail = User.UserEmail;
@@ -190,6 +239,17 @@ namespace WebApiMTModel.Models.Models.View
                     var reservations = context.OrdersTbl
                                  .Where(userres => userres.OrderUserId == User.UserID).Count();
                     userDetails.ReservationsNumber = context.OrdersTbl.Count();
+                    userDetails.UserName = User.UserName;
+                    userDetails.UserStatusCode = User.UserStatus;
+                    var vet = context.veterinarTbl
+                        .Where(v => v.VeterinarId == User.UserVeterinarId).FirstOrDefault();
+                    userDetails.UserVeterinarId = User.UserVeterinarId;
+                    userDetails.VeterinarAddress = vet.VeterinarAddress;
+                    userDetails.VeterinarCity = vet.VeterinarCity;
+                    userDetails.VeterinarEmail = vet.VeterinarEmail;
+                    userDetails.VeterinarName = vet.VeterinarName;
+                    userDetails.VeterinarPhone1 = vet.VeterinarPhone1;
+                    
                     //  GetUserDogs(userDetails); //שליפת כלבים למשתמש
                     //   OrderService orderService = new OrderService();
                     //    orderService.GetUserOrders(userDetails);//שליפת הזמנות למשתמש
@@ -246,7 +306,14 @@ namespace WebApiMTModel.Models.Models.View
                         dogDetails.DogComments = dog.DogComments;
                         dogDetails.DogUserID = dog.DogUserID;
                         dogDetails.DogBirthDate = dog.DogBirthDate;
+                        dogDetails.DogRabiesVaccine = dog.DogRabiesVaccine;
+                        dogDetails.DogNeuter = dog.DogNeuter;
+                        dogDetails.DogJump = (bool)dog.DogJump;
+                        dogDetails.DogDig = (bool)dog.DogDig;
+                        dogDetails.DogGender = dog.DogGender;
+                        dogDetails.DogFriendlyWith =(int)dog.DogFriendlyWith;
                         userDetails.UserarrayDogs.Add(dogDetails);
+
                     }
                 }
 
@@ -270,59 +337,48 @@ namespace WebApiMTModel.Models.Models.View
         public void UpdateUserDetails(UserDetailsView userDetails)
 
         {
-            string sql = "UPDATE UsersTbl SET FirstName = [@FirstName], LastName = [@LastName], CityID = [@cityID], address = [@address], state = [@state], zipCode = [@zipCode] WHERE UserID=[@UserID]";
-            //
-
-            //string connectionString = Connect.getConnectionString();
-
-            SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["conString"].ConnectionString);
-            SqlCommand objCmd;
-            objCmd = new SqlCommand(sql, objConn);
-
-            //set parameters for storde procedure
-            SqlParameter objParam;
-            objParam = objCmd.Parameters.Add("@UserID", SqlDbType.Int);
-            objParam.Direction = ParameterDirection.Input;
-            objParam.Value = userDetails.UserID;
-            //objParam = objCmd.Parameters.Add("@FirstName", SqlDbType.Char);
-            //objParam.Direction = ParameterDirection.Input;
-            //objParam.Value = user.UserFirstName;
-            //objParam = objCmd.Parameters.Add("@LastName", SqlDbType.Char);
-            //objParam.Direction = ParameterDirection.Input;
-            //objParam.Value = user.UserLastName;
-            //objParam = objCmd.Parameters.Add("@cityID", SqlDbType.Char);
-            //objParam.Direction = ParameterDirection.Input;
-            //objParam.Value = user.City;
-            objParam = objCmd.Parameters.Add("@UserEMail", SqlDbType.Char);
-            objParam.Direction = ParameterDirection.Input;
-            objParam.Value = userDetails.UserEmail;
-
-
-            objParam = objCmd.Parameters.Add("@address", SqlDbType.Char);
-            objParam.Direction = ParameterDirection.Input;
-            objParam.Value = userDetails.UserAddress;
-            //objParam = objCmd.Parameters.Add("@UserPhone1", SqlDbType.Char);
-            //objParam.Direction = ParameterDirection.Input;
-            //objParam.Value = user.UserPhone;
-
-            //objParam = objCmd.Parameters.Add("@state", SqlDbType.Char);
-            //objParam.Direction = ParameterDirection.Input;
-            //objParam.Value = user.State;
-            //objParam = objCmd.Parameters.Add("@zipcode", SqlDbType.Char);
-            //objParam.Direction = ParameterDirection.Input;
-            //objParam.Value = user.ZipCode;
-
             try
             {
-                objConn.Open();
-                //objCmd.Connection.Open();
-                int n = objCmd.ExecuteNonQuery();
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+                    UsersTbl usersTbl = new UsersTbl();
+                    usersTbl.UserAddress = userDetails.UserAddress;
+                    usersTbl.UserCity = userDetails.UserCityName;
+                    usersTbl.UserComments = userDetails.UserComments;
+                    usersTbl.UserEmail = userDetails.UserEmail;
+                    usersTbl.UserFirstName = userDetails.UserFirstName;
+                    usersTbl.UserLastName = userDetails.UserLastName;
+                    usersTbl.UserPaswrd = userDetails.UserPaswrd;
+                    usersTbl.UserPhone1 = userDetails.UserPhone1;
+                    usersTbl.UserPhone2 = userDetails.UserPhone2;
+                    usersTbl.UserStatus = 21;
+                    usersTbl.UserName = userDetails.UserName;
+                    usersTbl.Acceptmessages = userDetails.Acceptmessages;
+                    int vet = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    if (vet == 0) //אם עדין אין במאגר וטרינר כזה
+                    {
+                        veterinarTbl veterinarTbl = new veterinarTbl();
+                        veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
+                        veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
+                        veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
+                        veterinarTbl.VeterinarName = userDetails.VeterinarName;
+                        veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
+                      
+                        context.veterinarTbl.Add(veterinarTbl);
+                        context.SaveChanges();
+
+                    }
+                    int vetID = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    usersTbl.UserVeterinarId = vetID;
+                    context.SaveChanges();
+
+                }
 
             }
             catch (SqlException ex)
             { throw ex; }
             finally
-            { objCmd.Connection.Close(); }
+            {  }
         }
         //הוספת משתמש
         public void InsertUserDetails(UserDetailsView userDetails)
@@ -343,18 +399,47 @@ namespace WebApiMTModel.Models.Models.View
                     usersTbl.UserPhone1 = userDetails.UserPhone1;
                     usersTbl.UserPhone2 = userDetails.UserPhone2;
                     usersTbl.UserStatus = 21;
-                    
                     usersTbl.UserName = userDetails.UserName;
+                    usersTbl.Acceptmessages = userDetails.Acceptmessages;
+                    usersTbl.DaysSumForDiscount = 0;
+                    int vet = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    if (vet == 0) //אם עדין אין במאגר וטרינר כזה
+                    {
+                        veterinarTbl veterinarTbl = new veterinarTbl();
+                        veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
+                        veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
+                        veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
+                        veterinarTbl.VeterinarName = userDetails.VeterinarName;
+                        veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
+                       
+                        context.veterinarTbl.Add(veterinarTbl);
+                        context.SaveChanges();
 
+                    }
+                    int vetID = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    usersTbl.UserVeterinarId = vetID;
                     context.UsersTbl.Add(usersTbl);
                     context.SaveChanges();
-                }
-            }
 
+                }
+
+            }
             catch (SqlException ex)
             { throw ex; }
         }
+        public int GetVetID(string VeterinarName, string VeterinarPhone1)
+        {
+          
+            using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+            {
+               veterinarTbl vet = context.veterinarTbl.Where(v => v.VeterinarName == VeterinarName && v.VeterinarPhone1 == VeterinarPhone1).FirstOrDefault();
 
+                if (vet == null)
+                    return 0;
+                else
+                    return vet.VeterinarId;
+                        }
+        }
         //הוספת כלבים למשתמש
         public void AddDogsForUser(UserDetailsView userDetails)
         {
@@ -391,6 +476,42 @@ namespace WebApiMTModel.Models.Models.View
             }
             catch (Exception ex)
             {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// עדכון/הוספת כלבים למשתמש קיים
+        /// </summary>
+        /// <param name="OrdersList"></param>
+        public void UpdateDogsByManager(UserDetailsView userDetails)
+        {
+            try
+            {
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+                    foreach (DogDetailsView dog in userDetails.UserarrayDogs)
+                    {
+                        var dogt = context.Set<UserDogs>().Find(dog.DogNumber);
+
+                        if (dog != null)
+                        {
+
+                            context.Entry(dog).CurrentValues.SetValues(dog);
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            
+                            AddDogsForUser(userDetails);
+                        }
+                    }
+                    context.Dispose();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
                 throw ex;
             }
         }

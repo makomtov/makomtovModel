@@ -9,11 +9,11 @@ using System.Data;
 
 namespace WebApiMTModel.Controllers
 {
-    [RoutePrefix("api/XMLData")]
+    [RoutePrefix("api/XML")]
     public class XMLController : ApiController
     {
         // GET:
-        // /api/XMLData/cities
+        // /api/XML/GetXMLData
         [System.Web.Http.Route("{filename}")]
         public DataSet  Get(string filename)
         {
@@ -24,6 +24,7 @@ namespace WebApiMTModel.Controllers
             return ds;
         }
 
+       
         // GET: api/XML/5
         public string Get(int id)
         {

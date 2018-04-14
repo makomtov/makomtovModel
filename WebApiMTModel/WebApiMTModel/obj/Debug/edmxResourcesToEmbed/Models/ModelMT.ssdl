@@ -7,10 +7,6 @@
     </Key>
     <Property Name="OrderNumber" Type="int" Nullable="false" />
     <Property Name="DogNumber" Type="int" Nullable="false" />
-    <Property Name="FromDate" Type="datetime" Nullable="false" />
-    <Property Name="ShiftNumberFrom" Type="int" Nullable="false" />
-    <Property Name="ToDate" Type="datetime" Nullable="false" />
-    <Property Name="ShiftNumberTo" Type="int" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="DogTraining" Type="bit" />
     <Property Name="HomeFood" Type="bit" Nullable="false" />
@@ -31,6 +27,7 @@
     <Property Name="Price" Type="money" />
     <Property Name="OrderCreateDate" Type="date" Nullable="false" />
     <Property Name="ManagerComments" Type="nvarchar(max)" />
+    <Property Name="discount" Type="money" />
   </EntityType>
   <EntityType Name="OrderTypes">
     <Key>
@@ -115,6 +112,21 @@
     <Property Name="UserPaswrd" Type="char" MaxLength="10" Nullable="false" />
     <Property Name="UserPhone1" Type="char" MaxLength="15" Nullable="false" />
     <Property Name="UserPhone2" Type="char" MaxLength="15" />
+    <Property Name="DaysSumForDiscount" Type="int" Nullable="false" />
+    <Property Name="Acceptmessages" Type="bit" Nullable="false" />
+    <Property Name="UserVeterinarId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="veterinarTbl">
+    <Key>
+      <PropertyRef Name="VeterinarId" />
+    </Key>
+    <Property Name="VeterinarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VeterinarName" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="VeterinarEmail" Type="char" MaxLength="50" />
+    <Property Name="VeterinarAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="VeterinarCity" Type="nvarchar" MaxLength="50" />
+    <Property Name="VeterinarPhone1" Type="char" MaxLength="15" Nullable="false" />
+    <Property Name="VeterinarPhone2" Type="char" MaxLength="15" />
   </EntityType>
   <Association Name="FK_DogsInOrder_ToOrdersTbl">
     <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
@@ -272,6 +284,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_UsersTbl_VeterinarTbl">
+    <End Role="veterinarTbl" Type="Self.veterinarTbl" Multiplicity="1" />
+    <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="veterinarTbl">
+        <PropertyRef Name="VeterinarId" />
+      </Principal>
+      <Dependent Role="UsersTbl">
+        <PropertyRef Name="UserVeterinarId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="DatabaseModelStoreContainer">
     <EntitySet Name="DogsInOrder" EntityType="Self.DogsInOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrdersTbl" EntityType="Self.OrdersTbl" Schema="dbo" store:Type="Tables" />
@@ -282,6 +306,7 @@
     <EntitySet Name="StatusTbl" EntityType="Self.StatusTbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserDogs" EntityType="Self.UserDogs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UsersTbl" EntityType="Self.UsersTbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="veterinarTbl" EntityType="Self.veterinarTbl" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_DogsInOrder_ToOrdersTbl" Association="Self.FK_DogsInOrder_ToOrdersTbl">
       <End Role="OrdersTbl" EntitySet="OrdersTbl" />
       <End Role="DogsInOrder" EntitySet="DogsInOrder" />
@@ -332,6 +357,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_UsersTbl_ToStatusTbl" Association="Self.FK_UsersTbl_ToStatusTbl">
       <End Role="StatusTbl" EntitySet="StatusTbl" />
+      <End Role="UsersTbl" EntitySet="UsersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersTbl_VeterinarTbl" Association="Self.FK_UsersTbl_VeterinarTbl">
+      <End Role="veterinarTbl" EntitySet="veterinarTbl" />
       <End Role="UsersTbl" EntitySet="UsersTbl" />
     </AssociationSet>
   </EntityContainer>

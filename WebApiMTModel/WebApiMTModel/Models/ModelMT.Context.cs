@@ -34,5 +34,6 @@ namespace WebApiMTModel.Models
         public virtual DbSet<StatusTbl> StatusTbl { get; set; }
         public virtual DbSet<UserDogs> UserDogs { get; set; }
         public virtual DbSet<UsersTbl> UsersTbl { get; set; }
+        public virtual DbSet<veterinarTbl> veterinarTbl { get; set; }
     }
 }

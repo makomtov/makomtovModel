@@ -52,8 +52,9 @@ namespace WebApiMTModel.Controllers
             //bool ok = userservice.CheckUserDetails(orderDetailsView.User.UserID);
             //if (!ok) return -1;
             OrderService orderService = new OrderService();
-          //  orderService.createOrder(orderDetailsView);
-            return orderService.createOrder(orderDetailsView);
+            //  orderService.createOrder(orderDetailsView);
+             return orderService.createOrder(orderDetailsView);
+           // return orderService.CreateOrder();
         }
         // /api/Reservation/GetUserOrders/1
         [Route("GetUserOrders")]
@@ -96,10 +97,10 @@ namespace WebApiMTModel.Controllers
          public void UpdateOrdersByManager(HttpRequestMessage Orders)
         {
             var jsonString = Orders.Content.ReadAsStringAsync().Result;
-
-            UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+            OrdersForManagetView  list = JsonConvert.DeserializeObject<OrdersForManagetView>(jsonString);
+            //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
             OrderService orderService = new OrderService();
-            orderService.UpdateOrdersByManager(user.UserReservations);
+            orderService.UpdateOrdersByManager(list.UserReservations);
         }
     }
 }

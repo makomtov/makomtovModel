@@ -12,10 +12,6 @@
           </Key>
           <Property Name="OrderNumber" Type="int" Nullable="false" />
           <Property Name="DogNumber" Type="int" Nullable="false" />
-          <Property Name="FromDate" Type="datetime" Nullable="false" />
-          <Property Name="ShiftNumberFrom" Type="int" Nullable="false" />
-          <Property Name="ToDate" Type="datetime" Nullable="false" />
-          <Property Name="ShiftNumberTo" Type="int" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="DogTraining" Type="bit" />
           <Property Name="HomeFood" Type="bit" Nullable="false" />
@@ -36,6 +32,7 @@
           <Property Name="Price" Type="money" />
           <Property Name="OrderCreateDate" Type="date" Nullable="false" />
           <Property Name="ManagerComments" Type="nvarchar(max)" />
+          <Property Name="discount" Type="money" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -120,6 +117,21 @@
           <Property Name="UserPaswrd" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="UserPhone1" Type="char" MaxLength="15" Nullable="false" />
           <Property Name="UserPhone2" Type="char" MaxLength="15" />
+          <Property Name="DaysSumForDiscount" Type="int" Nullable="false" />
+          <Property Name="Acceptmessages" Type="bit" Nullable="false" />
+          <Property Name="UserVeterinarId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="veterinarTbl">
+          <Key>
+            <PropertyRef Name="VeterinarId" />
+          </Key>
+          <Property Name="VeterinarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VeterinarName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="VeterinarEmail" Type="char" MaxLength="50" />
+          <Property Name="VeterinarAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="VeterinarCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="VeterinarPhone1" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="VeterinarPhone2" Type="char" MaxLength="15" />
         </EntityType>
         <Association Name="FK_DogsInOrder_ToOrdersTbl">
           <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
@@ -277,6 +289,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UsersTbl_VeterinarTbl">
+          <End Role="veterinarTbl" Type="Self.veterinarTbl" Multiplicity="1" />
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="veterinarTbl">
+              <PropertyRef Name="VeterinarId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserVeterinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DatabaseModelStoreContainer">
           <EntitySet Name="DogsInOrder" EntityType="Self.DogsInOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrdersTbl" EntityType="Self.OrdersTbl" Schema="dbo" store:Type="Tables" />
@@ -287,6 +311,7 @@
           <EntitySet Name="StatusTbl" EntityType="Self.StatusTbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDogs" EntityType="Self.UserDogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersTbl" EntityType="Self.UsersTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="veterinarTbl" EntityType="Self.veterinarTbl" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_DogsInOrder_ToOrdersTbl" Association="Self.FK_DogsInOrder_ToOrdersTbl">
             <End Role="OrdersTbl" EntitySet="OrdersTbl" />
             <End Role="DogsInOrder" EntitySet="DogsInOrder" />
@@ -339,6 +364,10 @@
             <End Role="StatusTbl" EntitySet="StatusTbl" />
             <End Role="UsersTbl" EntitySet="UsersTbl" />
           </AssociationSet>
+          <AssociationSet Name="FK_UsersTbl_VeterinarTbl" Association="Self.FK_UsersTbl_VeterinarTbl">
+            <End Role="veterinarTbl" EntitySet="veterinarTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -351,16 +380,12 @@
           </Key>
           <Property Name="OrderNumber" Type="Int32" Nullable="false" />
           <Property Name="DogNumber" Type="Int32" Nullable="false" />
-          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="DogTraining" Type="Boolean" />
           <Property Name="HomeFood" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_DogsInOrder_ToOrdersTbl" FromRole="DogsInOrder" ToRole="OrdersTbl" />
           <NavigationProperty Name="StatusTbl" Relationship="Self.FK_DogsInOrder_ToStatusTbl" FromRole="DogsInOrder" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UserDogs" Relationship="Self.FK_DogsInOrder_ToUserDogsTbl" FromRole="DogsInOrder" ToRole="UserDogs" />
-          <Property Name="ShiftNumberFrom" Type="Int32" Nullable="false" />
-          <Property Name="ShiftNumberTo" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="OrdersTbl">
           <Key>
@@ -383,6 +408,7 @@
           <Property Name="ShiftNumberFrom" Type="Int32" />
           <Property Name="ToDate" Type="DateTime" Precision="3" />
           <Property Name="ShiftNumberTo" Type="Int32" />
+          <Property Name="discount" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -485,6 +511,10 @@
           <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="DaysSumForDiscount" Type="Int32" Nullable="false" />
+          <Property Name="Acceptmessages" Type="Boolean" Nullable="false" />
+          <Property Name="UserVeterinarId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="veterinarTbl" Relationship="DatabaseModel.FK_UsersTbl_VeterinarTbl" FromRole="UsersTbl" ToRole="veterinarTbl" />
         </EntityType>
         <Association Name="FK_DogsInOrder_ToOrdersTbl">
           <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
@@ -704,7 +734,36 @@
             <End Role="UsersTbl" EntitySet="UsersTbl" />
             <End Role="UserDogs" EntitySet="UserDogs" />
           </AssociationSet>
+          <EntitySet Name="veterinarTbl" EntityType="DatabaseModel.veterinarTbl" />
+          <AssociationSet Name="FK_UsersTbl_VeterinarTbl" Association="DatabaseModel.FK_UsersTbl_VeterinarTbl">
+            <End Role="veterinarTbl" EntitySet="veterinarTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="veterinarTbl">
+          <Key>
+            <PropertyRef Name="VeterinarId" />
+          </Key>
+          <Property Name="VeterinarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VeterinarName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="VeterinarEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="false" />
+          <Property Name="VeterinarAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VeterinarCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VeterinarPhone1" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="UsersTbl" Relationship="DatabaseModel.FK_UsersTbl_VeterinarTbl" FromRole="veterinarTbl" ToRole="UsersTbl" />
+        </EntityType>
+        <Association Name="FK_UsersTbl_VeterinarTbl">
+          <End Type="DatabaseModel.veterinarTbl" Role="veterinarTbl" Multiplicity="1" />
+          <End Type="DatabaseModel.UsersTbl" Role="UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="veterinarTbl">
+              <PropertyRef Name="VeterinarId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserVeterinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -714,12 +773,8 @@
           <EntitySetMapping Name="DogsInOrder">
             <EntityTypeMapping TypeName="DatabaseModel.DogsInOrder">
               <MappingFragment StoreEntitySet="DogsInOrder">
-                <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
-                <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
-                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DogTraining" ColumnName="DogTraining" />
                 <ScalarProperty Name="HomeFood" ColumnName="HomeFood" />
@@ -729,6 +784,7 @@
           <EntitySetMapping Name="OrdersTbl">
             <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
               <MappingFragment StoreEntitySet="OrdersTbl">
+                <ScalarProperty Name="discount" ColumnName="discount" />
                 <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
                 <ScalarProperty Name="ToDate" ColumnName="ToDate" />
                 <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
@@ -820,6 +876,9 @@
           <EntitySetMapping Name="UsersTbl">
             <EntityTypeMapping TypeName="DatabaseModel.UsersTbl">
               <MappingFragment StoreEntitySet="UsersTbl">
+                <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
+                <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
+                <ScalarProperty Name="DaysSumForDiscount" ColumnName="DaysSumForDiscount" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
@@ -832,6 +891,18 @@
                 <ScalarProperty Name="UserPaswrd" ColumnName="UserPaswrd" />
                 <ScalarProperty Name="UserPhone1" ColumnName="UserPhone1" />
                 <ScalarProperty Name="UserPhone2" ColumnName="UserPhone2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="veterinarTbl">
+            <EntityTypeMapping TypeName="DatabaseModel.veterinarTbl">
+              <MappingFragment StoreEntitySet="veterinarTbl">
+                <ScalarProperty Name="VeterinarPhone1" ColumnName="VeterinarPhone1" />
+                <ScalarProperty Name="VeterinarCity" ColumnName="VeterinarCity" />
+                <ScalarProperty Name="VeterinarAddress" ColumnName="VeterinarAddress" />
+                <ScalarProperty Name="VeterinarEmail" ColumnName="VeterinarEmail" />
+                <ScalarProperty Name="VeterinarName" ColumnName="VeterinarName" />
+                <ScalarProperty Name="VeterinarId" ColumnName="VeterinarId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

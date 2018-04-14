@@ -52,6 +52,8 @@ namespace WebApiMTModel.Models.Models.View
         public DateTime ToDate { get; set; }
         [JsonProperty("ShiftNumberTo")]
         public int ShiftNumberTo { get; set; }
+        [JsonProperty(propertyName: "Discount")]
+        public decimal Discount { get; set; }
         [JsonProperty("mDogs")]
         public List<DogsInOrderView> mDogs { get; set; }
     }
