@@ -41,7 +41,7 @@ namespace WebApiMTModel.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
 
-        // /api/Users/aaa@gmail.com/1234
+        // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
         [System.Web.Http.Route("GetUser")]
         [System.Web.Http.HttpPost]
         public UserDetailsView GetUser(string usereMail, string password)
@@ -51,14 +51,14 @@ namespace WebApiMTModel.Controllers
            
         }
         // /api/Users/1
-        [System.Web.Http.Route("{userid}")]
+        //[System.Web.Http.Route("{userid}")]
+       
+        //public UserDetailsView GetUser(int userid)
+        //{
+        //    Userservice userservice = new Userservice();
+        //    return userservice.GetUser(userid);
 
-        public UserDetailsView GetUser(int userid)
-        {
-            Userservice userservice = new Userservice();
-            return userservice.GetUser(userid);
-
-        }
+        //}
 
         // /api/Users/GetUserDogs/1
         [System.Web.Http.Route("GetUserDogs/{userid}")]

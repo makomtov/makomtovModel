@@ -60,7 +60,7 @@ namespace WebApiMTModel.Controllers
         /// <returns></returns>
         // /api/Reservation/CreateOrder
         [Route("CreateOrder")]
-        [HttpGet]
+        [HttpPost]
       //  public void CreateOrder()
          public int CreateOrder(OrderDetailsView orderDetailsView)
         {
