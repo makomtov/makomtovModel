@@ -154,3 +154,6 @@ C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.cspr
 C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.csproj.CoreCompileInputs.cache
 C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.dll
 C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.pdb
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.Web.Cors.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.Web.Http.Cors.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.Web.Http.Cors.xml
