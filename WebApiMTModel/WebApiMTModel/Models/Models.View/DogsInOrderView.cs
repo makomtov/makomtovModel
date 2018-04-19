@@ -25,8 +25,8 @@ namespace WebApiMTModel.Models.Models.View
         //public int DogNumber { get; set; }
         [JsonProperty("OrderNumber")]
         public int OrderNumber { get; set; }
-        [JsonProperty("Training")]
-        public bool Training { get; set; } //אילוף? כן/לא
+        [JsonProperty("DogTraining")]
+        public bool DogTraining { get; set; } //אילוף? כן/לא
         [JsonProperty("Pension")]
         public bool Pension { get; set; }
         [JsonProperty("HomeFood")]

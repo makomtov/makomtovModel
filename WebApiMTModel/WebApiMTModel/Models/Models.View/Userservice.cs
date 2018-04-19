@@ -402,21 +402,22 @@ namespace WebApiMTModel.Models.Models.View
                     usersTbl.UserName = userDetails.UserName;
                     usersTbl.Acceptmessages = userDetails.Acceptmessages;
                     usersTbl.DaysSumForDiscount = 0;
-                    int vet = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                    if (vet == 0) //אם עדין אין במאגר וטרינר כזה
-                    {
-                        veterinarTbl veterinarTbl = new veterinarTbl();
-                        veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
-                        veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
-                        veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
-                        veterinarTbl.VeterinarName = userDetails.VeterinarName;
-                        veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
-                       
-                        context.veterinarTbl.Add(veterinarTbl);
-                        context.SaveChanges();
+                    //int vet = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    //if (vet == 0) //אם עדין אין במאגר וטרינר כזה
+                    //{
+                    //    veterinarTbl veterinarTbl = new veterinarTbl();
+                    //    veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
+                    //    veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
+                    //    veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
+                    //    veterinarTbl.VeterinarName = userDetails.VeterinarName;
+                    //    veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
 
-                    }
-                    int vetID = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    //    context.veterinarTbl.Add(veterinarTbl);
+                    //    context.SaveChanges();
+
+                    //}
+                    int vetID = 2;
+                 //   int vetID = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
                     usersTbl.UserVeterinarId = vetID;
                     context.UsersTbl.Add(usersTbl);
                     context.SaveChanges();

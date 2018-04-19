@@ -67,11 +67,21 @@ namespace WebApiMTModel.Controllers
             //אם מחזיר -1 חסרים פרטים על המשתמש בטבלת משתמשים
             //Userservice userservice = new Userservice();
             //bool ok = userservice.CheckUserDetails(orderDetailsView.User.UserID);
-            //if (!ok) return -1;
             OrderService orderService = new OrderService();
-            //  orderService.createOrder(orderDetailsView);
-             return orderService.createOrder(orderDetailsView);
-           // return orderService.CreateOrder();
+            int orderNum = orderService.createOrder(orderDetailsView);
+            //if (!ok) return -1;
+            if (orderNum== - 997 )
+            {
+                var message = string.Format(" כפילות בהזמנות -  יש כלב משותף בהזמנה הנוכחית ןבהזמנות קודמות באותם תאריכים ");
+                throw new HttpResponseException(
+                    Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+            }
+            else
+            {
+                return orderNum;
+            }
+
+           
         }
         /// <summary>
         /// שליפת כל ההזמנות למשתמש
@@ -135,11 +145,14 @@ namespace WebApiMTModel.Controllers
         [HttpPut]
          public void UpdateOrdersByManager(HttpRequestMessage Orders)
         {
-            var jsonString = Orders.Content.ReadAsStringAsync().Result;
-            OrdersForManagetView  list = JsonConvert.DeserializeObject<OrdersForManagetView>(jsonString);
-            //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-            OrderService orderService = new OrderService();
-            orderService.UpdateOrdersByManager(list.UserReservations);
+            if (ModelState.IsValid)
+            {
+                var jsonString = Orders.Content.ReadAsStringAsync().Result;
+                OrdersForManagetView list = JsonConvert.DeserializeObject<OrdersForManagetView>(jsonString);
+                //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                OrderService orderService = new OrderService();
+                orderService.UpdateOrdersByManager(list.UserReservations);
+            }
         }
     }
 }

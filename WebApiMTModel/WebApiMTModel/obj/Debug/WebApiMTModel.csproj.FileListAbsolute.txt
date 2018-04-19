@@ -157,3 +157,11 @@ C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.pdb
 C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.Web.Cors.dll
 C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.Web.Http.Cors.dll
 C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.Web.Http.Cors.xml
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\FluentValidation.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\FluentValidation.WebApi.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.ComponentModel.Annotations.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.ComponentModel.Primitives.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\FluentValidation.xml
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\FluentValidation.WebApi.xml
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\FluentValidation.Mvc.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\FluentValidation.Mvc.xml

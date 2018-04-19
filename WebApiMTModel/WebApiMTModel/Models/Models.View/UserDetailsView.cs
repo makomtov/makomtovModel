@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using FluentValidation.Attributes;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace WebApiMTModel.Models.Models.View
 {
-   
+    [Validator(typeof(UserValidator))]
     public class UserDetailsView
     {
         public UserDetailsView()

@@ -9,9 +9,13 @@
 
 namespace WebApiMTModel.Models
 {
+    using FluentValidation.Attributes;
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using WebApiMTModel.Models.Models.View;
+
+   // [Validator(typeof(UserValidator))]
     public partial class UsersTbl
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,16 +24,19 @@ namespace WebApiMTModel.Models
             this.OrdersTbl = new HashSet<OrdersTbl>();
             this.UserDogs = new HashSet<UserDogs>();
         }
-    
+   
         public int UserID { get; set; }
         public string UserName { get; set; }
+   
         public string UserEmail { get; set; }
         public string UserAddress { get; set; }
         public string UserCity { get; set; }
         public int UserStatus { get; set; }
         public string UserComments { get; set; }
+ 
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
+      
         public string UserPaswrd { get; set; }
         public string UserPhone1 { get; set; }
         public string UserPhone2 { get; set; }

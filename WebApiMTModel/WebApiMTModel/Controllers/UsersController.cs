@@ -16,14 +16,21 @@ using System.Text;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using Newtonsoft.Json.Linq;
+using FluentValidation;
 
 namespace WebApiMTModel.Controllers
 {
+   
     [System.Web.Http.RoutePrefix("api/Users")]
-    public class
-
-        UsersController : ApiController
+    public class  UsersController : ApiController
     {
+
+        //private readonly IValidator<UserDetailsView> userViewModelValidator;
+
+        //public UsersController(IValidator<UserDetailsView> userViewModelValidator)
+        //{
+        //    this.userViewModelValidator = userViewModelValidator;
+        //}
         //api/Users/GetUsers
 
         [System.Web.Http.Route("")]
@@ -44,26 +51,35 @@ namespace WebApiMTModel.Controllers
         // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
         [System.Web.Http.Route("GetUser")]
         [System.Web.Http.HttpPost]
-        // public UserDetailsView GetUser(string usereMail, string password)
-
-        public UserDetailsView GetUser([FromBody]LoginView loginView)
-        {
-            //var jsonString = httpLogin.Content.ReadAsStringAsync().Result;
-
-            //LoginView loginView = JsonConvert.DeserializeObject<LoginView>(jsonString);
-            Userservice userservice = new Userservice();
-            return userservice.GetUser(loginView.UserEmail,loginView.UserPassword);
-           
-        }
-        // /api/Users/1
-        //[System.Web.Http.Route("{userid}")]
        
-        //public UserDetailsView GetUser(int userid)
-        //{
-        //    Userservice userservice = new Userservice();
-        //    return userservice.GetUser(userid);
+         public IHttpActionResult GetUser([FromBody]LoginView loginView)
+     
+        {
+            try
+            {
+                
+           
+            Userservice userservice = new Userservice();
+                UserDetailsView userDetailsView = userservice.GetUser(loginView.UserEmail, loginView.UserPassword);
+            return Ok(userDetailsView);
+        }
+        
+             catch
+            {
+               bool x= ModelState.IsValid;
+                return InternalServerError();
+    }
 
-        //}
+}
+        // /api/Users/1
+        [System.Web.Http.Route("{userid}")]
+
+        public UserDetailsView GetUser(int userid)
+        {
+            Userservice userservice = new Userservice();
+            return userservice.GetUser(userid);
+
+        }
 
         // /api/Users/GetUserDogs/1
         [System.Web.Http.Route("GetUserDogs/{userid}")]
@@ -77,26 +93,38 @@ namespace WebApiMTModel.Controllers
        
         // /api/Users/InsertUserDetails
         [System.Web.Http.Route("InsertUserDetails")]
-        [System.Web.Http.HttpPut]
-        public void InsertUserDetails(HttpRequestMessage userNew)
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult InsertUserDetails(HttpRequestMessage userNew)
         {
-            var jsonString = userNew.Content.ReadAsStringAsync().Result;
 
-            UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-            Userservice userservice = new Userservice();
-            userservice.InsertUserDetails(user);
-        
+            try
+            {
+                var jsonString = userNew.Content.ReadAsStringAsync().Result;
+                UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                Userservice userservice = new Userservice();
+                userservice.InsertUserDetails(user);
+                return Ok();
+            }
+
+            catch
+            {
+                return InternalServerError();
+            }
+
         }
 
         [System.Web.Http.Route("UpdateUserDogsByManager")]
         [System.Web.Http.HttpPut]
         public void UpdateUserDogsByManager(HttpRequestMessage userDogs)
         {
-            var jsonString = userDogs.Content.ReadAsStringAsync().Result;
-            UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-            //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-            Userservice userservice = new Userservice();
-            userservice.UpdateDogsByManager(user);
+            if (ModelState.IsValid)
+            {
+                var jsonString = userDogs.Content.ReadAsStringAsync().Result;
+                UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                Userservice userservice = new Userservice();
+                userservice.UpdateDogsByManager(user);
+            }
         }
         //// public void InsertUserDetails(JObject juser)
         //public void InsertUserDetails([FromBody] UserDetailsView user)
@@ -119,6 +147,11 @@ namespace WebApiMTModel.Controllers
         //    Userservice userservice = new Userservice();
         //    userservice.InsertUserDetails(userDetails);
         //}
+        private void ThrowResponseException(HttpStatusCode statusCode, string message)
+        {
+            var errorResponse = Request.CreateErrorResponse(statusCode, message);
+            throw new HttpResponseException(errorResponse);
+        }
     }
 }
 

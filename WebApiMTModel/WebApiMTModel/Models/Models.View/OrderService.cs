@@ -271,7 +271,7 @@ namespace WebApiMTModel.Models.Models.View
 
                     //{
                     DogsInOrder dogsInOrder = new DogsInOrder();
-                    dogsInOrder.DogTraining = orderDetailsView.mDogs[i].Training;
+                    dogsInOrder.DogTraining = orderDetailsView.mDogs[i].DogTraining;
                     dogsInOrder.DogNumber = orderDetailsView.mDogs[i].DogNumber;
 
                     dogsInOrder.HomeFood = orderDetailsView.mDogs[i].HomeFood;
@@ -421,6 +421,11 @@ namespace WebApiMTModel.Models.Models.View
                         {
 
                             context.Entry(ordert).CurrentValues.SetValues(order);
+                            foreach (DogsInOrderView dog in order.mDogs)
+                            {
+                                var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber,dog.DogNumber);
+                                context.Entry(dogt).CurrentValues.SetValues(dog);
+                            }
                             context.SaveChanges();
                         }
                         else
@@ -809,8 +814,9 @@ namespace WebApiMTModel.Models.Models.View
                              d.DogNumber,
                              d.UserDogs.DogName,
                              d.DogTraining,
+                             d.HomeFood,
                              d.UserDogs.DogImage,
-                           
+                             d.Status,
                              d.UserDogs.DogRabiesVaccine,
                              ud.DogType,
                              ud.DogBirthDate,
@@ -831,7 +837,7 @@ namespace WebApiMTModel.Models.Models.View
                     dogsInOrderV.DogName = dog.DogName; ;
                     dogsInOrderV.OrderNumber = dog.OrderNumber;
                     dogsInOrderV.DogImage = dog.DogImage;
-                    dogsInOrderV.Training =(bool)dog.DogTraining;
+                    dogsInOrderV.DogTraining =(bool)dog.DogTraining;
                     dogsInOrderV.DogBirthDate = dog.DogBirthDate;
                     dogsInOrderV.DogType = dog.DogType;
                     dogsInOrderV.DogComments = dog.DogComments;
@@ -841,7 +847,9 @@ namespace WebApiMTModel.Models.Models.View
                     dogsInOrderV.DogJump = (bool)dog.DogJump;
                     dogsInOrderV.DogNeuter = dog.DogNeuter;
                     dogsInOrderV.DogShvav = dog.DogShvav;
+                    dogsInOrderV.Status = dog.Status;
                     dogsInOrderV.Pension = true;
+                    dogsInOrderV.HomeFood = dog.HomeFood;
                     dogsInOrderList.Add(dogsInOrderV);
                 }
                 return dogsInOrderList;
