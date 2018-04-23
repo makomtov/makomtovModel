@@ -13,7 +13,7 @@ namespace WebApiMTModel.Models.Models.View
             RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק")
                                         .Length(0, 20).WithMessage("שפ פרטי אינו יכול להיות יותר מ 20 תווים");
 
-            //RuleFor(x => x.LastName).NotEmpty().WithMessage("The Last Name cannot be blank.");
+           RuleFor(x => x.UserLastName).NotEmpty().WithMessage("שם משפחה אינו יכול להיות ריק");
 
             //RuleFor(x => x.BirthDate).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
 
@@ -28,8 +28,8 @@ namespace WebApiMTModel.Models.Models.View
 
         public LoginValidator()
         {
-            RuleFor(x => x.UserEmail).NotEmpty().WithMessage("מייל אינו יכול להיות ריק");
-                                        //.Length(0, 20).WithMessage("שפ פרטי אינו יכול להיות יותר מ 20 תווים");
+            RuleFor(x => x.UserEmail).NotEmpty().WithMessage("מייל אינו יכול להיות ריק").EmailAddress().WithMessage("מייל לא חוקי");
+                                        
 
             //RuleFor(x => x.LastName).NotEmpty().WithMessage("The Last Name cannot be blank.");
 

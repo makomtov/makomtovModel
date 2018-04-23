@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using WebApiMTModel.Models.Models.View;
 
 namespace WebApiMTModel
@@ -15,8 +16,10 @@ namespace WebApiMTModel
 
         public static void Register(HttpConfiguration config)
         {
-            
-          ////  config.MessageHandlers.Add(new ResponseWrappingHandler());
+
+            var corsAttr = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(corsAttr);
+
             // Web API configuration and services
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             // Web API routes

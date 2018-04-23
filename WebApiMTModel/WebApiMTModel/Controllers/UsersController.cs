@@ -17,6 +17,9 @@ using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using Newtonsoft.Json.Linq;
 using FluentValidation;
+using System.Web.Http.Cors;
+using FluentValidation.Results;
+using System.Web.Http.Controllers;
 
 namespace WebApiMTModel.Controllers
 {
@@ -42,17 +45,18 @@ namespace WebApiMTModel.Controllers
         }
 
         /// <summary>
-        /// שליפת משתמש
+        ///  שליפת משתמש לפי פרמטרי פייסבוק
         /// </summary>
         /// <param name="usereMail"></param>
         /// <param name="password"></param>
         /// <returns></returns>
 
-        // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
-        [System.Web.Http.Route("GetUser")]
+        // /api/Users/GetUserFB
+        
+        [System.Web.Http.Route("GetUserFB")]
         [System.Web.Http.HttpPost]
        
-         public IHttpActionResult GetUser([FromBody]LoginView loginView)
+         public IHttpActionResult GetUserFB([FromBody]LoginView loginView)
      
         {
             try
@@ -60,7 +64,7 @@ namespace WebApiMTModel.Controllers
                 
            
             Userservice userservice = new Userservice();
-                UserDetailsView userDetailsView = userservice.GetUser(loginView.UserEmail, loginView.UserPassword);
+                UserDetailsView userDetailsView = userservice.GetUserFB(loginView.UserEmail, loginView.UserPassword);
             return Ok(userDetailsView);
         }
         
@@ -71,6 +75,78 @@ namespace WebApiMTModel.Controllers
     }
 
 }
+        /// <summary>
+        ///  שליפת משתמש לפי שם משתמש וסיסמה
+        /// </summary>
+        /// <param name="loginView"></param>
+        /// <returns></returns>
+        // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
+        [System.Web.Http.Route("GetUser")]
+        [System.Web.Http.HttpPost]
+
+        public HttpResponseMessage GetUser([FromBody]LoginView loginView)
+
+        {
+            List<string> errorlist = null;
+            UserDetailsView userDetailsView=null;
+            int code = (int)HttpStatusCode.OK;
+            try
+            {
+
+                LoginValidator validator = new LoginValidator();
+                ValidationResult results = validator.Validate(loginView);
+                bool validationSucceeded = results.IsValid;
+                if (validationSucceeded)
+                {
+                    Userservice userservice = new Userservice();
+                     userDetailsView = userservice.GetUser(loginView.UserEmail, loginView.UserPassword);
+                    if (userDetailsView != null)
+                        code = (int)HttpStatusCode.OK;
+                   else
+                        code = (int)HttpStatusCode.BadRequest;
+                    //  return Ok();
+                }
+                else
+                {
+                    code = (int)HttpStatusCode.BadRequest;
+                    errorlist = new List<string>();
+                    foreach (var value in results.Errors)
+                    {
+
+                        errorlist.Add(value.ErrorMessage);
+                        //errorlist.Add(value.Errors);
+                    }
+                    //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+                    //IList<ValidationFailure> failures = results.Errors;
+                    //List<string> errorlist = new List<string>();
+                    //foreach (ValidationFailure _error in failures)
+                    //{
+                    //    ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
+                    //    //foreach (var error in value.Errors)
+                    //    //  errorlist.Add(value.ErrorMessage);
+                    //    //errorlist.Add(value.Errors);
+                    //}
+                    //   return 
+                    //  return new System.Web.Http.Controllers.HttpActionContext()
+                    //HttpActionContext actionContext = new HttpActionContext();
+                   
+
+                    // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
+                }
+                if((HttpStatusCode)code==HttpStatusCode.OK)
+                { return Request.CreateResponse(HttpStatusCode.OK, userDetailsView); }
+                else
+                { return Request.CreateResponse(HttpStatusCode.BadRequest, errorlist); }
+
+            }
+
+            catch
+            {
+                bool x = ModelState.IsValid;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
         // /api/Users/1
         [System.Web.Http.Route("{userid}")]
 
@@ -94,27 +170,65 @@ namespace WebApiMTModel.Controllers
         // /api/Users/InsertUserDetails
         [System.Web.Http.Route("InsertUserDetails")]
         [System.Web.Http.HttpPost]
-        public IHttpActionResult InsertUserDetails(HttpRequestMessage userNew)
+       
+        public HttpResponseMessage InsertUserDetails([FromBody] UserDetailsView user)
         {
 
             try
             {
-                var jsonString = userNew.Content.ReadAsStringAsync().Result;
-                UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-                Userservice userservice = new Userservice();
-                userservice.InsertUserDetails(user);
-                return Ok();
+                //var jsonString = userNew.Content.ReadAsStringAsync().Result;
+                // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(userNew);
+                UserValidator validator = new UserValidator();
+                ValidationResult results = validator.Validate(user);
+                bool validationSucceeded = results.IsValid;
+                if (validationSucceeded)
+                {
+                    
+                    Userservice userservice = new Userservice();
+                    userservice.InsertUserDetails(user);
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                  //  return Ok();
+                }
+                else
+                {
+                    List<string> errorlist = new List<string>();
+                    foreach (var value in results.Errors)
+                    {
+                        
+                            errorlist.Add(value.ErrorMessage);
+                        //errorlist.Add(value.Errors);
+                    }
+                    //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+                    //IList<ValidationFailure> failures = results.Errors;
+                    //List<string> errorlist = new List<string>();
+                    //foreach (ValidationFailure _error in failures)
+                    //{
+                    //    ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
+                    //    //foreach (var error in value.Errors)
+                    //    //  errorlist.Add(value.ErrorMessage);
+                    //    //errorlist.Add(value.Errors);
+                    //}
+                    //   return 
+                    //  return new System.Web.Http.Controllers.HttpActionContext()
+                    //HttpActionContext actionContext = new HttpActionContext();
+                   return   Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+                    
+                   // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
+                }
             }
 
             catch
             {
-                return InternalServerError();
+                bool x = ModelState.IsValid;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
 
         }
 
         [System.Web.Http.Route("UpdateUserDogsByManager")]
-        [System.Web.Http.HttpPut]
+        [System.Web.Http.HttpPost]
         public void UpdateUserDogsByManager(HttpRequestMessage userDogs)
         {
             if (ModelState.IsValid)

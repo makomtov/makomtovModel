@@ -8,6 +8,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
 
+
 namespace WebApiMTModel.Models.Models.View
 {
     public class ValidateModelStateFilter : ActionFilterAttribute
@@ -15,31 +16,49 @@ namespace WebApiMTModel.Models.Models.View
 
 
 
-        public override void OnActionExecuting(HttpActionContext actionContext)
-        {
+        //public override void OnActionExecuting(HttpActionContext actionContext)
+        //{
 
 
-            if (actionContext.ModelState.IsValid) return;
+        //    if (actionContext.ModelState.IsValid) return;
 
 
 
-            if (actionContext.ModelState.IsValid == false)
-            {
-                //List<string> errorlist = new List<string>();
-                //foreach (var value in actionContext.ModelState.Values)
-                //{
-                //    foreach (var error in value.Errors)
-                //        errorlist.Add(error.Exception.ToString());
-                //    //errorlist.Add(value.Errors);
-                //}
-                //HttpResponseMessage response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
-            }
-            var message = actionContext.ModelState
-            .SelectMany(f => f.Value.Errors)
-            .Aggregate("", (current, error) => error.ErrorMessage);
+        //    if (actionContext.ModelState.IsValid == false)
+        //    {
+              
+        //        //var error = new
+        //        //{
+        //        //    status = false,
+        //        //    message = "The request is invalid.",
+        //        //    error = actionContext.ModelState.Values.SelectMany(e => e.Errors.Select(er => er.ErrorMessage))
+        //        //};
+        //       List<string> errorlist = new List<string>();
+        //            foreach (var value in actionContext.ModelState.Values)
+        //            {
+        //            foreach (var error in value.Errors)
+        //                errorlist.Add(error.ErrorMessage);
+        //                //errorlist.Add(value.Errors);
+        //            }
+        //        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+        //       // throw response;
+        //        }
+        //       // actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest,new Exception(error.ToString()));
+        //        //List<string> errorlist = new List<string>();
+        //        //foreach (var value in actionContext.ModelState.Values)
+        //        //{
+        //        //    foreach (var error in value.Errors)
+        //        //        errorlist.Add(error.Exception.ToString());
+        //        //    //errorlist.Add(value.Errors);
+        //        //}
+        //        //HttpResponseMessage response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+        //    }
+            //var message = actionContext.ModelState
+            //.SelectMany(f => f.Value.Errors);
+           // .Aggregate("", (current, error) => error.ErrorMessage);
 
-            actionContext.Response = actionContext.Request
-                .CreateResponse(HttpStatusCode.BadRequest, message);
+            //actionContext.Response = actionContext.Request
+            //    .CreateResponse(HttpStatusCode.BadRequest, message);
 
             //    var errors = actionContext.ModelState
             //                              .Values
@@ -58,7 +77,7 @@ namespace WebApiMTModel.Models.Models.View
 
             //}
             // base.OnActionExecuting(actionContext);
-        }
+        //}
         }
     }//OnActionExecuting
 
