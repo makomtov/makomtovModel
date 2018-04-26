@@ -99,21 +99,24 @@ namespace WebApiMTModel.Controllers
                 if (validationSucceeded)
                 {
                     Userservice userservice = new Userservice();
-                     userDetailsView = userservice.GetUser(loginView.UserEmail, loginView.UserPassword);
+                     userDetailsView = userservice.GetUserWithDogs(loginView.UserEmail, loginView.UserPassword);
                     if (userDetailsView != null)
                         code = (int)HttpStatusCode.OK;
                    else
                         code = (int)HttpStatusCode.BadRequest;
+                     
+                   
                     //  return Ok();
                 }
                 else
                 {
                     code = (int)HttpStatusCode.BadRequest;
+
                     errorlist = new List<string>();
                     foreach (var value in results.Errors)
                     {
-
-                        errorlist.Add(value.ErrorMessage);
+                       
+                        errorlist.Add(value.ErrorCode);
                         //errorlist.Add(value.Errors);
                     }
                     //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
@@ -129,14 +132,16 @@ namespace WebApiMTModel.Controllers
                     //   return 
                     //  return new System.Web.Http.Controllers.HttpActionContext()
                     //HttpActionContext actionContext = new HttpActionContext();
-                   
+
 
                     // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
                 }
                 if((HttpStatusCode)code==HttpStatusCode.OK)
                 { return Request.CreateResponse(HttpStatusCode.OK, userDetailsView); }
                 else
-                { return Request.CreateResponse(HttpStatusCode.BadRequest, errorlist); }
+                {// return Request.CreateResponse(HttpStatusCode.BadRequest, errorlist); 
+                    return Request.CreateResponse(code);
+                }
 
             }
 
@@ -166,37 +171,55 @@ namespace WebApiMTModel.Controllers
             return userservice.GetUserDogs(userid);
 
         }
-       
+        // /api/Users/InsertUserDetails
+        [System.Web.Http.Route("GetUserDogsByManager")]
+        [System.Web.Http.HttpPost]
+        public DogsForManagerView GetUserDogsByManager([FromBody]int userid)
+
+        {
+            Userservice userservice = new Userservice();
+            return userservice.GetUserDogsForManager(userid);
+
+        }
         // /api/Users/InsertUserDetails
         [System.Web.Http.Route("InsertUserDetails")]
         [System.Web.Http.HttpPost]
        
         public HttpResponseMessage InsertUserDetails([FromBody] UserDetailsView user)
         {
-
+            HttpStatusCodeResult httpStatusCodeResult = null;
+            int code =(int) HttpStatusCode.OK;
             try
             {
                 //var jsonString = userNew.Content.ReadAsStringAsync().Result;
                 // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(userNew);
                 UserValidator validator = new UserValidator();
                 ValidationResult results = validator.Validate(user);
-                bool validationSucceeded = results.IsValid;
-                if (validationSucceeded)
+                if (results.IsValid)
                 {
                     
                     Userservice userservice = new Userservice();
                     userservice.InsertUserDetails(user);
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Request.CreateResponse(code);
                   //  return Ok();
                 }
                 else
                 {
+                    code = (int)HttpStatusCode.BadRequest;
                     List<string> errorlist = new List<string>();
                     foreach (var value in results.Errors)
                     {
-                        
-                            errorlist.Add(value.ErrorMessage);
+                        if (value.ErrorCode == "112")
+                        {
+                            // httpStatusCodeResult = new HttpStatusCodeResult(int.Parse(value.ErrorCode));
+                            //code = (int)httpStatusCodeResult.StatusCode;
+
+                            var message = string.Format(" כפילות במייל ");
+                            throw new HttpResponseException(
+                                Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+                        }
+                        errorlist.Add(value.ErrorMessage);
                         //errorlist.Add(value.Errors);
                     }
                     //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
@@ -212,7 +235,7 @@ namespace WebApiMTModel.Controllers
                     //   return 
                     //  return new System.Web.Http.Controllers.HttpActionContext()
                     //HttpActionContext actionContext = new HttpActionContext();
-                   return   Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+                    return Request.CreateResponse(httpStatusCodeResult.StatusCode);
                     
                    // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
                 }
@@ -221,7 +244,7 @@ namespace WebApiMTModel.Controllers
             catch
             {
                 bool x = ModelState.IsValid;
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(code);
             }
 
 
@@ -233,11 +256,15 @@ namespace WebApiMTModel.Controllers
         {
             if (ModelState.IsValid)
             {
-                var jsonString = userDogs.Content.ReadAsStringAsync().Result;
-                UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-                //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
-                Userservice userservice = new Userservice();
-                userservice.UpdateDogsByManager(user);
+                if (ModelState.IsValid)
+                {
+                    var jsonString = userDogs.Content.ReadAsStringAsync().Result;
+                    DogsForManagerView list = JsonConvert.DeserializeObject<DogsForManagerView>(jsonString);
+                    //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                    Userservice userservice = new Userservice();
+                    userservice.UpdateDogsByManager(list.UserDogs);
+                }
+               
             }
         }
         //// public void InsertUserDetails(JObject juser)
@@ -261,6 +288,8 @@ namespace WebApiMTModel.Controllers
         //    Userservice userservice = new Userservice();
         //    userservice.InsertUserDetails(userDetails);
         //}
+
+           
         private void ThrowResponseException(HttpStatusCode statusCode, string message)
         {
             var errorResponse = Request.CreateErrorResponse(statusCode, message);

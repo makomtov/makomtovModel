@@ -61,26 +61,32 @@ namespace WebApiMTModel.Controllers
         // /api/Reservation/CreateOrder
         [Route("CreateOrder")]
         [HttpPost]
-      //  public void CreateOrder()
-         public int CreateOrder(OrderDetailsView orderDetailsView)
+        //  public void CreateOrder()
+        public int CreateOrder([FromBody] OrderDetailsView orderDetailsView)
         {
-            //אם מחזיר -1 חסרים פרטים על המשתמש בטבלת משתמשים
-            //Userservice userservice = new Userservice();
-            //bool ok = userservice.CheckUserDetails(orderDetailsView.User.UserID);
-            OrderService orderService = new OrderService();
-            int orderNum = orderService.createOrder(orderDetailsView);
-            //if (!ok) return -1;
-            if (orderNum== - 997 )
+            try
             {
-                var message = string.Format(" כפילות בהזמנות -  יש כלב משותף בהזמנה הנוכחית ןבהזמנות קודמות באותם תאריכים ");
-                throw new HttpResponseException(
-                    Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+                //אם מחזיר -1 חסרים פרטים על המשתמש בטבלת משתמשים
+                //Userservice userservice = new Userservice();
+                //bool ok = userservice.CheckUserDetails(orderDetailsView.User.UserID);
+                OrderService orderService = new OrderService();
+                int orderNum = orderService.createOrder(orderDetailsView);
+                //if (!ok) return -1;
+                if (orderNum == -997)
+                {
+                    var message = string.Format(" כפילות בהזמנות -  יש כלב משותף בהזמנה הנוכחית ןבהזמנות קודמות באותם תאריכים ");
+                    throw new HttpResponseException(
+                        Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+                }
+                else
+                {
+                   return orderNum;
+                  
+                   
+                }
             }
-            else
-            {
-                return orderNum;
-            }
-
+            catch (Exception ex)
+            { throw ex; }
            
         }
         /// <summary>

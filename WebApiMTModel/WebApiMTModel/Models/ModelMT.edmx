@@ -99,7 +99,7 @@
           <Property Name="DogBirthDate" Type="date" Nullable="false" />
           <Property Name="DogFriendlyWith" Type="int" />
           <Property Name="DogDig" Type="bit" />
-          <Property Name="Manager Comments" Type="nvarchar(max)" />
+          <Property Name="ManagerComments" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="UsersTbl">
           <Key>
@@ -408,7 +408,7 @@
           <Property Name="ShiftNumberFrom" Type="Int32" />
           <Property Name="ToDate" Type="DateTime" Precision="3" />
           <Property Name="ShiftNumberTo" Type="Int32" />
-          <Property Name="discount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="OrderTypes">
           <Key>
@@ -490,7 +490,7 @@
           <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="UserDogs" ToRole="RoomSetting" />
           <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="UserDogs" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UserDogs" ToRole="UsersTbl" />
-          <Property Name="Manager_Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UsersTbl">
           <Key>
@@ -784,7 +784,7 @@
           <EntitySetMapping Name="OrdersTbl">
             <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
               <MappingFragment StoreEntitySet="OrdersTbl">
-                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="Discount" ColumnName="discount" />
                 <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
                 <ScalarProperty Name="ToDate" ColumnName="ToDate" />
                 <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
@@ -854,7 +854,7 @@
           <EntitySetMapping Name="UserDogs">
             <EntityTypeMapping TypeName="DatabaseModel.UserDogs">
               <MappingFragment StoreEntitySet="UserDogs">
-                <ScalarProperty Name="Manager_Comments" ColumnName="Manager Comments" />
+                <ScalarProperty Name="ManagerComments" ColumnName="ManagerComments" />
                 <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
                 <ScalarProperty Name="DogName" ColumnName="DogName" />
                 <ScalarProperty Name="DogShvav" ColumnName="DogShvav" />

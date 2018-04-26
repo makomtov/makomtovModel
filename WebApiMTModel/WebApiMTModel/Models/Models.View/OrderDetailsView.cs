@@ -32,6 +32,8 @@ namespace WebApiMTModel.Models.Models.View
         public string userFirstName { get; set; }
         [JsonProperty("userLastName")]
         public string userLastName { get; set; }
+        [JsonProperty("useremail")]
+        public string UserEmail { get; set; }
         [JsonProperty("Price")]
         public decimal Price { get; set; }
         [JsonProperty("OrderconfirmationNumber")]

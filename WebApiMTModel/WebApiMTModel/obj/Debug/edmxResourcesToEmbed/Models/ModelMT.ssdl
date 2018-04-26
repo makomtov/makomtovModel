@@ -94,7 +94,7 @@
     <Property Name="DogBirthDate" Type="date" Nullable="false" />
     <Property Name="DogFriendlyWith" Type="int" />
     <Property Name="DogDig" Type="bit" />
-    <Property Name="Manager Comments" Type="nvarchar(max)" />
+    <Property Name="ManagerComments" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="UsersTbl">
     <Key>

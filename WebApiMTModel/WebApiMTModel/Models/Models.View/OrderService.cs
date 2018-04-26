@@ -44,7 +44,7 @@ namespace WebApiMTModel.Models.Models.View
                            o.ToDate,
                            ot.OrderTypeName,
                            o.ManagerComments,
-                           o.discount
+                           o.Discount
 
 
 
@@ -66,12 +66,13 @@ namespace WebApiMTModel.Models.Models.View
                                    a.OrderType,
                                    a.OrderTypeName,
                                    a.ManagerComments,
-                                   a.discount
+                                   a.Discount
 
                                }).Join(context.UsersTbl,
                                o => o.Userid, u => u.UserID,
                                (o, u) => new OrderDetailsViewManager
                                {
+                                   UserEmail=u.UserEmail,
                                    OrderNumber = o.OrderNumber,
                                    OrderDate = o.OrderDate,
                                    Price = (decimal)o.Price,
@@ -88,7 +89,7 @@ namespace WebApiMTModel.Models.Models.View
                                    OrderType = o.OrderType,
                                    OrderTypeName = o.OrderTypeName,
                                    ManagerComments = o.ManagerComments,
-                                   Discount=(decimal)o.discount
+                                   Discount=(decimal)o.Discount
                                }
 
                                ).Distinct()
@@ -259,9 +260,9 @@ namespace WebApiMTModel.Models.Models.View
                         ordersTbl.Price = result;
                 }
                 if (orderDetailsView.Discount > 0)
-                    ordersTbl.discount = orderDetailsView.Discount;
+                    ordersTbl.Discount = orderDetailsView.Discount;
                 else
-                    ordersTbl.discount = 0;
+                    ordersTbl.Discount = 0;
                 // List<OrderDetailsView> list = checkForAnotherParallelOrder(orderDetailsView);
 
 
@@ -290,7 +291,7 @@ namespace WebApiMTModel.Models.Models.View
                 //שליחת מייל למשתמש
                 SendMailService sendMailService = new SendMailService();
                 SendMailRequest mailRequest = new SendMailRequest();
-                mailRequest.recipient = orderDetailsView.User.UserEmail;
+                mailRequest.recipient = orderDetailsView.UserEmail;
                 mailRequest.subject = "קליטת הזמנה - " + (int)result + "מקום טוב- יוסף טוויטו";
                 mailRequest.body = " הזמנתך נקלטה";
 
@@ -330,7 +331,7 @@ namespace WebApiMTModel.Models.Models.View
                                                                       )
                                                                      ).ToList();
 
-                    if (orders != null) //יש הזמנות חופפות
+                    if (orders.Count>0) //יש הזמנות חופפות
                     {
                         //if (orderDetailsView.mDogs.Count == 2)
                         //    return -998; // מספר כלבים בהזמנה = 2 ויש הזמנות חופפות.
@@ -419,18 +420,42 @@ namespace WebApiMTModel.Models.Models.View
 
                         if (ordert != null)
                         {
-
-                            context.Entry(ordert).CurrentValues.SetValues(order);
-                            foreach (DogsInOrderView dog in order.mDogs)
+                            if (!EqualsOrders(order, ordert))
                             {
-                                var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber,dog.DogNumber);
-                                context.Entry(dogt).CurrentValues.SetValues(dog);
+                                context.Entry(ordert).CurrentValues.SetValues(order);
+
+                                foreach (DogsInOrderView dog in order.mDogs)
+                                {
+                                    var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber, dog.DogNumber);
+                                    context.Entry(dogt).CurrentValues.SetValues(dog);
+                                }
+                                context.SaveChanges();
+                                //שליחת מייל למשתמש
+                                SendMailService sendMailService = new SendMailService();
+                                SendMailRequest mailRequest = new SendMailRequest();
+                                mailRequest.recipient = order.UserEmail;
+                                
+                                    mailRequest.subject = "מצב הזמנה - " + order.OrderNumber + "מקום טוב- יוסף טוויטו";
+                                if (order.OrderStatus == 12)
+                                {
+                                    mailRequest.body = " הזמנתך אושרה";
+                                }
+                                else if(order.OrderStatus == 15)
+                                {
+                                    mailRequest.body = "לצערינו לא נוכל לבצע אילוף, ולכן הזמנתך אושרה ללא אילוף";
+                                }
+                                else if (order.OrderStatus == 13)
+                                {
+                                    mailRequest.body = "לצערינו לא נוכל לאשר את ההזמנה , לפרטים נוספים פנה למנהל הפנסיון";
+                                }
+
+                                sendMailService.SendMail(mailRequest);
                             }
-                            context.SaveChanges();
                         }
+                       
                         else
                         {
-                          //  order.User=
+                          
                             createOrder(order);
                         }
                     }
@@ -446,7 +471,26 @@ namespace WebApiMTModel.Models.Models.View
         }
 
 
+        private bool EqualsOrders(OrderDetailsViewManager order, OrdersTbl ordert)
+        {
+            bool equal = true;
+            equal=equal && order.Discount == ordert.Discount;
+            equal = equal && order.FromDate == ordert.FromDate;
+            equal = equal && order.ManagerComments == ordert.ManagerComments;
+            equal = equal && order.OrderStatus == ordert.OrderStatus;
+            equal = equal && order.Price == ordert.Price;
+            equal = equal && order.ShiftNumberFrom == ordert.ShiftNumberFrom;
+            equal = equal && order.ShiftNumberTo == ordert.ShiftNumberTo;
 
+            foreach (DogsInOrderView dog in order.mDogs)
+            {
+                var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber, dog.DogNumber);
+                equal = equal && dog.DogTraining == dogt.DogTraining;
+            }
+
+            return equal;
+
+        }
 
         //שליפת סטטוסים של הזמנה
         public IQueryable GetOrderStatusList()

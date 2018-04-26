@@ -15,7 +15,7 @@
     <EntitySetMapping Name="OrdersTbl">
       <EntityTypeMapping TypeName="DatabaseModel.OrdersTbl">
         <MappingFragment StoreEntitySet="OrdersTbl">
-          <ScalarProperty Name="discount" ColumnName="discount" />
+          <ScalarProperty Name="Discount" ColumnName="discount" />
           <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
           <ScalarProperty Name="ToDate" ColumnName="ToDate" />
           <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
@@ -85,7 +85,7 @@
     <EntitySetMapping Name="UserDogs">
       <EntityTypeMapping TypeName="DatabaseModel.UserDogs">
         <MappingFragment StoreEntitySet="UserDogs">
-          <ScalarProperty Name="Manager_Comments" ColumnName="Manager Comments" />
+          <ScalarProperty Name="ManagerComments" ColumnName="ManagerComments" />
           <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
           <ScalarProperty Name="DogName" ColumnName="DogName" />
           <ScalarProperty Name="DogShvav" ColumnName="DogShvav" />

@@ -7,6 +7,6 @@ namespace WebApiMTModel.Models.Models.View
 {
     public class DogDetailsViewManager:DogDetailsView
     {
-        public string Manager_Comments { get; set; } //הערות מנהל הכלביה
+        public string ManagerComments { get; set; } //הערות מנהל הכלביה
     }
 }

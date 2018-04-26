@@ -120,6 +120,33 @@ namespace WebApiMTModel.Models.Models.View
 
         }
 
+       /// <summary>
+       /// שליפת משתמש לפי מייל
+       /// </summary>
+       /// <param name="usereMail"></param>
+       /// <returns>מחזיר אמת אם המשתמש קיים אחרת מחזיר שקר</returns>
+        public bool GetUserByMail(string usereMail)
+        {
+
+            try
+            {
+               // UserDetailsView userDetails = null;
+
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+
+
+                var User = context.UsersTbl
+              .Where(user => user.UserEmail == usereMail).FirstOrDefault();
+
+                return User != null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
         //שליפת משתמש לפי מייל ו FACEBOOK ID
         public UserDetailsView GetUserFB(string usereMail, string FBid)
         {
@@ -316,6 +343,8 @@ namespace WebApiMTModel.Models.Models.View
             }
         }
 
+        
+
         //שליפת כלבים למשתמש
         private void GetUserDogs(UserDetailsView userDetails)
 
@@ -346,6 +375,7 @@ namespace WebApiMTModel.Models.Models.View
                         dogDetails.DogDig = (bool)dog.DogDig;
                         dogDetails.DogGender = dog.DogGender;
                         dogDetails.DogFriendlyWith =(int)dog.DogFriendlyWith;
+                        
                         userDetails.UserarrayDogs.Add(dogDetails);
 
                     }
@@ -358,11 +388,51 @@ namespace WebApiMTModel.Models.Models.View
                 throw ex;
             }
         }
-        
 
 
+        public DogsForManagerView GetUserDogsForManager(int userid)
+        {
 
+            DogsForManagerView dogsForManagerView = new DogsForManagerView();
+            try
+            {
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+        var dogs = context.UserDogs.Where(p => p.DogUserID == userid && p.DogStatus==21);
+                if (dogs != null)
+                {
 
+                    foreach (var dog in dogs)
+                    {
+                        DogDetailsViewManager dogDetails = new DogDetailsViewManager();
+                        dogDetails.DogNumber = dog.DogNumber;
+                        dogDetails.DogName = dog.DogName;
+                        dogDetails.DogImage = dog.DogImage;
+                        dogDetails.DogShvav = dog.DogShvav;
+                        dogDetails.DogType = dog.DogType;
+                        dogDetails.DogStatus = dog.DogStatus;
+                        dogDetails.DogComments = dog.DogComments;
+                        dogDetails.DogUserID = dog.DogUserID;
+                        dogDetails.DogBirthDate = dog.DogBirthDate;
+                        dogDetails.DogRabiesVaccine = dog.DogRabiesVaccine;
+                        dogDetails.DogNeuter = dog.DogNeuter;
+                        dogDetails.DogJump = (bool)dog.DogJump;
+                        dogDetails.DogDig = (bool)dog.DogDig;
+                        dogDetails.DogGender = dog.DogGender;
+                        dogDetails.DogFriendlyWith = (int)dog.DogFriendlyWith;
+                        dogDetails.ManagerComments = dog.ManagerComments;
+
+                        dogsForManagerView.UserDogs.Add(dogDetails);
+
+                    }
+                }
+                return dogsForManagerView;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         //שליפת משתמשים+כלבים
 
@@ -518,27 +588,27 @@ namespace WebApiMTModel.Models.Models.View
         /// עדכון/הוספת כלבים למשתמש קיים
         /// </summary>
         /// <param name="OrdersList"></param>
-        public void UpdateDogsByManager(UserDetailsView userDetails)
+        public void UpdateDogsByManager(List<DogDetailsViewManager> list)
         {
             try
             {
                 using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
                 {
-                    foreach (DogDetailsView dog in userDetails.UserarrayDogs)
+                    foreach (DogDetailsViewManager dog in list)
                     {
                         var dogt = context.Set<UserDogs>().Find(dog.DogNumber);
 
                         if (dog != null)
                         {
 
-                            context.Entry(dog).CurrentValues.SetValues(dog);
+                            context.Entry(dogt).CurrentValues.SetValues(dog);
                             context.SaveChanges();
                         }
-                        else
-                        {
+                        //else
+                        //{
                             
-                            AddDogsForUser(userDetails);
-                        }
+                        //    AddDogsForUser(userDetails);
+                        //}
                     }
                     context.Dispose();
                 }

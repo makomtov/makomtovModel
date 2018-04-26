@@ -33,7 +33,7 @@ namespace WebApiMTModel.Models
         public Nullable<int> ShiftNumberFrom { get; set; }
         public Nullable<System.DateTime> ToDate { get; set; }
         public Nullable<int> ShiftNumberTo { get; set; }
-        public Nullable<decimal> discount { get; set; }
+        public Nullable<decimal> Discount { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }

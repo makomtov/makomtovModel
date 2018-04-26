@@ -256,6 +256,7 @@
       <DependentUpon>ModelMT.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Models.View\DogDetailsViewManager.cs" />
+    <Compile Include="Models\Models.View\DogsForManagerView.cs" />
     <Compile Include="Models\Models.View\LoginView.cs" />
     <Compile Include="Models\Models.View\OrderDetailsViewManager.cs" />
     <Compile Include="Models\Models.View\OrdersForManagetView.cs" />
