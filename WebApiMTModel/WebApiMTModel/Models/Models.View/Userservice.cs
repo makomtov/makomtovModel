@@ -525,9 +525,27 @@ namespace WebApiMTModel.Models.Models.View
                     //    context.SaveChanges();
 
                     //}
-                    int vetID = 2;
-                 //   int vetID = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                    usersTbl.UserVeterinarId = vetID;
+                    veterinarService veterinarService = new veterinarService();
+
+                    VeterinarDetailsView vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    if (vet != null)
+                    {
+                        usersTbl.UserVeterinarId = vet.VeterinarId;
+                    }
+                    else
+                    {
+                        veterinarTbl veterinarTbl = new veterinarTbl();
+                        veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
+                        veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
+                        veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
+                        veterinarTbl.VeterinarName = userDetails.VeterinarName;
+                        veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
+                        context.veterinarTbl.Add(veterinarTbl);
+                        context.SaveChanges();
+                        vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                        usersTbl.UserVeterinarId = vet.VeterinarId;
+
+                    }
                     context.UsersTbl.Add(usersTbl);
                     context.SaveChanges();
 
@@ -537,19 +555,7 @@ namespace WebApiMTModel.Models.Models.View
             catch (SqlException ex)
             { throw ex; }
         }
-        public int GetVetID(string VeterinarName, string VeterinarPhone1)
-        {
-          
-            using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
-            {
-               veterinarTbl vet = context.veterinarTbl.Where(v => v.VeterinarName == VeterinarName && v.VeterinarPhone1 == VeterinarPhone1).FirstOrDefault();
-
-                if (vet == null)
-                    return 0;
-                else
-                    return vet.VeterinarId;
-                        }
-        }
+        
         //הוספת כלבים למשתמש
         public void AddDogsForUser(UserDetailsView userDetails)
         {
