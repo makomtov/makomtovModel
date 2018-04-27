@@ -247,8 +247,14 @@ namespace WebApiMTModel.Controllers
                 //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
         }
-
-            public HttpResponseMessage UpdateUserDetails([FromBody] UserDetailsView user)
+        /// <summary>
+        /// עדכון פרטי משתמש
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("UpdateUserDetails")]
+        [System.Web.Http.HttpPost]
+        public HttpResponseMessage UpdateUserDetails([FromBody] UserDetailsView user)
             {
             try
             {

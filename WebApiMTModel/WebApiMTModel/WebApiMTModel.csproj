@@ -274,6 +274,7 @@
     <Compile Include="Models\Models.View\Userservice.cs" />
     <Compile Include="Models\Models.View\UserValidator.cs" />
     <Compile Include="Models\Models.View\VeterinarDetailsView.cs" />
+    <Compile Include="Models\Models.View\veterinarService.cs" />
     <Compile Include="Models\Models.View\XmlService.cs" />
     <Compile Include="Models\OrdersTbl.cs">
       <DependentUpon>ModelMT.tt</DependentUpon>
