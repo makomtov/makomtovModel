@@ -178,39 +178,44 @@ namespace WebApiMTModel.Models.Models.View
 
         private static UserDetailsView getUserDetails(DatabaseEntitiesMT context, UsersTbl User)
         {
-            UserDetailsView userDetails = new UserDetailsView();
-            userDetails.DaysSumForDiscount = User.DaysSumForDiscount;
-            userDetails.Acceptmessages = User.Acceptmessages;
-            userDetails.UserFirstName = User.UserFirstName;
-            userDetails.UserLastName = User.UserLastName;
-            userDetails.UserEmail = User.UserEmail;
-            userDetails.UserID = User.UserID;
-            userDetails.UserPhone2 = User.UserPhone2;
-            userDetails.UserPhone1 = User.UserPhone1;
-            userDetails.UserComments = User.UserComments;
-            userDetails.UserCityName = User.UserCity;
-            userDetails.UserAddress = User.UserAddress;
-            userDetails.UserName = User.UserName;
-            userDetails.UserStatusCode = User.UserStatus;
-            var vet = context.veterinarTbl
-                .Where(v => v.VeterinarId == User.UserVeterinarId).FirstOrDefault();
-            userDetails.UserVeterinarId = User.UserVeterinarId;
-            userDetails.VeterinarAddress = vet.VeterinarAddress;
-            userDetails.VeterinarCity = vet.VeterinarCity;
-            userDetails.VeterinarEmail = vet.VeterinarEmail;
-            userDetails.VeterinarName = vet.VeterinarName;
-            userDetails.VeterinarPhone1 = vet.VeterinarPhone1;
+            try
+            {
+                UserDetailsView userDetails = new UserDetailsView();
+                userDetails.DaysSumForDiscount = User.DaysSumForDiscount;
+                userDetails.Acceptmessages = User.Acceptmessages;
+                userDetails.UserFirstName = User.UserFirstName;
+                userDetails.UserLastName = User.UserLastName;
+                userDetails.UserEmail = User.UserEmail;
+                userDetails.UserID = User.UserID;
+                userDetails.UserPhone2 = User.UserPhone2;
+                userDetails.UserPhone1 = User.UserPhone1;
+                userDetails.UserComments = User.UserComments;
+                userDetails.UserCityName = User.UserCity;
+                userDetails.UserAddress = User.UserAddress;
+                userDetails.UserName = User.UserName;
+                userDetails.UserStatusCode = User.UserStatus;
+                var vet = context.veterinarTbl
+                    .Where(v => v.VeterinarId == User.UserVeterinarId).FirstOrDefault();
+                userDetails.UserVeterinarId = User.UserVeterinarId;
+                userDetails.VeterinarAddress = vet.VeterinarAddress;
+                userDetails.VeterinarCity = vet.VeterinarCity;
+                userDetails.VeterinarEmail = vet.VeterinarEmail;
+                userDetails.VeterinarName = vet.VeterinarName;
+                userDetails.VeterinarPhone1 = vet.VeterinarPhone1;
 
-            var dogs = context.UserDogs
-                            .Where(userDog => userDog.DogUserID == User.UserID).Count();
-            userDetails.DogsNumber = dogs;
+                var dogs = context.UserDogs
+                                .Where(userDog => userDog.DogUserID == User.UserID).Count();
+                userDetails.DogsNumber = dogs;
 
-            var reservations = context.OrdersTbl
-                         .Where(userres => userres.OrderUserId == User.UserID).Count();
-            userDetails.ReservationsNumber = context.OrdersTbl.Count();
+                var reservations = context.OrdersTbl
+                             .Where(userres => userres.OrderUserId == User.UserID).Count();
+                userDetails.ReservationsNumber = context.OrdersTbl.Count();
 
-            HttpContext.Current.Session["userDetails"] = userDetails;
-            return userDetails;
+                HttpContext.Current.Session["userDetails"] = userDetails;
+                return userDetails;
+            }
+            catch (Exception ex)
+            { throw ex; }
         }
 
         //+כלבים שלו שליפת משתמש

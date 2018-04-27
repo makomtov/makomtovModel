@@ -476,6 +476,7 @@ namespace WebApiMTModel.Models.Models.View
             bool equal = true;
             equal=equal && order.Discount == ordert.Discount;
             equal = equal && order.FromDate == ordert.FromDate;
+            equal = equal && order.ToDate == ordert.ToDate;
             equal = equal && order.ManagerComments == ordert.ManagerComments;
             equal = equal && order.OrderStatus == ordert.OrderStatus;
             equal = equal && order.Price == ordert.Price;
