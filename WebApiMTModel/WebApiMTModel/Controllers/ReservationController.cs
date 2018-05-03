@@ -15,6 +15,7 @@ namespace WebApiMTModel.Controllers
     /// <summary>
     /// פעולות על הזמנות
     /// </summary>
+    [System.Web.Http.Authorize]
     [RoutePrefix("api/Reservation")]
     public class ReservationController : ApiController
     {
@@ -26,6 +27,7 @@ namespace WebApiMTModel.Controllers
         /// <returns></returns>
         //api/Reservation
         [Route("")]
+        [System.Web.Http.Authorize(Roles = "admin")]
         public List<OrderDetailsView> GetOrders()
         {
 
@@ -40,6 +42,7 @@ namespace WebApiMTModel.Controllers
         /// <returns></returns>
         //  /api/Reservation/OrderStatusList
         [Route("OrderStatusList")]
+        [System.Web.Http.Authorize(Roles = "admin")]
         public IQueryable GetOrderStatusList()
         {
             OrderService orderService = new OrderService();
@@ -62,6 +65,7 @@ namespace WebApiMTModel.Controllers
         /// <returns></returns>
         // /api/Reservation/CreateOrder
         [Route("CreateOrder")]
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         [HttpPost]
         //  public void CreateOrder()
         public HttpResponseMessage CreateOrder([FromBody] OrderDetailsView orderDetailsView)
@@ -115,7 +119,7 @@ namespace WebApiMTModel.Controllers
         //    return orderService.GetUserOrdersList(userID);
         //}
         [Route("GetUserOrders")]
-
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         public HttpResponseMessage GetUserOrdersList(int userID)
         {
             OrderService orderService = new OrderService();
@@ -148,6 +152,7 @@ namespace WebApiMTModel.Controllers
         /// <returns></returns>
         // /api/Reservation/GetAllOrdersAndDogs
         [Route("GetAllOrdersAndDogs")]
+        [System.Web.Http.Authorize(Roles = "admin")]
         public HttpResponseMessage  GetAllOrdersAndDogs()
         //public List<OrderDetailsView> GetAllOrdersAndDogs()
         {
@@ -169,6 +174,7 @@ namespace WebApiMTModel.Controllers
         /// <returns></returns>
     // /api/Reservation/GetAllOrdersAndDogsManager
     [Route("GetAllOrdersAndDogsManager")]
+        [System.Web.Http.Authorize(Roles = "admin")]
         public HttpResponseMessage GetAllOrdersAndDogsManager()
         //  public List<OrderDetailsViewManager> GetAllOrdersAndDogsManager()
         {
@@ -183,14 +189,14 @@ namespace WebApiMTModel.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, list);
             }
         }
-    // /api/Reservation/UpdateOrdersByManager/Manager
+        // /api/Reservation/UpdateOrdersByManager/Manager
 
-            /// <summary>
-            /// עדכון הזמנות על ידי הכלביה
-            /// </summary>
-            /// <param name="Orders"></param>
-
-    [Route("UpdateOrdersByManager")]
+        /// <summary>
+        /// עדכון הזמנות על ידי הכלביה
+        /// </summary>
+        /// <param name="Orders"></param>
+        [System.Web.Http.Authorize(Roles = "admin")]
+        [Route("UpdateOrdersByManager")]
         [HttpPut]
         //public void UpdateOrdersByManager(HttpRequestMessage Orders)
         public HttpResponseMessage UpdateOrdersByManager([FromBody] List<OrderDetailsViewManager> listOrder)

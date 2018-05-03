@@ -35,6 +35,7 @@ namespace WebApiMTModel.Controllers
         //    this.userViewModelValidator = userViewModelValidator;
         //}
         //api/Users/GetUsers
+        [System.Web.Http.Authorize(Roles = "admin")]
 
         [System.Web.Http.Route("")]
         public IEnumerable<UserDetailsView> GetUsers()
@@ -81,6 +82,7 @@ namespace WebApiMTModel.Controllers
         /// <param name="loginView"></param>
         /// <returns></returns>
         // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
+        [System.Web.Http.AllowAnonymous]
         [System.Web.Http.Route("GetUser")]
         [System.Web.Http.HttpPost]
 
@@ -154,7 +156,7 @@ namespace WebApiMTModel.Controllers
 
         // /api/Users/1
         [System.Web.Http.Route("{userid}")]
-
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         public HttpResponseMessage GetUser(int userid)
         {
             Userservice userservice = new Userservice();
@@ -172,6 +174,7 @@ namespace WebApiMTModel.Controllers
 
         // /api/Users/GetUserDogs/1
         [System.Web.Http.Route("GetUserDogs/{userid}")]
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         public HttpResponseMessage GetUserDogs(int userid)
 
         {
@@ -188,6 +191,7 @@ namespace WebApiMTModel.Controllers
 
         }
         // /api/Users/InsertUserDetails
+        [System.Web.Http.Authorize(Roles = "admin")]
         [System.Web.Http.Route("GetUserDogsByManager")]
         [System.Web.Http.HttpPost]
         public HttpResponseMessage GetUserDogsByManager([FromBody]int userid)
@@ -211,7 +215,7 @@ namespace WebApiMTModel.Controllers
 
         public HttpResponseMessage InsertUserDetails([FromBody] UserDetailsView user)
         {
-            string message = "";
+           
             //HttpStatusCodeResult httpStatusCodeResult = null;
             //int code =(int) HttpStatusCode.OK;
             try
@@ -241,7 +245,7 @@ namespace WebApiMTModel.Controllers
             }
             catch (HttpRequestException ex)
             {
-                throw ex;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
                 // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
                 //                           badInputValidationException.Result));
                 //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
@@ -283,56 +287,56 @@ namespace WebApiMTModel.Controllers
             }
             catch (HttpRequestException ex)
             {
-                throw ex;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
                 // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
                 //                           badInputValidationException.Result));
                 //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
         }
-            //code = (int)HttpStatusCode.BadRequest;
-            //        List<string> errorlist = new List<string>();
-            //        foreach (var value in results.Errors)
-            //        {
-            //            if (value.ErrorCode == "112")
-            //            {
-            //                // httpStatusCodeResult = new HttpStatusCodeResult(int.Parse(value.ErrorCode));
-            //                //code = (int)httpStatusCodeResult.StatusCode;
+        //code = (int)HttpStatusCode.BadRequest;
+        //        List<string> errorlist = new List<string>();
+        //        foreach (var value in results.Errors)
+        //        {
+        //            if (value.ErrorCode == "112")
+        //            {
+        //                // httpStatusCodeResult = new HttpStatusCodeResult(int.Parse(value.ErrorCode));
+        //                //code = (int)httpStatusCodeResult.StatusCode;
 
-            //                var message = string.Format(" כפילות במייל ");
-            //                throw new HttpResponseException(
-            //                    Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
-            //            }
-            //            errorlist.Add(value.ErrorMessage);
-            //            //errorlist.Add(value.Errors);
-            //        }
-            //        //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
-            //        //IList<ValidationFailure> failures = results.Errors;
-            //        //List<string> errorlist = new List<string>();
-            //        //foreach (ValidationFailure _error in failures)
-            //        //{
-            //        //    ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
-            //        //    //foreach (var error in value.Errors)
-            //        //    //  errorlist.Add(value.ErrorMessage);
-            //        //    //errorlist.Add(value.Errors);
-            //        //}
-            //        //   return 
-            //        //  return new System.Web.Http.Controllers.HttpActionContext()
-            //        //HttpActionContext actionContext = new HttpActionContext();
-            //        return Request.CreateResponse(httpStatusCodeResult.StatusCode);
+        //                var message = string.Format(" כפילות במייל ");
+        //                throw new HttpResponseException(
+        //                    Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+        //            }
+        //            errorlist.Add(value.ErrorMessage);
+        //            //errorlist.Add(value.Errors);
+        //        }
+        //        //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, errorlist);
+        //        //IList<ValidationFailure> failures = results.Errors;
+        //        //List<string> errorlist = new List<string>();
+        //        //foreach (ValidationFailure _error in failures)
+        //        //{
+        //        //    ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
+        //        //    //foreach (var error in value.Errors)
+        //        //    //  errorlist.Add(value.ErrorMessage);
+        //        //    //errorlist.Add(value.Errors);
+        //        //}
+        //        //   return 
+        //        //  return new System.Web.Http.Controllers.HttpActionContext()
+        //        //HttpActionContext actionContext = new HttpActionContext();
+        //        return Request.CreateResponse(httpStatusCodeResult.StatusCode);
 
-            // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
-            //    }
-            //}
+        // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
+        //    }
+        //}
 
-            //catch
-            //{
-            //    bool x = ModelState.IsValid;
-            //    return Request.CreateResponse(code);
-            //}
+        //catch
+        //{
+        //    bool x = ModelState.IsValid;
+        //    return Request.CreateResponse(code);
+        //}
 
 
-       
 
+        [System.Web.Http.Authorize(Roles = "admin")]
         [System.Web.Http.Route("UpdateUserDogsByManager")]
         [System.Web.Http.HttpPost]
         public HttpResponseMessage UpdateUserDogsByManager([FromBody]DogsForManagerView userDogs)
@@ -360,37 +364,135 @@ namespace WebApiMTModel.Controllers
 }
             catch (HttpRequestException ex)
             {
-                throw ex;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
                 // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
                 //                           badInputValidationException.Result));
                 //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
             
         }
-        //// public void InsertUserDetails(JObject juser)
-        //public void InsertUserDetails([FromBody] UserDetailsView user)
-        //{
-        //    // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(juser.ToString());
-        //    Userservice userservice = new Userservice();
-        //    userservice.InsertUserDetails(user);
-        //}
-
         /// <summary>
-        /// add dogs for user
+        /// עדכון פרטי כלב
         /// </summary>
-        /// <param name="userDetails"></param>
-        /// 
-        //// /api/Users/user/AddDogs
-        //[System.Web.Http.HttpPost]
-        //[System.Web.Http.Route("{user/AddDogs}")]
-        //public void AddDogsForUser(UserDetailsView userDetails)
-        //{
-        //    Userservice userservice = new Userservice();
-        //    userservice.InsertUserDetails(userDetails);
-        //}
+        /// <param name="userDog"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("UpdateUserDog")]
+        [System.Web.Http.HttpPost]
+        public HttpResponseMessage UpdateUserDog([FromBody]DogDetailsView userDog)
+        {
+            try
+            {
+                dogValidator userdogValidator = new dogValidator();
+                ValidationResult results = userdogValidator.Validate(userDog);
 
-           
-        private void ThrowResponseException(HttpStatusCode statusCode, string message)
+                if (results.IsValid)
+                {
+                    //var jsonString = userDogs.Content.ReadAsStringAsync().Result;
+                    //DogsForManagerView list = JsonConvert.DeserializeObject<DogsForManagerView>(jsonString);
+                    //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                    Userservice userservice = new Userservice();
+                    userservice.UpdateDog(userDog);
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+
+                else
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
+                //                           badInputValidationException.Result));
+                //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+
+        }
+        /// <summary>
+        /// הוספת כלב למשתמש
+        /// </summary>
+        /// <param name="userDog"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("AddOneUserDog")]
+        [System.Web.Http.HttpPost]
+        public HttpResponseMessage AddOneUserDog([FromBody]DogDetailsView userDog)
+        {
+            try
+            {
+                dogValidator userdogValidator = new dogValidator();
+                ValidationResult results = userdogValidator.Validate(userDog);
+
+                if (results.IsValid)
+                {
+                    //var jsonString = userDogs.Content.ReadAsStringAsync().Result;
+                    //DogsForManagerView list = JsonConvert.DeserializeObject<DogsForManagerView>(jsonString);
+                    //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+                    Userservice userservice = new Userservice();
+                    userservice.AddOneDogForUser(userDog);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+
+                else
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
+                //                           badInputValidationException.Result));
+                //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+
+        }
+
+        [System.Web.Http.Route("DeleteOneUserDog")]
+        [System.Web.Http.HttpPost]
+        public HttpResponseMessage DeleteOneUserDog([FromBody]DogDetailsView userDog)
+        {
+            try
+            {
+                Userservice userservice = new Userservice();
+                userservice.DeleteDog(userDog);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (HttpRequestException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
+                //                           badInputValidationException.Result));
+                //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+        }
+            //// public void InsertUserDetails(JObject juser)
+            //public void InsertUserDetails([FromBody] UserDetailsView user)
+            //{
+            //    // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(juser.ToString());
+            //    Userservice userservice = new Userservice();
+            //    userservice.InsertUserDetails(user);
+            //}
+
+            /// <summary>
+            /// add dogs for user
+            /// </summary>
+            /// <param name="userDetails"></param>
+            /// 
+            //// /api/Users/user/AddDogs
+            //[System.Web.Http.HttpPost]
+            //[System.Web.Http.Route("{user/AddDogs}")]
+            //public void AddDogsForUser(UserDetailsView userDetails)
+            //{
+            //    Userservice userservice = new Userservice();
+            //    userservice.InsertUserDetails(userDetails);
+            //}
+
+
+            private void ThrowResponseException(HttpStatusCode statusCode, string message)
         {
             var errorResponse = Request.CreateErrorResponse(statusCode, message);
             throw new HttpResponseException(errorResponse);

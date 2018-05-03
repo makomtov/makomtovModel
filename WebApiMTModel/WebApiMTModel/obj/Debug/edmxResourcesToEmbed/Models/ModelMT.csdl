@@ -31,9 +31,9 @@
     <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="OrdersTbl" ToRole="RoomSetting" />
     <Property Name="OrderCreateDate" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="ManagerComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="FromDate" Type="DateTime" Precision="3" />
+    <Property Name="FromDate" Type="DateTime" Precision="0" />
     <Property Name="ShiftNumberFrom" Type="Int32" />
-    <Property Name="ToDate" Type="DateTime" Precision="3" />
+    <Property Name="ToDate" Type="DateTime" Precision="0" />
     <Property Name="ShiftNumberTo" Type="Int32" />
     <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
   </EntityType>
@@ -105,7 +105,7 @@
     <Property Name="DogStatus" Type="Int32" Nullable="false" />
     <Property Name="DogComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="DogUserID" Type="Int32" Nullable="false" />
-    <Property Name="DogImage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DogImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="DogGender" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="DogNeuter" Type="Boolean" Nullable="false" />
     <Property Name="DogRabiesVaccine" Type="DateTime" Nullable="false" Precision="0" />
@@ -125,16 +125,16 @@
     </Key>
     <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="UserAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="UserCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="UserStatus" Type="Int32" Nullable="false" />
     <Property Name="UserComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="true" />
     <Property Name="UserFirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="UserLastName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="UserPaswrd" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
-    <Property Name="UserPhone1" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
-    <Property Name="UserPhone2" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+    <Property Name="UserPaswrd" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserPhone1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserPhone2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
     <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
     <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -142,6 +142,7 @@
     <Property Name="Acceptmessages" Type="Boolean" Nullable="false" />
     <Property Name="UserVeterinarId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="veterinarTbl" Relationship="DatabaseModel.FK_UsersTbl_VeterinarTbl" FromRole="UsersTbl" ToRole="veterinarTbl" />
+    <Property Name="UserRole" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_DogsInOrder_ToOrdersTbl">
     <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />

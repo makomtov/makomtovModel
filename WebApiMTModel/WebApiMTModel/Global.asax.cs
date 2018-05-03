@@ -14,40 +14,40 @@ namespace WebApiMTModel
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        protected void Application_Start()
-        {
+        //protected void Application_Start()
+        //{
             
-                GlobalConfiguration.Configure(WebApiConfig.Register);
+        //    //    GlobalConfiguration.Configure(WebApiConfig.Register);
 
-                JsonSerializerSettings serializerSettings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
-                serializerSettings.TypeNameHandling = TypeNameHandling.All;
-                serializerSettings.TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
-                serializerSettings.FloatParseHandling = FloatParseHandling.Decimal;
+        //    //    JsonSerializerSettings serializerSettings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
+        //    //    serializerSettings.TypeNameHandling = TypeNameHandling.All;
+        //    //    serializerSettings.TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
+        //    //    serializerSettings.FloatParseHandling = FloatParseHandling.Decimal;
 
-            FluentValidationModelValidatorProvider.Configure();
+        //    //FluentValidationModelValidatorProvider.Configure();
 
 
 
-            AreaRegistration.RegisterAllAreas();
+        //    //AreaRegistration.RegisterAllAreas();
            
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+        //    //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+        //    //RouteConfig.RegisterRoutes(RouteTable.Routes);
+        //    //BundleConfig.RegisterBundles(BundleTable.Bundles);
             
 
-        }
+        //}
 
-        protected void Application_PostAuthorizeRequest()
-        {
-            if (IsWebApiRequest())
-            {
-                HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);
-            }
-        }
+        //protected void Application_PostAuthorizeRequest()
+        //{
+        //    //if (IsWebApiRequest())
+        //    //{
+        //    //    HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);
+        //    //}
+        //}
 
-        private bool IsWebApiRequest()
-        {
-            return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith(WebApiConfig.UrlPrefixRelative);
-        }
+        //private bool IsWebApiRequest()
+        //{
+        //    //return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith(WebApiConfig.UrlPrefixRelative);
+        //}
     }
 }

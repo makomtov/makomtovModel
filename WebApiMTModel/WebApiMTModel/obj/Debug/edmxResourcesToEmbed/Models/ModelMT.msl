@@ -107,6 +107,7 @@
     <EntitySetMapping Name="UsersTbl">
       <EntityTypeMapping TypeName="DatabaseModel.UsersTbl">
         <MappingFragment StoreEntitySet="UsersTbl">
+          <ScalarProperty Name="UserRole" ColumnName="UserRole" />
           <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
           <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
           <ScalarProperty Name="DaysSumForDiscount" ColumnName="DaysSumForDiscount" />

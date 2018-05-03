@@ -14,7 +14,7 @@ namespace WebApiMTModel.Models.Models.View
             //RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק")
             //                            .Length(0, 20).WithMessage("שם פרטי אינו יכול להיות יותר מ 20 תווים");
 
-            RuleFor(x => x.UserLastName).NotEmpty().WithErrorCode("Empty"); ;//.WithMessage("שם משפחה אינו יכול להיות ריק");
+            RuleFor(x => x.UserLastName).NotEmpty().WithErrorCode("Empty"); //.WithMessage("שם משפחה אינו יכול להיות ריק");
             RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
             RuleFor(x => x.UserEmail).EmailAddress();
             RuleFor(x => x.UserLastName).NotEmpty();
@@ -77,6 +77,11 @@ namespace WebApiMTModel.Models.Models.View
             //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
         }
     }
+    public class dogValidator : AbstractValidator<DogDetailsView>
+    {
+        public dogValidator()
+        { }
 
+    }
 
 }

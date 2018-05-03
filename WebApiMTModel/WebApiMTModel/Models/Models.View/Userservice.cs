@@ -130,13 +130,13 @@ namespace WebApiMTModel.Models.Models.View
 
             try
             {
-               // UserDetailsView userDetails = null;
-
+                // UserDetailsView userDetails = null;
+               
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
 
 
                 var User = context.UsersTbl
-              .Where(user => user.UserEmail == usereMail).FirstOrDefault();
+              .Where(user => user.UserEmail == usereMail && user.UserStatus != 22).FirstOrDefault();
 
                 return User != null;
             }
@@ -204,14 +204,14 @@ namespace WebApiMTModel.Models.Models.View
                 userDetails.VeterinarPhone1 = vet.VeterinarPhone1;
 
                 var dogs = context.UserDogs
-                                .Where(userDog => userDog.DogUserID == User.UserID).Count();
+                                .Where(userDog => userDog.DogUserID == User.UserID && userDog.DogStatus == 21).Count();
                 userDetails.DogsNumber = dogs;
 
                 var reservations = context.OrdersTbl
                              .Where(userres => userres.OrderUserId == User.UserID).Count();
                 userDetails.ReservationsNumber = context.OrdersTbl.Count();
 
-                HttpContext.Current.Session["userDetails"] = userDetails;
+                //HttpContext.Current.Session["userDetails"] = userDetails;
                 return userDetails;
             }
             catch (Exception ex)
@@ -257,7 +257,7 @@ namespace WebApiMTModel.Models.Models.View
                
                 GetUserDogs(userDetails); //שליפת כלבים למשתמש
                    
-                    HttpContext.Current.Session["userDetails"] = userDetails;
+                 //   HttpContext.Current.Session["userDetails"] = userDetails;
 
 
              
@@ -358,7 +358,7 @@ namespace WebApiMTModel.Models.Models.View
             try
             {
                 DatabaseEntitiesMT context = new DatabaseEntitiesMT();
-                var dogs = context.UserDogs.Where(p => p.DogUserID == userDetails.UserID);
+                var dogs = context.UserDogs.Where(p => p.DogUserID == userDetails.UserID && p.DogStatus == 21);
                 if (dogs != null)
                 {
                     userDetails.UserarrayDogs = new List<DogDetailsView>();
@@ -439,7 +439,7 @@ namespace WebApiMTModel.Models.Models.View
             }
         }
 
-        //שליפת משתמשים+כלבים
+       
 
 
         //עדכון משתמש
@@ -463,8 +463,9 @@ namespace WebApiMTModel.Models.Models.View
                     usersTbl.UserStatus = 21;
                     usersTbl.UserName = userDetails.UserName;
                     usersTbl.Acceptmessages = userDetails.Acceptmessages;
-                    int vet = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                    if (vet == 0) //אם עדין אין במאגר וטרינר כזה
+                    veterinarService veterinarService = new veterinarService();
+                    VeterinarDetailsView  vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    if (vet ==null) //אם עדין אין במאגר וטרינר כזה
                     {
                         veterinarTbl veterinarTbl = new veterinarTbl();
                         veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
@@ -477,8 +478,8 @@ namespace WebApiMTModel.Models.Models.View
                         context.SaveChanges();
 
                     }
-                    int vetID = GetVetID(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                    usersTbl.UserVeterinarId = vetID;
+                     vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                    usersTbl.UserVeterinarId = vet.VeterinarId;
                     context.SaveChanges();
 
                 }
@@ -540,6 +541,7 @@ namespace WebApiMTModel.Models.Models.View
                         veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
                         veterinarTbl.VeterinarName = userDetails.VeterinarName;
                         veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
+                        
                         context.veterinarTbl.Add(veterinarTbl);
                         context.SaveChanges();
                         vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
@@ -565,24 +567,24 @@ namespace WebApiMTModel.Models.Models.View
                 
                for (int i = 0; i < userDetails.UserarrayDogs.Count; i++)
                     {
-                       
-                        UserDogs userDogs  = new UserDogs();
-                        userDogs.DogBirthDate = userDetails.UserarrayDogs[i].DogBirthDate;
-                        userDogs.DogComments = userDetails.UserarrayDogs[i].DogComments;
-                        userDogs.DogDig  = userDetails.UserarrayDogs[i].DogDig;
-                        userDogs.DogFriendlyWith = userDetails.UserarrayDogs[i].DogFriendlyWith;
-                        userDogs.DogGender = userDetails.UserarrayDogs[i].DogGender;
-                        userDogs.DogImage = userDetails.UserarrayDogs[i].DogImage;
-                        userDogs.DogJump = userDetails.UserarrayDogs[i].DogJump;
-                        userDogs.DogName = userDetails.UserarrayDogs[i].DogName;
-                        userDogs.DogNeuter = userDetails.UserarrayDogs[i].DogNeuter;
-                        userDogs.DogRabiesVaccine = userDetails.UserarrayDogs[i].DogRabiesVaccine;
-                        userDogs.DogShvav = userDetails.UserarrayDogs[i].DogShvav;
-                        userDogs.DogStatus = 21;
-                        userDogs.DogType = userDetails.UserarrayDogs[i].DogType;
-                        userDogs.DogUserID = userDetails.UserID;
-                        context.UserDogs.Add(userDogs);
-                        context.SaveChanges();
+                    AddOneDogForUser(userDetails.UserarrayDogs[i]);
+                        //UserDogs userDogs  = new UserDogs();
+                        //userDogs.DogBirthDate = userDetails.UserarrayDogs[i].DogBirthDate;
+                        //userDogs.DogComments = userDetails.UserarrayDogs[i].DogComments;
+                        //userDogs.DogDig  = userDetails.UserarrayDogs[i].DogDig;
+                        //userDogs.DogFriendlyWith = userDetails.UserarrayDogs[i].DogFriendlyWith;
+                        //userDogs.DogGender = userDetails.UserarrayDogs[i].DogGender;
+                        //userDogs.DogImage = userDetails.UserarrayDogs[i].DogImage;
+                        //userDogs.DogJump = userDetails.UserarrayDogs[i].DogJump;
+                        //userDogs.DogName = userDetails.UserarrayDogs[i].DogName;
+                        //userDogs.DogNeuter = userDetails.UserarrayDogs[i].DogNeuter;
+                        //userDogs.DogRabiesVaccine = userDetails.UserarrayDogs[i].DogRabiesVaccine;
+                        //userDogs.DogShvav = userDetails.UserarrayDogs[i].DogShvav;
+                        //userDogs.DogStatus = 21;
+                        //userDogs.DogType = userDetails.UserarrayDogs[i].DogType;
+                        //userDogs.DogUserID = userDetails.UserID;
+                        //context.UserDogs.Add(userDogs);
+                        //context.SaveChanges();
 
 
                     }
@@ -596,10 +598,50 @@ namespace WebApiMTModel.Models.Models.View
             }
         }
         /// <summary>
+        /// הוספת כלב למשתמש
+        /// </summary>
+        /// <param name="dog"></param>
+        public void AddOneDogForUser(DogDetailsView  dog)
+        {
+            try
+            {
+                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                UserDogs userDogs = new UserDogs();
+                userDogs.DogBirthDate = dog.DogBirthDate;
+                userDogs.DogComments = dog.DogComments;
+                userDogs.DogDig = dog.DogDig;
+                userDogs.DogFriendlyWith = dog.DogFriendlyWith;
+                userDogs.DogGender = dog.DogGender;
+                userDogs.DogImage = dog.DogImage;
+                userDogs.DogJump = dog.DogJump;
+                userDogs.DogName = dog.DogName;
+                userDogs.DogNeuter = dog.DogNeuter;
+                userDogs.DogRabiesVaccine = dog.DogRabiesVaccine;
+                userDogs.DogShvav = dog.DogShvav;
+                userDogs.DogStatus = 21;
+                userDogs.DogType = dog.DogType;
+                userDogs.DogUserID = dog.DogUserID;
+                context.UserDogs.Add(userDogs);
+                context.SaveChanges();
+
+
+            }
+
+
+
+
+           
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+}
+        
+        /// <summary>
         /// עדכון/הוספת כלבים למשתמש קיים
         /// </summary>
         /// <param name="OrdersList"></param>
-        public void UpdateDogsByManager(List<DogDetailsViewManager> list)
+            public void UpdateDogsByManager(List<DogDetailsViewManager> list)
         {
             try
             {
@@ -615,15 +657,83 @@ namespace WebApiMTModel.Models.Models.View
                             context.Entry(dogt).CurrentValues.SetValues(dog);
                             context.SaveChanges();
                         }
-                        //else
-                        //{
-                            
-                        //    AddDogsForUser(userDetails);
-                        //}
+                        else
+                        {
+
+                            throw new Exception();
+                        }
                     }
                     context.Dispose();
                 }
                 
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// עדכון פרטי כלב
+        /// </summary>
+        /// <param name="dog"></param>
+        public void UpdateDog(DogDetailsView dog)
+        {
+            try
+            {
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+                    
+                        var dogt = context.Set<UserDogs>().Find(dog.DogNumber);
+
+                        if (dog != null)
+                        {
+
+                            context.Entry(dogt).CurrentValues.SetValues(dog);
+                            context.SaveChanges();
+                        }
+                    else
+                    {
+
+                        throw new Exception();
+                    }
+
+                    context.Dispose();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void DeleteDog(DogDetailsView dog)
+        {
+            try
+            {
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+
+                    var dogt = context.Set<UserDogs>().Find(dog.DogNumber);
+                    
+
+                    if (dog != null)
+                    {
+                        dog.DogStatus = 22;
+                        context.Entry(dogt).CurrentValues.SetValues(dog);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+
+                        throw new Exception();
+                    }
+
+                    context.Dispose();
+                }
+
             }
             catch (Exception ex)
             {

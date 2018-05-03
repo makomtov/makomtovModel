@@ -26,21 +26,21 @@ namespace WebApiMTModel.Models.Models.View
             get { return userID; }
             set { userID = value; }
         }
-        [JsonProperty("username")]
+        [JsonProperty("UserName")]
         public string UserName { get; set; }
-        [JsonProperty("useremail")]
+        [JsonProperty("UserEmail")]
         public string UserEmail { get; set; }
-        [JsonProperty("useraddress")]
+        [JsonProperty("UserAddress")]
         public string UserAddress { get; set; }
-        [JsonProperty("userstatus")]
+        [JsonProperty("UserStatus")]
         public string UserStatus { get; set; }
-        [JsonProperty("userstatusCode")]
+        [JsonProperty("UserStatusCode")]
         public int UserStatusCode { get; set; }
-        [JsonProperty("usercomments")]
+        [JsonProperty("UserComments")]
         public string UserComments { get; set; }
-        [JsonProperty("usercityname")]
+        [JsonProperty("UserCityName")]
         public string UserCityName { get; set; }
-        [JsonProperty("userFirstName")]
+        [JsonProperty("UserFirstName")]
         public string UserFirstName { get; set; }
         [JsonProperty("UserLastName")]
         public string UserLastName { get; set; }
@@ -66,8 +66,7 @@ namespace WebApiMTModel.Models.Models.View
         public string VeterinarCity { get; set; }
         [JsonProperty("VeterinarPhone1")]
         public string VeterinarPhone1 { get; set; }
-        [JsonProperty("VeterinarPhone2")]
-        public string VeterinarPhone2 { get; set; }
+      
         [JsonProperty("DogsNumber")]
         public int DogsNumber { get; set; }
         [JsonProperty("ReservationsNumber")]

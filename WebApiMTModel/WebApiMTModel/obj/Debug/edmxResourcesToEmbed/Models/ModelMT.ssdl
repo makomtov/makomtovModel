@@ -20,9 +20,9 @@
     <Property Name="OrderStatus" Type="int" Nullable="false" />
     <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="OrderType" Type="int" Nullable="false" />
-    <Property Name="FromDate" Type="datetime" />
+    <Property Name="FromDate" Type="date" />
     <Property Name="ShiftNumberFrom" Type="int" />
-    <Property Name="ToDate" Type="datetime" />
+    <Property Name="ToDate" Type="date" />
     <Property Name="ShiftNumberTo" Type="int" />
     <Property Name="Price" Type="money" />
     <Property Name="OrderCreateDate" Type="date" Nullable="false" />
@@ -86,7 +86,6 @@
     <Property Name="DogStatus" Type="int" Nullable="false" />
     <Property Name="DogComments" Type="nvarchar(max)" />
     <Property Name="DogUserID" Type="int" Nullable="false" />
-    <Property Name="DogImage" Type="varchar" MaxLength="50" />
     <Property Name="DogGender" Type="nvarchar" MaxLength="4" Nullable="false" />
     <Property Name="DogNeuter" Type="bit" Nullable="false" />
     <Property Name="DogRabiesVaccine" Type="date" Nullable="false" />
@@ -95,6 +94,7 @@
     <Property Name="DogFriendlyWith" Type="int" />
     <Property Name="DogDig" Type="bit" />
     <Property Name="ManagerComments" Type="nvarchar(max)" />
+    <Property Name="DogImage" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="UsersTbl">
     <Key>
@@ -102,19 +102,20 @@
     </Key>
     <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserName" Type="varchar" MaxLength="50" />
-    <Property Name="UserEmail" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserStatus" Type="int" Nullable="false" />
     <Property Name="UserComments" Type="nvarchar(max)" />
     <Property Name="UserFirstName" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="UserLastName" Type="nvarchar" MaxLength="10" Nullable="false" />
-    <Property Name="UserPaswrd" Type="char" MaxLength="10" Nullable="false" />
-    <Property Name="UserPhone1" Type="char" MaxLength="15" Nullable="false" />
-    <Property Name="UserPhone2" Type="char" MaxLength="15" />
+    <Property Name="UserPaswrd" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserPhone1" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserPhone2" Type="nvarchar" MaxLength="15" />
     <Property Name="DaysSumForDiscount" Type="int" Nullable="false" />
     <Property Name="Acceptmessages" Type="bit" Nullable="false" />
     <Property Name="UserVeterinarId" Type="int" Nullable="false" />
+    <Property Name="UserRole" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="veterinarTbl">
     <Key>
@@ -126,7 +127,6 @@
     <Property Name="VeterinarAddress" Type="nvarchar" MaxLength="50" />
     <Property Name="VeterinarCity" Type="nvarchar" MaxLength="50" />
     <Property Name="VeterinarPhone1" Type="char" MaxLength="15" Nullable="false" />
-    <Property Name="VeterinarPhone2" Type="char" MaxLength="15" />
   </EntityType>
   <Association Name="FK_DogsInOrder_ToOrdersTbl">
     <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
