@@ -15,7 +15,7 @@ namespace WebApiMTModel.Models.Models.View
             //                            .Length(0, 20).WithMessage("שם פרטי אינו יכול להיות יותר מ 20 תווים");
 
             RuleFor(x => x.UserLastName).NotEmpty().WithErrorCode("Empty"); //.WithMessage("שם משפחה אינו יכול להיות ריק");
-            RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
+           // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
             RuleFor(x => x.UserEmail).EmailAddress();
             RuleFor(x => x.UserLastName).NotEmpty();
             RuleFor(x => x.UserCityName).Must(checkCityExist);

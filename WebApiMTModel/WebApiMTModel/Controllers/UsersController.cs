@@ -30,10 +30,10 @@ namespace WebApiMTModel.Controllers
 
         //private readonly IValidator<UserDetailsView> userViewModelValidator;
 
-        //public UsersController(IValidator<UserDetailsView> userViewModelValidator)
-        //{
-        //    this.userViewModelValidator = userViewModelValidator;
-        //}
+        public UsersController()
+        {
+          //  this.userViewModelValidator = userViewModelValidator;
+        }
         //api/Users/GetUsers
         [System.Web.Http.Authorize(Roles = "admin")]
 
@@ -82,7 +82,7 @@ namespace WebApiMTModel.Controllers
         /// <param name="loginView"></param>
         /// <returns></returns>
         // /api/Users/GetLogInUser/ziris248@gmail.com/iris1234
-        [System.Web.Http.AllowAnonymous]
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         [System.Web.Http.Route("GetUser")]
         [System.Web.Http.HttpPost]
 
@@ -194,6 +194,7 @@ namespace WebApiMTModel.Controllers
         [System.Web.Http.Authorize(Roles = "admin")]
         [System.Web.Http.Route("GetUserDogsByManager")]
         [System.Web.Http.HttpPost]
+      
         public HttpResponseMessage GetUserDogsByManager([FromBody]int userid)
 
         {
@@ -212,7 +213,7 @@ namespace WebApiMTModel.Controllers
         // /api/Users/InsertUserDetails
         [System.Web.Http.Route("InsertUserDetails")]
         [System.Web.Http.HttpPost]
-
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         public HttpResponseMessage InsertUserDetails([FromBody] UserDetailsView user)
         {
            
@@ -256,6 +257,7 @@ namespace WebApiMTModel.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         [System.Web.Http.Route("UpdateUserDetails")]
         [System.Web.Http.HttpPost]
         public HttpResponseMessage UpdateUserDetails([FromBody] UserDetailsView user)
@@ -376,6 +378,8 @@ namespace WebApiMTModel.Controllers
         /// </summary>
         /// <param name="userDog"></param>
         /// <returns></returns>
+        /// 
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         [System.Web.Http.Route("UpdateUserDog")]
         [System.Web.Http.HttpPost]
         public HttpResponseMessage UpdateUserDog([FromBody]DogDetailsView userDog)
@@ -416,6 +420,8 @@ namespace WebApiMTModel.Controllers
         /// </summary>
         /// <param name="userDog"></param>
         /// <returns></returns>
+        /// 
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         [System.Web.Http.Route("AddOneUserDog")]
         [System.Web.Http.HttpPost]
         public HttpResponseMessage AddOneUserDog([FromBody]DogDetailsView userDog)
@@ -450,7 +456,7 @@ namespace WebApiMTModel.Controllers
             }
 
         }
-
+        [System.Web.Http.Authorize(Roles = "admin,user")]
         [System.Web.Http.Route("DeleteOneUserDog")]
         [System.Web.Http.HttpPost]
         public HttpResponseMessage DeleteOneUserDog([FromBody]DogDetailsView userDog)

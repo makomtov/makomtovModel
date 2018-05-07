@@ -7,3 +7,222 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
+public partial class DogsInOrder
+{
+    public int OrderNumber { get; set; }
+    public int DogNumber { get; set; }
+    public int Status { get; set; }
+    public Nullable<bool> DogTraining { get; set; }
+    public bool HomeFood { get; set; }
+
+    public virtual OrdersTbl OrdersTbl { get; set; }
+    public virtual StatusTbl StatusTbl { internal get; set; }
+    public virtual UserDogs UserDogs { get; set; }
+}
+
+public partial class OrdersTbl
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public OrdersTbl()
+    {
+        this.DogsInOrder = new HashSet<DogsInOrder>();
+        this.RoomSetting = new HashSet<RoomSetting>();
+    }
+
+    public int OrderNumber { get; set; }
+    public int OrderUserId { get; set; }
+    public int OrderStatus { get; set; }
+    public string OrderconfirmationNumber { get; set; }
+    public int OrderType { get; set; }
+    public Nullable<decimal> Price { get; set; }
+    public System.DateTime OrderCreateDate { get; set; }
+    public string ManagerComments { get; set; }
+    public Nullable<System.DateTime> FromDate { get; set; }
+    public Nullable<int> ShiftNumberFrom { get; set; }
+    public Nullable<System.DateTime> ToDate { get; set; }
+    public Nullable<int> ShiftNumberTo { get; set; }
+    public Nullable<decimal> Discount { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }
+    public virtual OrderTypes OrderTypes { get; set; }
+    public virtual StatusTbl StatusTbl { internal get; set; }
+    public virtual UsersTbl UsersTbl { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<RoomSetting> RoomSetting { get; set; }
+}
+
+public partial class OrderTypes
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public OrderTypes()
+    {
+        this.OrdersTbl = new HashSet<OrdersTbl>();
+    }
+
+    public int OrderTypeId { get; set; }
+    public string OrderTypeName { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<OrdersTbl> OrdersTbl { get; set; }
+}
+
+public partial class PricesTbl
+{
+    public int Id { get; set; }
+    public int Days { get; set; }
+    public int Dogs { get; set; }
+    public decimal Price { get; set; }
+}
+
+public partial class RoomSetting
+{
+    public int Id { get; set; }
+    public int RoomNumber { get; set; }
+    public Nullable<int> OrderNumber { get; set; }
+    public int DogNumber { get; set; }
+    public System.DateTime FromDate { get; set; }
+    public System.DateTime ToDate { get; set; }
+    public string Comments { get; set; }
+
+    public virtual OrdersTbl OrdersTbl { get; set; }
+    public virtual RoomsTbl RoomsTbl { get; set; }
+    public virtual UserDogs UserDogs { get; set; }
+}
+
+public partial class RoomsTbl
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public RoomsTbl()
+    {
+        this.RoomSetting = new HashSet<RoomSetting>();
+    }
+
+    public int RoomID { get; set; }
+    public string RoomDescription { get; set; }
+    public int RoomStatus { get; set; }
+    public Nullable<int> RoomCapacity { get; set; }
+    public string RoomComments { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<RoomSetting> RoomSetting { get; set; }
+    public virtual StatusTbl StatusTbl { internal get; set; }
+}
+
+public partial class StatusTbl
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public StatusTbl()
+    {
+        this.DogsInOrder = new HashSet<DogsInOrder>();
+        this.OrdersTbl = new HashSet<OrdersTbl>();
+        this.RoomsTbl = new HashSet<RoomsTbl>();
+        this.UserDogs = new HashSet<UserDogs>();
+        this.UsersTbl = new HashSet<UsersTbl>();
+    }
+
+    public int StatusId { get; set; }
+    public string StatusName { get; set; }
+    public int StatusGroup { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<OrdersTbl> OrdersTbl { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<RoomsTbl> RoomsTbl { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<UserDogs> UserDogs { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<UsersTbl> UsersTbl { get; set; }
+}
+
+public partial class UserDogs
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public UserDogs()
+    {
+        this.DogsInOrder = new HashSet<DogsInOrder>();
+        this.RoomSetting = new HashSet<RoomSetting>();
+    }
+
+    public int DogNumber { get; set; }
+    public string DogName { get; set; }
+    public string DogShvav { get; set; }
+    public string DogType { get; set; }
+    public int DogStatus { get; set; }
+    public string DogComments { get; set; }
+    public int DogUserID { get; set; }
+    public string DogImage { get; set; }
+    public string DogGender { get; set; }
+    public bool DogNeuter { get; set; }
+    public System.DateTime DogRabiesVaccine { get; set; }
+    public Nullable<bool> DogJump { get; set; }
+    public System.DateTime DogBirthDate { get; set; }
+    public Nullable<int> DogFriendlyWith { get; set; }
+    public Nullable<bool> DogDig { get; set; }
+    public string ManagerComments { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<DogsInOrder> DogsInOrder { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<RoomSetting> RoomSetting { get; set; }
+    public virtual StatusTbl StatusTbl { internal get; set; }
+    public virtual UsersTbl UsersTbl { get; set; }
+}
+
+public partial class UsersTbl
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public UsersTbl()
+    {
+        this.OrdersTbl = new HashSet<OrdersTbl>();
+        this.UserDogs = new HashSet<UserDogs>();
+    }
+
+    public int UserID { get; set; }
+    public string UserName { get; set; }
+    public string UserEmail { get; set; }
+    public string UserAddress { get; set; }
+    public string UserCity { get; set; }
+    public string UserComments { get; set; }
+    public string UserFirstName { get; set; }
+    public string UserLastName { get; set; }
+    public string UserPaswrd { get; set; }
+    public string UserPhone1 { get; set; }
+    public string UserPhone2 { get; set; }
+    public int DaysSumForDiscount { get; set; }
+    public bool Acceptmessages { get; set; }
+    public int UserVeterinarId { get; set; }
+    public string UserRole { get; set; }
+    public int UserStatusCode { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<OrdersTbl> OrdersTbl { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<UserDogs> UserDogs { get; set; }
+    public virtual veterinarTbl veterinarTbl { get; set; }
+    public virtual StatusTbl StatusTbl { get; set; }
+}
+
+public partial class veterinarTbl
+{
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public veterinarTbl()
+    {
+        this.UsersTbl = new HashSet<UsersTbl>();
+    }
+
+    public int VeterinarId { get; set; }
+    public string VeterinarName { get; set; }
+    public string VeterinarEmail { get; set; }
+    public string VeterinarAddress { get; set; }
+    public string VeterinarCity { get; set; }
+    public string VeterinarPhone1 { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    public virtual ICollection<UsersTbl> UsersTbl { get; set; }
+}

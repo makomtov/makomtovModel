@@ -25,6 +25,7 @@ namespace WebApiMTModel.Models.Models.View
                     veterinarD = new VeterinarDetailsView();
                     veterinarD.VeterinarName = veterinar.VeterinarName;
                     veterinarD.VeterinarPhone1 = veterinar.VeterinarPhone1;
+                    veterinarD.VeterinarId = veterinar.VeterinarId;
                 }
                 return veterinarD;
             }

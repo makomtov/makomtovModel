@@ -107,6 +107,7 @@
     <EntitySetMapping Name="UsersTbl">
       <EntityTypeMapping TypeName="DatabaseModel.UsersTbl">
         <MappingFragment StoreEntitySet="UsersTbl">
+          <ScalarProperty Name="UserStatusCode" ColumnName="UserStatusCode" />
           <ScalarProperty Name="UserRole" ColumnName="UserRole" />
           <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
           <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
@@ -116,7 +117,6 @@
           <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
           <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
           <ScalarProperty Name="UserCity" ColumnName="UserCity" />
-          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
           <ScalarProperty Name="UserComments" ColumnName="UserComments" />
           <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
           <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />

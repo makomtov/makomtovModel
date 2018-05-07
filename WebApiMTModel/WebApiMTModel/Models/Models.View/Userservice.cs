@@ -37,7 +37,8 @@ namespace WebApiMTModel.Models.Models.View
                           UserName = u.UserName,
                           UserLastName = u.UserLastName,
                           UserID = u.UserID,
-                          UserStatusCode = u.UserStatus,
+                          UserStatusCode = u.UserStatusCode,
+                         // UserStatus=u.UserStatus,
                           UserPhone1 = u.UserPhone1,
                           UserPhone2 = u.UserPhone2,
                           UserVeterinarId = v.VeterinarId,
@@ -103,7 +104,7 @@ namespace WebApiMTModel.Models.Models.View
 
 
                 var User = context.UsersTbl
-              .Where(user => user.UserEmail == usereMail && user.UserPaswrd == password && user.UserStatus != 22).FirstOrDefault();
+              .Where(user => user.UserEmail == usereMail && user.UserPaswrd == password && user.UserStatusCode != 22).FirstOrDefault();
 
 
                 if (User != null)
@@ -136,7 +137,7 @@ namespace WebApiMTModel.Models.Models.View
 
 
                 var User = context.UsersTbl
-              .Where(user => user.UserEmail == usereMail && user.UserStatus != 22).FirstOrDefault();
+              .Where(user => user.UserEmail == usereMail && user.UserStatusCode != 22).FirstOrDefault();
 
                 return User != null;
             }
@@ -159,7 +160,7 @@ namespace WebApiMTModel.Models.Models.View
 
 
                 var User = context.UsersTbl
-              .Where(user => user.UserEmail == usereMail && user.UserName == FBid && user.UserStatus != 22).FirstOrDefault();
+              .Where(user => user.UserEmail == usereMail && user.UserName == FBid && user.UserStatusCode != 22).FirstOrDefault();
 
 
                 if (User != null)
@@ -193,7 +194,7 @@ namespace WebApiMTModel.Models.Models.View
                 userDetails.UserCityName = User.UserCity;
                 userDetails.UserAddress = User.UserAddress;
                 userDetails.UserName = User.UserName;
-                userDetails.UserStatusCode = User.UserStatus;
+                userDetails.UserStatusCode = User.UserStatusCode;
                 var vet = context.veterinarTbl
                     .Where(v => v.VeterinarId == User.UserVeterinarId).FirstOrDefault();
                 userDetails.UserVeterinarId = User.UserVeterinarId;
@@ -281,7 +282,7 @@ namespace WebApiMTModel.Models.Models.View
 
 
                 var User = context.UsersTbl
-              .Where(user => user.UserID == userid && user.UserStatus!=22).FirstOrDefault();
+              .Where(user => user.UserID == userid && user.UserStatusCode!=22).FirstOrDefault();
 
 
                 if (User != null)
@@ -306,7 +307,7 @@ namespace WebApiMTModel.Models.Models.View
                                  .Where(userres => userres.OrderUserId == User.UserID).Count();
                     userDetails.ReservationsNumber = context.OrdersTbl.Count();
                     userDetails.UserName = User.UserName;
-                    userDetails.UserStatusCode = User.UserStatus;
+                    userDetails.UserStatusCode = User.UserStatusCode;
                     var vet = context.veterinarTbl
                         .Where(v => v.VeterinarId == User.UserVeterinarId).FirstOrDefault();
                     userDetails.UserVeterinarId = User.UserVeterinarId;
@@ -450,36 +451,30 @@ namespace WebApiMTModel.Models.Models.View
             {
                 using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
                 {
-                    UsersTbl usersTbl = new UsersTbl();
-                    usersTbl.UserAddress = userDetails.UserAddress;
-                    usersTbl.UserCity = userDetails.UserCityName;
-                    usersTbl.UserComments = userDetails.UserComments;
-                    usersTbl.UserEmail = userDetails.UserEmail;
-                    usersTbl.UserFirstName = userDetails.UserFirstName;
-                    usersTbl.UserLastName = userDetails.UserLastName;
-                    usersTbl.UserPaswrd = userDetails.UserPaswrd;
-                    usersTbl.UserPhone1 = userDetails.UserPhone1;
-                    usersTbl.UserPhone2 = userDetails.UserPhone2;
-                    usersTbl.UserStatus = 21;
-                    usersTbl.UserName = userDetails.UserName;
-                    usersTbl.Acceptmessages = userDetails.Acceptmessages;
-                    veterinarService veterinarService = new veterinarService();
-                    VeterinarDetailsView  vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                    if (vet ==null) //אם עדין אין במאגר וטרינר כזה
+                    var user = context.Set<UsersTbl>().Find(userDetails.UserID);
+                    userDetails.UserPaswrd = user.UserPaswrd;
+                    if (user.UserVeterinarId != userDetails.UserVeterinarId) //שינה את הוטרינר
                     {
-                        veterinarTbl veterinarTbl = new veterinarTbl();
-                        veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
-                        veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
-                        veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
-                        veterinarTbl.VeterinarName = userDetails.VeterinarName;
-                        veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
-                      
-                        context.veterinarTbl.Add(veterinarTbl);
-                        context.SaveChanges();
+                        veterinarService veterinarService = new veterinarService();
+                        VeterinarDetailsView vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                        if (vet == null) //אם עדין אין במאגר וטרינר כזה
+                        {
+                            veterinarTbl veterinarTbl = new veterinarTbl();
+                            veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
+                            veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
+                            veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
+                            veterinarTbl.VeterinarName = userDetails.VeterinarName;
+                            veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
 
+                            context.veterinarTbl.Add(veterinarTbl);
+                            context.SaveChanges();
+
+                        }
+                        user.UserVeterinarId = vet.VeterinarId;
                     }
-                     vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                    usersTbl.UserVeterinarId = vet.VeterinarId;
+                    
+                   
+                    context.Entry(user).CurrentValues.SetValues(userDetails);
                     context.SaveChanges();
 
                 }
@@ -490,6 +485,7 @@ namespace WebApiMTModel.Models.Models.View
             finally
             {  }
         }
+   
         //הוספת משתמש
         public void InsertUserDetails(UserDetailsView userDetails)
 
@@ -508,7 +504,7 @@ namespace WebApiMTModel.Models.Models.View
                     usersTbl.UserPaswrd = userDetails.UserPaswrd;
                     usersTbl.UserPhone1 = userDetails.UserPhone1;
                     usersTbl.UserPhone2 = userDetails.UserPhone2;
-                    usersTbl.UserStatus = 21;
+                    usersTbl.UserStatusCode= 21;
                     usersTbl.UserName = userDetails.UserName;
                     usersTbl.Acceptmessages = userDetails.Acceptmessages;
                     usersTbl.DaysSumForDiscount = 0;

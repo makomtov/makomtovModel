@@ -110,7 +110,7 @@
           <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserStatus" Type="int" Nullable="false" />
+          <Property Name="UserStatusCode" Type="int" Nullable="false" />
           <Property Name="UserComments" Type="nvarchar(max)" />
           <Property Name="UserFirstName" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="UserLastName" Type="nvarchar" MaxLength="10" Nullable="false" />
@@ -285,7 +285,7 @@
               <PropertyRef Name="StatusId" />
             </Principal>
             <Dependent Role="UsersTbl">
-              <PropertyRef Name="UserStatus" />
+              <PropertyRef Name="UserStatusCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -465,8 +465,8 @@
           <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="OrdersTbl" />
           <NavigationProperty Name="RoomsTbl" Relationship="Self.FK_RoomsTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="RoomsTbl" />
           <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="StatusTbl" ToRole="UserDogs" />
-          <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="UsersTbl" />
-        </EntityType>
+          <NavigationProperty Name="UsersTbl" Relationship="DatabaseModel.FK_UsersTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="UsersTbl" />
+          </EntityType>
         <EntityType Name="UserDogs">
           <Key>
             <PropertyRef Name="DogNumber" />
@@ -501,21 +501,21 @@
           <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserStatus" Type="Int32" Nullable="false" />
           <Property Name="UserComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="true" />
           <Property Name="UserFirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserLastName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPaswrd" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPhone1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPhone2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Name="DaysSumForDiscount" Type="Int32" Nullable="false" />
           <Property Name="Acceptmessages" Type="Boolean" Nullable="false" />
           <Property Name="UserVeterinarId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="veterinarTbl" Relationship="DatabaseModel.FK_UsersTbl_VeterinarTbl" FromRole="UsersTbl" ToRole="veterinarTbl" />
           <Property Name="UserRole" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserStatusCode" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StatusTbl" Relationship="DatabaseModel.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" />
         </EntityType>
         <Association Name="FK_DogsInOrder_ToOrdersTbl">
           <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
@@ -649,18 +649,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UsersTbl_ToStatusTbl">
-          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
-          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StatusTbl">
-              <PropertyRef Name="StatusId" />
-            </Principal>
-            <Dependent Role="UsersTbl">
-              <PropertyRef Name="UserStatus" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserDogs_ToUsersTbl">
           <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
           <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
@@ -727,10 +715,6 @@
             <End Role="StatusTbl" EntitySet="StatusTbl" />
             <End Role="UserDogs" EntitySet="UserDogs" />
           </AssociationSet>
-          <AssociationSet Name="FK_UsersTbl_ToStatusTbl" Association="Self.FK_UsersTbl_ToStatusTbl">
-            <End Role="StatusTbl" EntitySet="StatusTbl" />
-            <End Role="UsersTbl" EntitySet="UsersTbl" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserDogs_ToUsersTbl" Association="Self.FK_UserDogs_ToUsersTbl">
             <End Role="UsersTbl" EntitySet="UsersTbl" />
             <End Role="UserDogs" EntitySet="UserDogs" />
@@ -738,6 +722,10 @@
           <EntitySet Name="veterinarTbl" EntityType="DatabaseModel.veterinarTbl" />
           <AssociationSet Name="FK_UsersTbl_VeterinarTbl" Association="DatabaseModel.FK_UsersTbl_VeterinarTbl">
             <End Role="veterinarTbl" EntitySet="veterinarTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTbl_ToStatusTbl" Association="DatabaseModel.FK_UsersTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
             <End Role="UsersTbl" EntitySet="UsersTbl" />
           </AssociationSet>
         </EntityContainer>
@@ -762,6 +750,18 @@
             </Principal>
             <Dependent Role="UsersTbl">
               <PropertyRef Name="UserVeterinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTbl_ToStatusTbl">
+          <End Type="DatabaseModel.StatusTbl" Role="StatusTbl" Multiplicity="1" />
+          <End Type="DatabaseModel.UsersTbl" Role="UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserStatusCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -877,6 +877,7 @@
           <EntitySetMapping Name="UsersTbl">
             <EntityTypeMapping TypeName="DatabaseModel.UsersTbl">
               <MappingFragment StoreEntitySet="UsersTbl">
+                <ScalarProperty Name="UserStatusCode" ColumnName="UserStatusCode" />
                 <ScalarProperty Name="UserRole" ColumnName="UserRole" />
                 <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
                 <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
@@ -886,7 +887,6 @@
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
                 <ScalarProperty Name="UserCity" ColumnName="UserCity" />
-                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
                 <ScalarProperty Name="UserComments" ColumnName="UserComments" />
                 <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
                 <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />

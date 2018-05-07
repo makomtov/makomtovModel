@@ -220,5 +220,44 @@ namespace WebApiMTModel.Controllers
 
             //}
         }
+
+        /// <summary>
+        /// עדכון הזמנה על ידי משתמש
+        /// </summary>
+        /// <param name="Orders"></param>
+        [System.Web.Http.Authorize(Roles = "admin,user")]
+        [Route("UpdateOrder")]
+        [HttpPut]
+        //public void UpdateOrdersByManager(HttpRequestMessage Orders)
+        public HttpResponseMessage UpdateOrder([FromBody] OrderDetailsView order)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //var jsonString = Orders.Content.ReadAsStringAsync().Result;
+            //OrdersForManagetView list = JsonConvert.DeserializeObject<OrdersForManagetView>(jsonString);
+            //  UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(jsonString);
+            try
+            {
+
+                OrderService orderService = new OrderService();
+                orderService.UpdateOrderDetails(order);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            
+                catch (Exception ex)
+            {
+              //  ThrowResponseException(HttpStatusCode.NotModified, ex.Message);
+                return Request.CreateResponse(HttpStatusCode.NotModified);
+            }
+           
+           
+
+            //}
+        }
+        private void ThrowResponseException(HttpStatusCode statusCode, string message)
+        {
+            var errorResponse = Request.CreateErrorResponse(statusCode, message);
+            throw new HttpResponseException(errorResponse);
+        }
     }
 }

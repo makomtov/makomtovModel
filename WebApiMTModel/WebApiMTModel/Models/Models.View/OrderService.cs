@@ -423,11 +423,15 @@ namespace WebApiMTModel.Models.Models.View
                             if (!EqualsOrders(order, ordert))
                             {
                                 context.Entry(ordert).CurrentValues.SetValues(order);
-
+                               
                                 foreach (DogsInOrderView dog in order.mDogs)
                                 {
                                     var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber, dog.DogNumber);
-                                    context.Entry(dogt).CurrentValues.SetValues(dog);
+                                    if (dog.Status == 21)
+                                        context.Entry(dogt).CurrentValues.SetValues(dog);
+                                    else
+                                        if (dog.Status == 23)
+                                        context.DogsInOrder.Remove(dogt);
                                 }
                                 context.SaveChanges();
                                 //שליחת מייל למשתמש
@@ -470,6 +474,34 @@ namespace WebApiMTModel.Models.Models.View
             }
         }
 
+        public void UpdateOrderDetails(OrderDetailsView orderDetails)
+
+        {
+            try
+            {
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+                    var ordert = context.Set<OrdersTbl>().Find(orderDetails.OrderNumber);
+                    //ניתן לשנות הזמנה בסטטוס חדש בלבד
+                if (ordert.OrderStatus != 11) throw new Exception("לא ניתן לשנות את ההזמנה. אנא פנה למנהל הכלביה");
+
+
+                    context.Entry(ordert).CurrentValues.SetValues(orderDetails);
+                    context.SaveChanges();
+                    //שליחת מייל למשתמש
+                    SendMailService sendMailService = new SendMailService();
+                    SendMailRequest mailRequest = new SendMailRequest();
+                    mailRequest.recipient = orderDetails.UserEmail;
+
+                    mailRequest.subject = "מצב הזמנה - " + orderDetails.OrderNumber + "מקום טוב- יוסף טוויטו";
+                }
+
+            }
+            catch (SqlException ex)
+            { throw ex; }
+            finally
+            { }
+        }
 
         private bool EqualsOrders(OrderDetailsViewManager order, OrdersTbl ordert)
         {
@@ -482,11 +514,14 @@ namespace WebApiMTModel.Models.Models.View
             equal = equal && order.Price == ordert.Price;
             equal = equal && order.ShiftNumberFrom == ordert.ShiftNumberFrom;
             equal = equal && order.ShiftNumberTo == ordert.ShiftNumberTo;
+          //  equal = equal && order.mDogs.Count == ordert.DogsInOrder.Count;
 
             foreach (DogsInOrderView dog in order.mDogs)
             {
                 var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber, dog.DogNumber);
                 equal = equal && dog.DogTraining == dogt.DogTraining;
+                equal = equal && dog.HomeFood == dogt.HomeFood;
+                equal = equal && dog.Status == dogt.Status;
             }
 
             return equal;

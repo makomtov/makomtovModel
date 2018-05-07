@@ -105,7 +105,7 @@
     <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="UserStatus" Type="int" Nullable="false" />
+    <Property Name="UserStatusCode" Type="int" Nullable="false" />
     <Property Name="UserComments" Type="nvarchar(max)" />
     <Property Name="UserFirstName" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="UserLastName" Type="nvarchar" MaxLength="10" Nullable="false" />
@@ -280,7 +280,7 @@
         <PropertyRef Name="StatusId" />
       </Principal>
       <Dependent Role="UsersTbl">
-        <PropertyRef Name="UserStatus" />
+        <PropertyRef Name="UserStatusCode" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
