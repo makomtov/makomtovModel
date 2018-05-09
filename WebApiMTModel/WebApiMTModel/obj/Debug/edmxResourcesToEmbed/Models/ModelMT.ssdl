@@ -11,6 +11,13 @@
     <Property Name="DogTraining" Type="bit" />
     <Property Name="HomeFood" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="OpenHours">
+    <Key>
+      <PropertyRef Name="ShiftNumber" />
+    </Key>
+    <Property Name="ShiftNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
   <EntityType Name="OrdersTbl">
     <Key>
       <PropertyRef Name="OrderNumber" />
@@ -176,6 +183,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_OrdersTbl_ToShiftNumberFrom">
+    <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OpenHours">
+        <PropertyRef Name="ShiftNumber" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="ShiftNumberFrom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrdersTbl_ToShiftNumberTo">
+    <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+    <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OpenHours">
+        <PropertyRef Name="ShiftNumber" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="ShiftNumberTo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_OrdersTbl_ToStatusTbl">
     <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
     <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
@@ -298,6 +329,7 @@
   </Association>
   <EntityContainer Name="DatabaseModelStoreContainer">
     <EntitySet Name="DogsInOrder" EntityType="Self.DogsInOrder" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OpenHours" EntityType="Self.OpenHours" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrdersTbl" EntityType="Self.OrdersTbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrderTypes" EntityType="Self.OrderTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PricesTbl" EntityType="Self.PricesTbl" Schema="dbo" store:Type="Tables" />
@@ -321,6 +353,14 @@
     </AssociationSet>
     <AssociationSet Name="FK_OrdersTbl_ToOrderTypesTbl" Association="Self.FK_OrdersTbl_ToOrderTypesTbl">
       <End Role="OrderTypes" EntitySet="OrderTypes" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdersTbl_ToShiftNumberFrom" Association="Self.FK_OrdersTbl_ToShiftNumberFrom">
+      <End Role="OpenHours" EntitySet="OpenHours" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdersTbl_ToShiftNumberTo" Association="Self.FK_OrdersTbl_ToShiftNumberTo">
+      <End Role="OpenHours" EntitySet="OpenHours" />
       <End Role="OrdersTbl" EntitySet="OrdersTbl" />
     </AssociationSet>
     <AssociationSet Name="FK_OrdersTbl_ToStatusTbl" Association="Self.FK_OrdersTbl_ToStatusTbl">

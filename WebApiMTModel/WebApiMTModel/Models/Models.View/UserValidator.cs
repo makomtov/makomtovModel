@@ -19,10 +19,16 @@ namespace WebApiMTModel.Models.Models.View
             RuleFor(x => x.UserEmail).EmailAddress();
             RuleFor(x => x.UserLastName).NotEmpty();
             RuleFor(x => x.UserCityName).Must(checkCityExist);
-            RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{1}\d{7}");
-            RuleFor(x => x.UserPhone2).Matches(@"[0\d{1}\d{7}]*");
-          //  RuleFor(x => x.UserPaswrd).Matches();
-            // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
+            RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{8}");
+            RuleFor(x => x.UserPhone2).Matches(@"0\d{8}");
+            RuleFor(x => x.UserAddress).NotEmpty();
+            RuleFor(x => x.UserPaswrd).NotEmpty();
+            RuleFor(x => x.UserStatus).NotEmpty();
+            RuleFor(x => x.VeterinarName).NotEmpty();
+            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^ 0\d{8}$|^0[5,7]{1}\d{8}$");
+
+           // RuleFor(x => x.UserPaswrd).Matches();
+          // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
 
             //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
         }
@@ -69,7 +75,7 @@ namespace WebApiMTModel.Models.Models.View
         {
 
             RuleFor(x => x.UserDogs).NotEmpty();
-
+            
             //RuleFor(x => x.LastName).NotEmpty().WithMessage("The Last Name cannot be blank.");
 
             //RuleFor(x => x.BirthDate).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
@@ -80,8 +86,29 @@ namespace WebApiMTModel.Models.Models.View
     public class dogValidator : AbstractValidator<DogDetailsView>
     {
         public dogValidator()
-        { }
+        {
+            RuleFor(x => x.DogBirthDate).NotEmpty().LessThan(DateTime.Today);
+            RuleFor(x => x.DogFriendlyWith).NotEmpty();
+            RuleFor(x => x.DogGender).Must(checkGenderValues);
+            RuleFor(x => x.DogName).NotEmpty();
+            RuleFor(x => x.DogRabiesVaccine).NotEmpty().LessThan(DateTime.Today);
+            RuleFor(x => x.DogStatus).NotEmpty();
+            RuleFor(x => x.DogType).NotEmpty();
+            RuleFor(x => x.DogUserID).Must(checkUserExist);
+           
+        }
+        private bool checkGenderValues(DogDetailsView dog, string gender)
+        {
+            return (gender == "זכר" || gender == "נקבה");
+                
 
+        }
+        private bool checkUserExist(DogDetailsView dog, int  userid)
+        {
+            Userservice userservice = new Userservice();
+            return userservice.GetUser(userid)!=null;
+
+        }
     }
 
 }

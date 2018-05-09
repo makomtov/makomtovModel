@@ -26,7 +26,6 @@ namespace WebApiMTModel.Models
         public string UserEmail { get; set; }
         public string UserAddress { get; set; }
         public string UserCity { get; set; }
-        public int UserStatus { get; set; }
         public string UserComments { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
@@ -37,12 +36,13 @@ namespace WebApiMTModel.Models
         public bool Acceptmessages { get; set; }
         public int UserVeterinarId { get; set; }
         public string UserRole { get; set; }
+        public int UserStatusCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrdersTbl> OrdersTbl {  get; set; }
-        public virtual StatusTbl StatusTbl {  get; set; }
+        public virtual ICollection<OrdersTbl> OrdersTbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserDogs> UserDogs {  get; set; }
+        public virtual ICollection<UserDogs> UserDogs { get; set; }
         public virtual veterinarTbl veterinarTbl { get; set; }
+        public virtual StatusTbl StatusTbl { get; set; }
     }
 }

@@ -260,12 +260,16 @@
     <Compile Include="Areas\RouteDebugger\RouteDebuggerConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\SendMailController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\XMLController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DogsInOrder.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelMT.Context.cs">
       <AutoGen>True</AutoGen>
@@ -293,6 +297,7 @@
     <Compile Include="Models\Models.View\ResponsePackage.cs" />
     <Compile Include="Models\Models.View\SendMailRequest.cs" />
     <Compile Include="Models\Models.View\SendMailService.cs" />
+    <Compile Include="Models\Models.View\ShiftView.cs" />
     <Compile Include="Models\Models.View\StatusView.cs" />
     <Compile Include="Models\Models.View\DogDetailsView.cs" />
     <Compile Include="Models\Models.View\DogsInOrderView.cs" />
@@ -304,6 +309,36 @@
     <Compile Include="Models\Models.View\VeterinarDetailsView.cs" />
     <Compile Include="Models\Models.View\veterinarService.cs" />
     <Compile Include="Models\Models.View\XmlService.cs" />
+    <Compile Include="Models\OpenHours.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrdersTbl.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderTypes.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PricesTbl.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RoomSetting.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RoomsTbl.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StatusTbl.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserDogs.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UsersTbl.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\veterinarTbl.cs">
+      <DependentUpon>ModelMT.tt</DependentUpon>
+    </Compile>
     <Compile Include="Providers\OAuthProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

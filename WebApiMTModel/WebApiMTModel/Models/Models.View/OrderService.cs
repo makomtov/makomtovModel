@@ -543,7 +543,21 @@ namespace WebApiMTModel.Models.Models.View
             }).Where(o => o.StatusGroup == 1);
             return data;
         }
+        //שליפת שעות פתיחה
+        public List<ShiftView> GetOpenHoursList()
+        {
+            DatabaseEntitiesMT context = new DatabaseEntitiesMT();
 
+            List<ShiftView> data = context.OpenHours
+            .Select(o => new ShiftView
+            {
+                ShiftNumber = o.ShiftNumber,
+                Description = o.Description,
+
+
+            }).ToList();
+            return data;
+        }
         //public decimal CalculateOrderPrice()
 
         //{
@@ -593,52 +607,52 @@ namespace WebApiMTModel.Models.Models.View
         //            dateTimeTo = order.mDogs[1].ToDate;
         //        }
         //        else
-                //{
-                //    dateTimeTo = order.mDogs[0].ToDate;
-                //}
+        //{
+        //    dateTimeTo = order.mDogs[0].ToDate;
+        //}
 
-                //days = dateTimeTo.Subtract(dateTimeFrom).Days;
-                //if (order.mDogs[0].ShiftNumberTo == 2)
-                //    days++;
-                //int[] arr = new int[days];
-                //for (int i = 0; i < arr.Length; i++)
-                //{
-                //    arr[i] = -1;
-                //}
-                //DateTime date = order.mDogs[0].ToDate;
-                ////טיפול בהחזרה במשמרת בוקר- לא מחשיבים את היום לתשלום
-                //if (order.mDogs[0].ShiftNumberTo == 1)
-                //    date.AddDays(-1);
-                //changeArr(arr, order.mDogs[0].FromDate, date, dateTimeFrom);
-                //if (order.mDogs[1].ShiftNumberTo == 1)
-                //    date.AddDays(-1);
-                //changeArr(arr, order.mDogs[1].FromDate, date, dateTimeFrom);
+        //days = dateTimeTo.Subtract(dateTimeFrom).Days;
+        //if (order.mDogs[0].ShiftNumberTo == 2)
+        //    days++;
+        //int[] arr = new int[days];
+        //for (int i = 0; i < arr.Length; i++)
+        //{
+        //    arr[i] = -1;
+        //}
+        //DateTime date = order.mDogs[0].ToDate;
+        ////טיפול בהחזרה במשמרת בוקר- לא מחשיבים את היום לתשלום
+        //if (order.mDogs[0].ShiftNumberTo == 1)
+        //    date.AddDays(-1);
+        //changeArr(arr, order.mDogs[0].FromDate, date, dateTimeFrom);
+        //if (order.mDogs[1].ShiftNumberTo == 1)
+        //    date.AddDays(-1);
+        //changeArr(arr, order.mDogs[1].FromDate, date, dateTimeFrom);
 
-                //int dogs2 = 0;
-                //for (int i = 0; i < arr.Length; i++)
-                //{
-                //    dogs2 += arr[i];
-                //}
-                //List<PricesView> p;
+        //int dogs2 = 0;
+        //for (int i = 0; i < arr.Length; i++)
+        //{
+        //    dogs2 += arr[i];
+        //}
+        //List<PricesView> p;
 
-                //if (dogs2 > 0) //פתרון הבעיה שיש בהזמנה 2 כלבים אבל התאריכים לא חופפים ולכן יש בעצם פעמיים כלב 1
-                //{
-                //    //חישוב מספר הימים ל 2 כלבים
-                //    p = prices.Where(o => o.Dogs == 2).ToList();
-                //    price += Calculte(dogs2, p);
-                //}
-                //else
-                //    dogs2 *= -1;
-                //int dogs1 = arr.Length - dogs2;
-                ////חישוב מספר הימים לכלב 1
-                //p = prices.Where(o => o.Dogs == 1).ToList();
-                //price = Calculte(dogs1, p);
-
-
+        //if (dogs2 > 0) //פתרון הבעיה שיש בהזמנה 2 כלבים אבל התאריכים לא חופפים ולכן יש בעצם פעמיים כלב 1
+        //{
+        //    //חישוב מספר הימים ל 2 כלבים
+        //    p = prices.Where(o => o.Dogs == 2).ToList();
+        //    price += Calculte(dogs2, p);
+        //}
+        //else
+        //    dogs2 *= -1;
+        //int dogs1 = arr.Length - dogs2;
+        ////חישוב מספר הימים לכלב 1
+        //p = prices.Where(o => o.Dogs == 1).ToList();
+        //price = Calculte(dogs1, p);
 
 
-            //}
-            //return price;
+
+
+        //}
+        //return price;
         //}
         //private void changeArr(int[] arr, DateTime min, DateTime max, DateTime first)
         //{

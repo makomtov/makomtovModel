@@ -29,6 +29,9 @@
         <EntityTypeShape EntityType="DatabaseModel.veterinarTbl" Width="1.5" PointX="3.375" PointY="1" />
         <AssociationConnector Association="DatabaseModel.FK_UsersTbl_VeterinarTbl" />
         <AssociationConnector Association="DatabaseModel.FK_UsersTbl_ToStatusTbl" />
+        <EntityTypeShape EntityType="DatabaseModel.OpenHours" Width="1.5" PointX="0.75" PointY="3.75" />
+        <AssociationConnector Association="DatabaseModel.FK_OrdersTbl_ToShiftNumberFrom" />
+        <AssociationConnector Association="DatabaseModel.FK_OrdersTbl_ToShiftNumberTo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -264,8 +264,6 @@ namespace WebApiMTModel.Controllers
             {
             try
             {
-                //var jsonString = userNew.Content.ReadAsStringAsync().Result;
-                // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(userNew);
                 UserValidator validator = new UserValidator();
                 ValidationResult results = validator.Validate(user);
                 if (results.IsValid)

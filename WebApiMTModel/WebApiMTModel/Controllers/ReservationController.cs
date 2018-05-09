@@ -35,6 +35,17 @@ namespace WebApiMTModel.Controllers
             return orderService.GetOrders();
 
         }
+        /// <summary>
+        /// get open hours
+        /// </summary>
+        /// <returns></returns>
+        [Route("OpenHoursList")]
+       [AllowAnonymous]
+        public List<ShiftView> GetOpenHoursList()
+        {
+            OrderService orderService = new OrderService();
+            return orderService.GetOpenHoursList();
+        }
 
         /// <summary>
         /// שליפת כל הסטטוסים להזמנה

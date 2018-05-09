@@ -36,6 +36,8 @@
     <Property Name="ToDate" Type="DateTime" Precision="0" />
     <Property Name="ShiftNumberTo" Type="Int32" />
     <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="OpenHours" Relationship="DatabaseModel.FK_OrdersTbl_ToShiftNumberFrom" FromRole="OrdersTbl" ToRole="OpenHours" />
+    <NavigationProperty Name="OpenHours1" Relationship="DatabaseModel.FK_OrdersTbl_ToShiftNumberTo" FromRole="OrdersTbl" ToRole="OpenHours" />
   </EntityType>
   <EntityType Name="OrderTypes">
     <Key>
@@ -355,6 +357,15 @@
       <End Role="StatusTbl" EntitySet="StatusTbl" />
       <End Role="UsersTbl" EntitySet="UsersTbl" />
     </AssociationSet>
+    <EntitySet Name="OpenHours" EntityType="DatabaseModel.OpenHours" />
+    <AssociationSet Name="FK_OrdersTbl_ToShiftNumberFrom" Association="DatabaseModel.FK_OrdersTbl_ToShiftNumberFrom">
+      <End Role="OpenHours" EntitySet="OpenHours" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdersTbl_ToShiftNumberTo" Association="DatabaseModel.FK_OrdersTbl_ToShiftNumberTo">
+      <End Role="OpenHours" EntitySet="OpenHours" />
+      <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="veterinarTbl">
     <Key>
@@ -389,6 +400,39 @@
       </Principal>
       <Dependent Role="UsersTbl">
         <PropertyRef Name="UserStatusCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="OpenHours">
+    <Key>
+      <PropertyRef Name="ShiftNumber" />
+    </Key>
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShiftNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="OrdersTbl" Relationship="DatabaseModel.FK_OrdersTbl_ToShiftNumberFrom" FromRole="OpenHours" ToRole="OrdersTbl" />
+    <NavigationProperty Name="OrdersTbl1" Relationship="DatabaseModel.FK_OrdersTbl_ToShiftNumberTo" FromRole="OpenHours" ToRole="OrdersTbl" />
+  </EntityType>
+  <Association Name="FK_OrdersTbl_ToShiftNumberFrom">
+    <End Type="DatabaseModel.OpenHours" Role="OpenHours" Multiplicity="0..1" />
+    <End Type="DatabaseModel.OrdersTbl" Role="OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OpenHours">
+        <PropertyRef Name="ShiftNumber" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="ShiftNumberFrom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrdersTbl_ToShiftNumberTo">
+    <End Type="DatabaseModel.OpenHours" Role="OpenHours" Multiplicity="0..1" />
+    <End Type="DatabaseModel.OrdersTbl" Role="OrdersTbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OpenHours">
+        <PropertyRef Name="ShiftNumber" />
+      </Principal>
+      <Dependent Role="OrdersTbl">
+        <PropertyRef Name="ShiftNumberTo" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -138,5 +138,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="OpenHours">
+      <EntityTypeMapping TypeName="DatabaseModel.OpenHours">
+        <MappingFragment StoreEntitySet="OpenHours">
+          <ScalarProperty Name="ShiftNumber" ColumnName="ShiftNumber" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
