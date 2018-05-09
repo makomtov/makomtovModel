@@ -320,7 +320,7 @@ namespace WebApiMTModel.Models.Models.View
                     //  GetUserDogs(userDetails); //שליפת כלבים למשתמש
                     //   OrderService orderService = new OrderService();
                     //    orderService.GetUserOrders(userDetails);//שליפת הזמנות למשתמש
-                    HttpContext.Current.Session["userDetails"] = userDetails;
+                  //  HttpContext.Current.Session["userDetails"] = userDetails;
 
 
                 }

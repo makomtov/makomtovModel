@@ -287,6 +287,7 @@
       <DependentUpon>ModelMT.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Models.View\DogDetailsViewManager.cs" />
+    <Compile Include="Models\Models.View\DogInRoomDetailsView.cs" />
     <Compile Include="Models\Models.View\DogsForManagerView.cs" />
     <Compile Include="Models\Models.View\DogValidator.cs" />
     <Compile Include="Models\Models.View\LoginView.cs" />
@@ -295,6 +296,8 @@
     <Compile Include="Models\Models.View\OrdersForUserView.cs" />
     <Compile Include="Models\Models.View\PricesView.cs" />
     <Compile Include="Models\Models.View\ResponsePackage.cs" />
+    <Compile Include="Models\Models.View\RoomsDetailsView.cs" />
+    <Compile Include="Models\Models.View\RoomsServie.cs" />
     <Compile Include="Models\Models.View\SendMailRequest.cs" />
     <Compile Include="Models\Models.View\SendMailService.cs" />
     <Compile Include="Models\Models.View\ShiftView.cs" />

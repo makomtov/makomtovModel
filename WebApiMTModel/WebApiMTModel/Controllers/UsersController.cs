@@ -57,25 +57,59 @@ namespace WebApiMTModel.Controllers
         [System.Web.Http.Route("GetUserFB")]
         [System.Web.Http.HttpPost]
        
-         public IHttpActionResult GetUserFB([FromBody]LoginView loginView)
-     
+         public HttpResponseMessage GetUserFB([FromBody]LoginView loginView)
         {
+            // password in LoginView   == FBid
+            //UserName in DB =FBid
+            UserDetailsView userDetailsView = null;
+            int code = (int)HttpStatusCode.OK;
+            List<string> errorlist = null;
             try
             {
-                
-           
-            Userservice userservice = new Userservice();
-                UserDetailsView userDetailsView = userservice.GetUserFB(loginView.UserEmail, loginView.UserPassword);
-            return Ok(userDetailsView);
-        }
-        
-             catch
+
+                LoginValidatorFB validator = new LoginValidatorFB();
+                ValidationResult results = validator.Validate(loginView);
+                bool validationSucceeded = results.IsValid;
+                if (validationSucceeded)
+                {
+                    Userservice userservice = new Userservice();
+                   userDetailsView = userservice.GetUserFB(loginView.UserEmail, loginView.UserPassword);
+                    if (userDetailsView != null)
+                        code = (int)HttpStatusCode.OK;
+                    else
+                        code = (int)HttpStatusCode.BadRequest;
+                }
+                else
+                {
+                    code = (int)HttpStatusCode.BadRequest;
+
+                    errorlist = new List<string>();
+                    foreach (var value in results.Errors)
+                    {
+
+                        errorlist.Add(value.ErrorCode);
+                        //errorlist.Add(value.Errors);
+                    }
+
+                }
+                if ((HttpStatusCode)code == HttpStatusCode.OK)
+                { return Request.CreateResponse(HttpStatusCode.OK, userDetailsView); }
+                else
+                { 
+                    return Request.CreateResponse(code);
+                }
+
+            }
+
+            catch
             {
-               bool x= ModelState.IsValid;
-                return InternalServerError();
+                bool x = ModelState.IsValid;
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            
     }
 
-}
+
         /// <summary>
         ///  שליפת משתמש לפי שם משתמש וסיסמה
         /// </summary>
@@ -461,9 +495,20 @@ namespace WebApiMTModel.Controllers
         {
             try
             {
-                Userservice userservice = new Userservice();
-                userservice.DeleteDog(userDog);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                dogValidator userdogValidator = new dogValidator();
+                ValidationResult results = userdogValidator.Validate(userDog);
+                if (results.IsValid)
+                {
+                    Userservice userservice = new Userservice();
+                    userservice.DeleteDog(userDog);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
             }
             catch (HttpRequestException ex)
             {

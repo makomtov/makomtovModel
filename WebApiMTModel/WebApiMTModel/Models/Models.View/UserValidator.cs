@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +67,24 @@ namespace WebApiMTModel.Models.Models.View
         }
     }
 
+    public class LoginValidatorFB : AbstractValidator<LoginView>
+    {
+
+
+
+        public LoginValidatorFB()
+        {
+
+            RuleFor(x => x.UserEmail).NotEmpty().WithMessage("מייל אינו יכול להיות ריק").EmailAddress().WithMessage("מייל לא חוקי");
+            RuleFor(x => x.UserPassword).NotEmpty();
+
+            //RuleFor(x => x.LastName).NotEmpty().WithMessage("The Last Name cannot be blank.");
+
+            //RuleFor(x => x.BirthDate).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
+
+            //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
+        }
+    }
     public class UserdogsValidator : AbstractValidator<DogsForManagerView>
     {
 
@@ -74,15 +93,31 @@ namespace WebApiMTModel.Models.Models.View
         public UserdogsValidator()
         {
 
-            RuleFor(x => x.UserDogs).NotEmpty();
-            
-            //RuleFor(x => x.LastName).NotEmpty().WithMessage("The Last Name cannot be blank.");
+           
+            RuleFor(x => x.UserDogs).NotEmpty().Must(CheckDogInManagerList);
+            //לעבור על הרשימה לבדוק תקינות כל כלב 
+        
 
-            //RuleFor(x => x.BirthDate).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
-
-            //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
+           
         }
+
+        private bool CheckDogInManagerList(List<DogDetailsViewManager> arg)
+        {
+            bool ok = true;
+            
+            foreach (DogDetailsViewManager dog in arg)
+            {
+                dogValidatorManager dogValidator = new dogValidatorManager();
+                ValidationResult results = dogValidator.Validate(dog);
+                ok = ok && results.IsValid;
+            }
+            return ok;
+        }
+
+        
     }
+
+   
     public class dogValidator : AbstractValidator<DogDetailsView>
     {
         public dogValidator()
@@ -100,8 +135,7 @@ namespace WebApiMTModel.Models.Models.View
         private bool checkGenderValues(DogDetailsView dog, string gender)
         {
             return (gender == "זכר" || gender == "נקבה");
-                
-
+           
         }
         private bool checkUserExist(DogDetailsView dog, int  userid)
         {
@@ -110,5 +144,30 @@ namespace WebApiMTModel.Models.Models.View
 
         }
     }
+    public class dogValidatorManager : AbstractValidator<DogDetailsViewManager>
+    {
+        public dogValidatorManager()
+        {
+            RuleFor(x => x.DogBirthDate).NotEmpty().LessThan(DateTime.Today);
+            RuleFor(x => x.DogFriendlyWith).NotEmpty();
+            RuleFor(x => x.DogGender).Must(checkGenderValues);
+            RuleFor(x => x.DogName).NotEmpty();
+            RuleFor(x => x.DogRabiesVaccine).NotEmpty().LessThan(DateTime.Today);
+            RuleFor(x => x.DogStatus).NotEmpty();
+            RuleFor(x => x.DogType).NotEmpty();
+            RuleFor(x => x.DogUserID).Must(checkUserExist);
 
+        }
+        private bool checkGenderValues(DogDetailsView dog, string gender)
+        {
+            return (gender == "זכר" || gender == "נקבה");
+
+        }
+        private bool checkUserExist(DogDetailsView dog, int userid)
+        {
+            Userservice userservice = new Userservice();
+            return userservice.GetUser(userid) != null;
+
+        }
+    }
 }
