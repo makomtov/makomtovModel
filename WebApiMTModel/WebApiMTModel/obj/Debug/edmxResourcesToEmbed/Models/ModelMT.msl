@@ -52,12 +52,12 @@
     <EntitySetMapping Name="RoomSetting">
       <EntityTypeMapping TypeName="DatabaseModel.RoomSetting">
         <MappingFragment StoreEntitySet="RoomSetting">
+          <ScalarProperty Name="RoomToDate" ColumnName="RoomToDate" />
+          <ScalarProperty Name="RoomFromDate" ColumnName="RoomFromDate" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
           <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
           <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
-          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-          <ScalarProperty Name="ToDate" ColumnName="ToDate" />
           <ScalarProperty Name="Comments" ColumnName="Comments" />
         </MappingFragment>
       </EntityTypeMapping>

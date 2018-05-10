@@ -65,8 +65,8 @@
           <Property Name="RoomNumber" Type="int" Nullable="false" />
           <Property Name="OrderNumber" Type="int" />
           <Property Name="DogNumber" Type="int" Nullable="false" />
-          <Property Name="FromDate" Type="date" Nullable="false" />
-          <Property Name="ToDate" Type="date" Nullable="false" />
+          <Property Name="RoomFromDate" Type="date" Nullable="false" />
+          <Property Name="RoomToDate" Type="date" Nullable="false" />
           <Property Name="Comments" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="RoomsTbl">
@@ -477,12 +477,12 @@
           <Property Name="RoomNumber" Type="Int32" Nullable="false" />
           <Property Name="OrderNumber" Type="Int32" />
           <Property Name="DogNumber" Type="Int32" Nullable="false" />
-          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Comments" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="RoomSetting" ToRole="OrdersTbl" />
           <NavigationProperty Name="RoomsTbl" Relationship="Self.FK_RoomSetting_ToRoomsTbl" FromRole="RoomSetting" ToRole="RoomsTbl" />
           <NavigationProperty Name="UserDogs" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="RoomSetting" ToRole="UserDogs" />
+          <Property Name="RoomFromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RoomToDate" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <EntityType Name="RoomsTbl">
           <Key>
@@ -906,12 +906,12 @@
           <EntitySetMapping Name="RoomSetting">
             <EntityTypeMapping TypeName="DatabaseModel.RoomSetting">
               <MappingFragment StoreEntitySet="RoomSetting">
+                <ScalarProperty Name="RoomToDate" ColumnName="RoomToDate" />
+                <ScalarProperty Name="RoomFromDate" ColumnName="RoomFromDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
-                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
               </MappingFragment>
             </EntityTypeMapping>

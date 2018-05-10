@@ -173,7 +173,10 @@ namespace WebApiMTModel.Controllers
                     // ThrowResponseException(HttpStatusCode.NotAcceptable, errorlist);
                 }
                 if((HttpStatusCode)code==HttpStatusCode.OK)
-                { return Request.CreateResponse(HttpStatusCode.OK, userDetailsView); }
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.OK, userDetailsView);
+                }
                 else
                 {// return Request.CreateResponse(HttpStatusCode.BadRequest, errorlist); 
                     return Request.CreateResponse(code);
@@ -247,10 +250,53 @@ namespace WebApiMTModel.Controllers
         // /api/Users/InsertUserDetails
         [System.Web.Http.Route("InsertUserDetails")]
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Authorize(Roles = "admin,user")]
+        [System.Web.Http.AllowAnonymous]
         public HttpResponseMessage InsertUserDetails([FromBody] UserDetailsView user)
         {
            
+            //HttpStatusCodeResult httpStatusCodeResult = null;
+            //int code =(int) HttpStatusCode.OK;
+            try
+            {
+                //var jsonString = userNew.Content.ReadAsStringAsync().Result;
+                // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(userNew);
+                UserValidator validator = new UserValidator();
+                ValidationResult results = validator.Validate(user);
+                if (results.IsValid)
+                {
+
+                    Userservice userservice = new Userservice();
+                    userservice.InsertUserDetails(user);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+
+                    //  return Ok();
+                }
+                else
+                {
+                    //List<string> errorlist = new List<string>();
+                    //foreach (var value in results.Errors)
+                    //{
+                    //    errorlist.Add(value.ErrorMessage);
+                    //}
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
+                //                           badInputValidationException.Result));
+                //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+        }
+
+        // /api/Users/InsertUserDetails
+        [System.Web.Http.Route("InsertUserDetailsByManager")]
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Authorize(Roles = "admin")]
+        public HttpResponseMessage InsertUserDetailsByManager([FromBody] UserDetailsView user)
+        {
+
             //HttpStatusCodeResult httpStatusCodeResult = null;
             //int code =(int) HttpStatusCode.OK;
             try

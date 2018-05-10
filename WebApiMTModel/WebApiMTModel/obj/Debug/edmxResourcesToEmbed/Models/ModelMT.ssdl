@@ -60,8 +60,8 @@
     <Property Name="RoomNumber" Type="int" Nullable="false" />
     <Property Name="OrderNumber" Type="int" />
     <Property Name="DogNumber" Type="int" Nullable="false" />
-    <Property Name="FromDate" Type="date" Nullable="false" />
-    <Property Name="ToDate" Type="date" Nullable="false" />
+    <Property Name="RoomFromDate" Type="date" Nullable="false" />
+    <Property Name="RoomToDate" Type="date" Nullable="false" />
     <Property Name="Comments" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="RoomsTbl">

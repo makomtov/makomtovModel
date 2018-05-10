@@ -64,12 +64,12 @@
     <Property Name="RoomNumber" Type="Int32" Nullable="false" />
     <Property Name="OrderNumber" Type="Int32" />
     <Property Name="DogNumber" Type="Int32" Nullable="false" />
-    <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Comments" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="RoomSetting" ToRole="OrdersTbl" />
     <NavigationProperty Name="RoomsTbl" Relationship="Self.FK_RoomSetting_ToRoomsTbl" FromRole="RoomSetting" ToRole="RoomsTbl" />
     <NavigationProperty Name="UserDogs" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="RoomSetting" ToRole="UserDogs" />
+    <Property Name="RoomFromDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="RoomToDate" Type="DateTime" Nullable="false" Precision="0" />
   </EntityType>
   <EntityType Name="RoomsTbl">
     <Key>

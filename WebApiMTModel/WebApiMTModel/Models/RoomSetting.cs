@@ -18,9 +18,9 @@ namespace WebApiMTModel.Models
         public int RoomNumber { get; set; }
         public Nullable<int> OrderNumber { get; set; }
         public int DogNumber { get; set; }
-        public System.DateTime FromDate { get; set; }
-        public System.DateTime ToDate { get; set; }
         public string Comments { get; set; }
+        public System.DateTime RoomFromDate { get; set; }
+        public System.DateTime RoomToDate { get; set; }
     
         public virtual OrdersTbl OrdersTbl { get; set; }
         public virtual RoomsTbl RoomsTbl { get; set; }
