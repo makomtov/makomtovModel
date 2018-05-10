@@ -27,6 +27,7 @@ namespace WebApiMTModel.Models.Models.View
         public System.DateTime ToDateInRoom { get; set; } //תאריך עזיבת החדר
         public string Comments { get; set; } //הערות על הכלב בחדר
         public int DogorderNumber { get; set; }
+        public int RoomNumberDB { get; set; } //מספר החדר בבסיס הנתונים.אם הכלב הועבר, כל עוד לא עודכן בבסיס הנתונים שדה זה לא מתעדכן
 
     }
 }

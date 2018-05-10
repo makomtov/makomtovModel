@@ -324,13 +324,18 @@ namespace WebApiMTModel.Models.Models.View
             {
                 using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
                 {
-                    List<OrdersTbl> orders = context.OrdersTbl.Where(p => p.OrderUserId == orderDetailsView.Userid && (p.OrderStatus==12 || p.OrderStatus==11 || p.OrderStatus==15)
-                                                                      &&( (orderDetailsView.FromDate >= p.FromDate && orderDetailsView.FromDate <= p.ToDate)
-                                                                       || (orderDetailsView.ToDate >= p.FromDate && orderDetailsView.ToDate <= p.ToDate)
-                                                                      || (orderDetailsView.FromDate <= p.FromDate && orderDetailsView.ToDate > p.ToDate)
+                    //List<OrdersTbl> orders = context.OrdersTbl.Where(p => p.OrderUserId == orderDetailsView.Userid && (p.OrderStatus==12 || p.OrderStatus==11 || p.OrderStatus==15)
+                    //                                                  &&( (orderDetailsView.FromDate >= p.FromDate && orderDetailsView.FromDate <= p.ToDate)
+                    //                                                   || (orderDetailsView.ToDate >= p.FromDate && orderDetailsView.ToDate <= p.ToDate)
+                    //                                                  || (orderDetailsView.FromDate <= p.FromDate && orderDetailsView.ToDate > p.ToDate)
+                    //                                                  )
+                    //                                                 ).ToList();
+                    List<OrdersTbl> orders = context.OrdersTbl.Where(p => p.OrderUserId == orderDetailsView.Userid && (p.OrderStatus == 12 || p.OrderStatus == 11 || p.OrderStatus == 15)
+                                                                      && ((p.FromDate >= orderDetailsView.FromDate && orderDetailsView.FromDate <= p.ToDate)
+                                                                       || (p.ToDate >= orderDetailsView.FromDate && p.ToDate <= orderDetailsView.ToDate)
+                                                                      || (p.FromDate <= orderDetailsView.FromDate && p.ToDate > orderDetailsView.ToDate)
                                                                       )
                                                                      ).ToList();
-
                     if (orders.Count>0) //יש הזמנות חופפות
                     {
                         //if (orderDetailsView.mDogs.Count == 2)
@@ -344,6 +349,8 @@ namespace WebApiMTModel.Models.Models.View
                             {
                                 nums.Add(d.DogNumber);
                             }
+
+
 
 
                             foreach (DogsInOrderView dog in orderDetailsView.mDogs)

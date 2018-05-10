@@ -24,11 +24,11 @@ namespace WebApiMTModel.Controllers
         [HttpGet]
         public List<RoomsDetailsView> GetRoomsSetting(DateTime fromDate, DateTime toDate)
         {
-           // DateTime fromDate=new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day).AddDays(2); DateTime toDate= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(4);
-             RoomsServie roomService = new RoomsServie();
+            // DateTime fromDate=new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day).AddDays(2); DateTime toDate= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(4);
+            RoomsServie roomService = new RoomsServie();
             return roomService.GetRoomsSetting(fromDate, toDate);
-          //  List<RoomsDetailsView> rooms = roomService.GetRooms();
-          //  return rooms;
+            //  List<RoomsDetailsView> rooms = roomService.GetRooms();
+            //  return rooms;
         }
         /// <summary>
         /// מכניס כלב לחדר
@@ -41,7 +41,7 @@ namespace WebApiMTModel.Controllers
         public void AddDogToRoom([FromBody]DogInRoomDetailsView dog, int roomNumber)
         {
             RoomsServie roomsServie = new RoomsServie();
-            roomsServie.AddDogToRoom(dog,roomNumber);
+            roomsServie.AddDogToRoom(dog, roomNumber);
         }
         /// <summary>
         /// מוציא כלב מחדר
@@ -52,7 +52,7 @@ namespace WebApiMTModel.Controllers
         [System.Web.Http.Route("RemoveDogFromRoom")]
         [AllowAnonymous]
         [HttpGet]
-        public void RemoveDogFromRoom(int dogNumber,int RoomNumber)
+        public void RemoveDogFromRoom(int dogNumber, int RoomNumber)
         {
             RoomsServie roomsServie = new RoomsServie();
             roomsServie.RemoveDogFromRoom(dogNumber, RoomNumber);
@@ -62,5 +62,11 @@ namespace WebApiMTModel.Controllers
         {
         }
 
+        //שליפת כל הכלבים לפי תאריכי הגעה שעאין להם שיבוץ לחדר
+
+        public List<DogsInOrderView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
+        {
+            return new List<DogsInOrderView>();
         }
+    }
 }
