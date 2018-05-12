@@ -23,10 +23,16 @@ namespace WebApiMTModel.Controllers
         [AllowAnonymous]
         [HttpGet]
         public List<RoomsDetailsView> GetRoomsSetting(DateTime fromDate, DateTime toDate)
-        {
+        {//בחדר מספר 0 נמצאים כל הכלבים בהזמנות שלא שובצו
             // DateTime fromDate=new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day).AddDays(2); DateTime toDate= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(4);
             RoomsServie roomService = new RoomsServie();
-            return roomService.GetRoomsSetting(fromDate, toDate);
+            List<RoomsDetailsView> list= roomService.GetRoomsSetting(fromDate, toDate);
+            RoomsDetailsView roomsDetailsView = new RoomsDetailsView();
+            roomsDetailsView.dogsInRoom = roomService.GetDogsNoSetting(fromDate, toDate);
+            roomsDetailsView.RoomCapacity = 0;
+            roomsDetailsView.RoomID = 0;
+            list.Insert(0, roomsDetailsView);
+            return list;
             //  List<RoomsDetailsView> rooms = roomService.GetRooms();
             //  return rooms;
         }
@@ -57,16 +63,25 @@ namespace WebApiMTModel.Controllers
             RoomsServie roomsServie = new RoomsServie();
             roomsServie.RemoveDogFromRoom(dogNumber, RoomNumber);
         }
-        //מעדכנת איכלוס חדרים לפי הרשימה
-        public void GetRoomsSetting([FromBody]List<RoomsDetailsView> list)
+        
+        /// <summary>
+        /// שליפת כל הכלבים לפי תאריכי הגעה שעאין להם שיבוץ לחדר
+        /// </summary>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
+
+
+        public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
         {
+            RoomsServie roomsServie = new RoomsServie();
+            return roomsServie.GetDogsNoSetting(fromDate, toDate);
         }
 
-        //שליפת כל הכלבים לפי תאריכי הגעה שעאין להם שיבוץ לחדר
-
-        public List<DogsInOrderView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
+        //מעדכנת איכלוס חדרים לפי הרשימה
+        public void UpdateRoomsSetting([FromBody]List<RoomsDetailsView> list)
         {
-            return new List<DogsInOrderView>();
+
         }
     }
 }

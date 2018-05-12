@@ -276,5 +276,9 @@ namespace WebApiMTModel.Models.Models.View
             }
             
             }
+        public void UpdateRoomsSetting(List<RoomsDetailsView> list)
+        {
+
         }
+    }
 }
