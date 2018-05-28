@@ -344,7 +344,7 @@ namespace WebApiMTModel.Controllers
             {
             try
             {
-                UserValidator validator = new UserValidator();
+                UpdateUserValidator validator = new UpdateUserValidator();
                 ValidationResult results = validator.Validate(user);
                 if (results.IsValid)
                 {

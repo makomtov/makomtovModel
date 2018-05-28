@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using WebApiMTModel.Models.Models.View;
 using FluentValidation.Results;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace WebApiMTModel.Controllers
 {
@@ -17,15 +19,27 @@ namespace WebApiMTModel.Controllers
             //  this.userViewModelValidator = userViewModelValidator;
         }
 
-        //api/Rooms/RoomsSetting
-        //  [System.Web.Http.Authorize(Roles = "admin")]
+        //api/Rooms/GetRoomsSetting
+         [System.Web.Http.Authorize(Roles = "admin")]
         [System.Web.Http.Route("GetRoomsSetting")]
-        [AllowAnonymous]
-        [HttpGet]
-        public List<RoomsDetailsView> GetRoomsSetting(DateTime fromDate, DateTime toDate)
+      //  [AllowAnonymous]
+        [HttpPost]
+     
+            public List<RoomsDetailsView> GetRoomsSetting([FromBody]JObject dates)
+       // public List<RoomsDetailsView> GetRoomsSetting()
         {//בחדר מספר 0 נמצאים כל הכלבים בהזמנות שלא שובצו
             // DateTime fromDate=new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day).AddDays(2); DateTime toDate= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(4);
             RoomsServie roomService = new RoomsServie();
+            //DateTime fromDate = DateTime.Now;
+            //DateTime toDate = DateTime.Now.AddDays(1);
+            string json = JsonConvert.SerializeObject(dates);
+            //DateTime fromDate = JObject.Parse(json)["@fromDate"];
+            //var toDate = JObject.Parse(json)["@toDate"];
+            var data = (JObject)JsonConvert.DeserializeObject(json);
+            DateTime fromDate = data["fromDate"].Value<DateTime>();
+            //var jArray = JArray.Parse(json);
+            //DateTime fromDate = jArray[0]["fromDate"].Value<DateTime>();
+            DateTime toDate = data["toDate"].Value<DateTime>();
             List<RoomsDetailsView> list= roomService.GetRoomsSetting(fromDate, toDate);
             RoomsDetailsView roomsDetailsView = new RoomsDetailsView();
             roomsDetailsView.dogsInRoom = roomService.GetDogsNoSetting(fromDate, toDate);
@@ -58,10 +72,10 @@ namespace WebApiMTModel.Controllers
         [System.Web.Http.Route("RemoveDogFromRoom")]
         [AllowAnonymous]
         [HttpGet]
-        public void RemoveDogFromRoom(int dogNumber, int RoomNumber)
+        public void RemoveDogFromRoom(DogInRoomDetailsView dog, int RoomNumber)
         {
             RoomsServie roomsServie = new RoomsServie();
-            roomsServie.RemoveDogFromRoom(dogNumber, RoomNumber);
+            roomsServie.RemoveDogFromRoom(dog, RoomNumber);
         }
         
         /// <summary>
@@ -77,11 +91,30 @@ namespace WebApiMTModel.Controllers
             RoomsServie roomsServie = new RoomsServie();
             return roomsServie.GetDogsNoSetting(fromDate, toDate);
         }
+        /// <summary>
+        /// מעדכנת איכלוס חדרים לפי הרשימה
+        /// </summary>
+        /// <param name="listRoomsDetails"></param>
 
-        //מעדכנת איכלוס חדרים לפי הרשימה
-        public void UpdateRoomsSetting([FromBody]List<RoomsDetailsView> list)
+        [System.Web.Http.Authorize(Roles = "admin")]
+        [System.Web.Http.Route("UpdateRoomsDetailsAndSetting")]
+        [HttpPost]
+        public HttpResponseMessage UpdateRoomsDetailsAndSetting(List<RoomsDetailsView> listRoomsDetails)
         {
+           
+                try
+                {
 
+                RoomsServie roomsServie = new RoomsServie();
+                roomsServie.UpdateRoomsDetailsAndSetting(listRoomsDetails);
+                return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                catch
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotModified);
+                }
+           
+           
         }
     }
 }

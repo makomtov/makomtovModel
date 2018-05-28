@@ -241,7 +241,7 @@ namespace WebApiMTModel.Models.Models.View
            //     ordersTbl.Price = CalculateOrderPrice(orderDetailsView);
           
             decimal result = checkForAnotherParallelOrder(orderDetailsView);  //אין הזמנות חופפות לאותם כלבים
-            if (result > 0)
+            if (result >= 0)
             {
                 
                 ordersTbl.OrderStatus = 11;
@@ -330,16 +330,18 @@ namespace WebApiMTModel.Models.Models.View
                     //                                                  || (orderDetailsView.FromDate <= p.FromDate && orderDetailsView.ToDate > p.ToDate)
                     //                                                  )
                     //                                                 ).ToList();
+
+                   
+
                     List<OrdersTbl> orders = context.OrdersTbl.Where(p => p.OrderUserId == orderDetailsView.Userid && (p.OrderStatus == 12 || p.OrderStatus == 11 || p.OrderStatus == 15)
-                                                                      && ((p.FromDate >= orderDetailsView.FromDate && orderDetailsView.FromDate <= p.ToDate)
+                                                                      && ((p.FromDate >= orderDetailsView.FromDate && p.ToDate<= orderDetailsView.FromDate)
                                                                        || (p.ToDate >= orderDetailsView.FromDate && p.ToDate <= orderDetailsView.ToDate)
                                                                       || (p.FromDate <= orderDetailsView.FromDate && p.ToDate > orderDetailsView.ToDate)
                                                                       )
                                                                      ).ToList();
                     if (orders.Count>0) //יש הזמנות חופפות
                     {
-                        //if (orderDetailsView.mDogs.Count == 2)
-                        //    return -998; // מספר כלבים בהזמנה = 2 ויש הזמנות חופפות.
+                        
                         OrderDetailsView orderDetailsViewDB = new OrderDetailsView();
                         foreach (var order in orders)
                         {
@@ -376,6 +378,8 @@ namespace WebApiMTModel.Models.Models.View
                         }
                        // result = CalculateOrderPriceParallel(orderDetailsView, list);
                     }
+                    //if (orderDetailsView.mDogs.Count > 2)
+                    //    return -999; // מספר כלבים בהזמנה > 2   .
                     result = CalculateOrderPrice(orderDetailsView); //חישוב רגיל
 
                 }

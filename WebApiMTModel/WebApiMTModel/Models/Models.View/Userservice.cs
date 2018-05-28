@@ -28,7 +28,8 @@ namespace WebApiMTModel.Models.Models.View
                       {
                           Acceptmessages = u.Acceptmessages,
                           DaysSumForDiscount = u.DaysSumForDiscount,
-                          DogsNumber = u.UserDogs.Count,
+                          DogsNumber =  context.UserDogs
+                                .Where(userDog => userDog.DogUserID == u.UserID && userDog.DogStatus == 21).Count(),
                           UserAddress = u.UserAddress,
                           UserCityName = u.UserCity,
                           UserEmail = u.UserEmail,

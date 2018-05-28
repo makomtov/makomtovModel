@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using WebApiMTModel.Models;
@@ -24,10 +25,10 @@ namespace WebApiMTModel.Models.Models.View
                         RoomComments= u.RoomComments,
                         RoomDescription= u.RoomDescription,
                         RoomStatus= u.RoomStatus,
-                         RoomStatusName = v.StatusName
+                        RoomStatusName = v.StatusName,
+                        
 
-
-                     }).Where(room => room.RoomStatus == 21)
+                     })/*.Where(room => room.RoomStatus == 21)*/
                      .Distinct()
                          .ToList();
                 for (int i = 0; i < list.Count; i++)
@@ -37,7 +38,7 @@ namespace WebApiMTModel.Models.Models.View
                 }
 
 
-
+                
 
                 return list;
                 
@@ -60,6 +61,7 @@ namespace WebApiMTModel.Models.Models.View
                      u => u.OrderNumber, v => v.OrderNumber,
                      (u, v) => new
                      {
+                         u.Id,
                          u.Comments,
                          u.DogNumber,
                          v.FromDate,
@@ -68,6 +70,7 @@ namespace WebApiMTModel.Models.Models.View
                          v.OrderUserId,
                          u.RoomFromDate,
                          u.RoomToDate,
+                         v.OrderNumber,
                      }
 
                     ).Where(u => u.RoomFromDate <= fromDate && u.RoomToDate >= toDate && u.RoomNumber == roomNumber).
@@ -85,17 +88,18 @@ namespace WebApiMTModel.Models.Models.View
                         o.DogNumber,
                         o.FromDate,
                         o.ToDate,
+                        o.OrderNumber,
                         o.OrderUserId,
                         o.RoomFromDate,
                         o.RoomToDate,
                         o.RoomNumber,
-
+                        o.Id,
                     }).
-
                     Join(context.UserDogs,
                     o => o.DogNumber, d => d.DogNumber,
                     (o, d) => new DogInRoomDetailsView
                     {
+                        id=o.Id,
                         Comments = o.Comments,
                         DogNumber = o.DogNumber,
                         FromDateInRoom = (DateTime)o.RoomFromDate,
@@ -122,8 +126,8 @@ namespace WebApiMTModel.Models.Models.View
                         VeterinarName = o.VeterinarName,
                         VeterinarPhone1 = o.VeterinarPhone1,
                         RoomNumberDB =(int) o.RoomNumber,
-                      
-                    
+                        ManagerComments=d.ManagerComments,
+                        OrderNumber=o.OrderNumber,
                         
                     }).
                     Distinct().ToList();
@@ -144,8 +148,8 @@ namespace WebApiMTModel.Models.Models.View
                 RoomSetting roomSetting = new RoomSetting();
                 roomSetting.Comments = dog.Comments;
                 roomSetting.DogNumber = dog.DogNumber;
-                roomSetting.Id = roomNumber;
-                roomSetting.OrderNumber = dog.DogorderNumber;
+                roomSetting.RoomNumber = roomNumber;
+                roomSetting.OrderNumber = dog.OrderNumber;
                 roomSetting.RoomFromDate = dog.FromDateInRoom;
                 roomSetting.RoomToDate = dog.ToDateInRoom;
                
@@ -162,19 +166,70 @@ namespace WebApiMTModel.Models.Models.View
 
         }
 
-        public void RemoveDogFromRoom(int dogNumber, int RoomNumber)
+        public void UpdateRoomsDetailsAndSetting(List<RoomsDetailsView> listRoomsDetails)
+
+        {
+            try
+            {
+                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                {
+                    foreach (RoomsDetailsView  room in listRoomsDetails)
+                    {
+                        var roomt = context.Set<RoomsTbl>().Find(room.RoomID);
+
+                        if (roomt != null)
+                        {
+
+                            context.Entry(roomt).CurrentValues.SetValues(room);
+                           
+                            foreach (DogInRoomDetailsView dog in room.dogsInRoom)
+                            {
+                                if (dog.id != 0)
+                                {
+                                    var dogt = context.Set<RoomSetting>().Find(dog.id);
+                                    if (dog.RoomNumberDB != room.RoomID)
+                                    {
+                                        RemoveDogFromRoom(dog, dog.RoomNumberDB);
+                                        AddDogToRoom(dog, room.RoomID);
+                                    }
+                                   
+                                }
+                                else
+                                {
+                                    AddDogToRoom(dog, room.RoomID);
+                                }
+                                
+
+                            }
+                            context.SaveChanges();
+
+                        }
+                        
+                    }
+                    context.Dispose();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public void RemoveDogFromRoom(DogInRoomDetailsView dog, int RoomNumber)
         {
             try
             {
 
                 using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
                 {
-                    var dogt = context.Set<RoomSetting>().Find(dogNumber);
+                    var dogt = context.Set<RoomSetting>().Find(dog.id);
                     
                     if (dogt != null)
                     {
-                        dogt.RoomToDate = DateTime.Now;
+                        dogt.RoomToDate = dog.FromDateInRoom;
                         context.Entry(dogt).CurrentValues.SetValues(dogt);
+                        //   context.Entry(dogt).State = EntityState.Deleted;
                         context.SaveChanges();
                     }
                     else
@@ -220,7 +275,7 @@ namespace WebApiMTModel.Models.Models.View
                 // כל ההזמנות בתאריכים המבוקשים
                 List<OrderDetailsViewManager> listOrderInDates = listOrders.Where(
                                                                        p=>(p.OrderStatus == 12 || p.OrderStatus == 11 || p.OrderStatus == 15)
-                                                                      && (p.FromDate >= fromDate && fromDate <= p.ToDate)
+                                                                      && (p.FromDate >= fromDate &&  p.ToDate<= fromDate)
                                                                        || (p.ToDate >= fromDate && p.ToDate <= toDate)
                                                                       || (p.FromDate <= fromDate && p.ToDate > toDate)
                                                                      
@@ -255,7 +310,10 @@ namespace WebApiMTModel.Models.Models.View
                     dogOutOfRoom.DogTraining = dogInOrder.DogTraining;
                     dogOutOfRoom.DogType = dogInOrder.DogType;
                     dogOutOfRoom.DogUserID = dogInOrder.DogUserID;
+                    dogOutOfRoom.OrderNumber = dogInOrder.OrderNumber;
+                   
                     OrderDetailsViewManager orderDetailsViewManager = listOrderInDates.Find(o => o.OrderNumber == dogOutOfRoom.OrderNumber);
+                    dogOutOfRoom.DogUserID = orderDetailsViewManager.Userid;
                     dogOutOfRoom.FromDateInPension = orderDetailsViewManager.FromDate;
                     dogOutOfRoom.ToDateInPension = orderDetailsViewManager.ToDate;
                     dogOutOfRoom.ToDateInRoom= orderDetailsViewManager.ToDate;

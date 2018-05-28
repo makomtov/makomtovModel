@@ -9,7 +9,7 @@ namespace WebApiMTModel.Models.Models.View
     {
        
 
-       
+        public int id { get; set; }  // מספר זיהוי
         public string UserFirstName { get; set; }
 
         public string UserLastName { get; set; }
@@ -28,6 +28,6 @@ namespace WebApiMTModel.Models.Models.View
         public string Comments { get; set; } //הערות על הכלב בחדר
         public int DogorderNumber { get; set; }
         public int RoomNumberDB { get; set; } //מספר החדר בבסיס הנתונים.אם הכלב הועבר, כל עוד לא עודכן בבסיס הנתונים שדה זה לא מתעדכן
-
+        public string ManagerComments { get; set; } //הערות מנהל הכלביה
     }
 }
