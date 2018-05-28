@@ -19,7 +19,7 @@ namespace WebApiMTModel.Models.Models.View
            // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
             RuleFor(x => x.UserEmail).EmailAddress();
             RuleFor(x => x.UserLastName).NotEmpty();
-            RuleFor(x => x.UserCityName).Must(checkCityExist);
+            RuleFor(x => x.UserCity).Must(checkCityExist);
             RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{8}");
             RuleFor(x => x.UserPhone2).Matches(@"0\d{8}");
             RuleFor(x => x.UserAddress).NotEmpty();
@@ -60,9 +60,10 @@ namespace WebApiMTModel.Models.Models.View
                                                                             // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
             RuleFor(x => x.UserEmail).EmailAddress();
             RuleFor(x => x.UserLastName).NotEmpty();
-            RuleFor(x => x.UserCityName).Must(checkCityExist);
+            RuleFor(x => x.UserCity).Must(checkCityExist);
             RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{8}");
-            RuleFor(x => x.UserPhone2).Matches(@"0\d{8}");
+            
+            RuleFor(x => x.UserPhone2).Matches(@"0\d{8}").When(x=>x.UserPhone2 !="");
             RuleFor(x => x.UserAddress).NotEmpty();
           
             RuleFor(x => x.UserStatusCode).NotEmpty();

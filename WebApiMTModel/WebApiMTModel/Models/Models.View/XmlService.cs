@@ -15,8 +15,9 @@ namespace WebApiMTModel.Models.Models.View
             DataSet ds = new DataSet();
             ds.ReadXml(xmlFile);
             //   ds.Tables[0].PrimaryKey = new DataColumn[1] { ds.Tables[0].Columns["Heb"] };
-            DataRow[] data = ds.Tables[0].Select("Heb='" + City + "'");
-            return data.Count() == 0;
+            string filter = "Heb='" + City + "'";
+            DataRow[] data = ds.Tables["City"].Select(filter);
+            return data.Length == 0;
         }
     }
 }

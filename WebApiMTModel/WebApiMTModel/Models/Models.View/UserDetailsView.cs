@@ -38,8 +38,8 @@ namespace WebApiMTModel.Models.Models.View
         public int UserStatusCode { get; set; }
         [JsonProperty("UserComments")]
         public string UserComments { get; set; }
-        [JsonProperty("UserCityName")]
-        public string UserCityName { get; set; }
+        [JsonProperty("UserCity")]
+        public string UserCity { get; set; }
         [JsonProperty("UserFirstName")]
         public string UserFirstName { get; set; }
         [JsonProperty("UserLastName")]

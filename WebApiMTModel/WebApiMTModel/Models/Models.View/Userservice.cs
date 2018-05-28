@@ -31,7 +31,7 @@ namespace WebApiMTModel.Models.Models.View
                           DogsNumber =  context.UserDogs
                                 .Where(userDog => userDog.DogUserID == u.UserID && userDog.DogStatus == 21).Count(),
                           UserAddress = u.UserAddress,
-                          UserCityName = u.UserCity,
+                          UserCity = u.UserCity,
                           UserEmail = u.UserEmail,
                           UserComments = u.UserComments,
                           UserFirstName = u.UserFirstName,
@@ -192,7 +192,7 @@ namespace WebApiMTModel.Models.Models.View
                 userDetails.UserPhone2 = User.UserPhone2;
                 userDetails.UserPhone1 = User.UserPhone1;
                 userDetails.UserComments = User.UserComments;
-                userDetails.UserCityName = User.UserCity;
+                userDetails.UserCity = User.UserCity;
                 userDetails.UserAddress = User.UserAddress;
                 userDetails.UserName = User.UserName;
                 userDetails.UserStatusCode = User.UserStatusCode;
@@ -298,7 +298,7 @@ namespace WebApiMTModel.Models.Models.View
                     userDetails.UserPhone2 = User.UserPhone2;
                     userDetails.UserPhone1 = User.UserPhone1;
                     userDetails.UserComments = User.UserComments;
-                    userDetails.UserCityName = User.UserCity;
+                    userDetails.UserCity = User.UserCity;
                     userDetails.UserAddress = User.UserAddress;
                     var dogs = context.UserDogs
                                     .Where(userDog => userDog.DogUserID == User.UserID).Count();
@@ -454,27 +454,32 @@ namespace WebApiMTModel.Models.Models.View
                 {
                     var user = context.Set<UsersTbl>().Find(userDetails.UserID);
                     userDetails.UserPaswrd = user.UserPaswrd;
-                    if (user.UserVeterinarId != userDetails.UserVeterinarId) //שינה את הוטרינר
-                    {
+                  
+                    //
+                    //{
                         veterinarService veterinarService = new veterinarService();
                         VeterinarDetailsView vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
-                        if (vet == null) //אם עדין אין במאגר וטרינר כזה
-                        {
-                            veterinarTbl veterinarTbl = new veterinarTbl();
-                            veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
-                            veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
-                            veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
-                            veterinarTbl.VeterinarName = userDetails.VeterinarName;
-                            veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
+                    if (vet == null) //אם עדין אין במאגר וטרינר כזה
+                    {
+                        veterinarTbl veterinarTbl = new veterinarTbl();
+                        veterinarTbl.VeterinarAddress = userDetails.VeterinarAddress;
+                        veterinarTbl.VeterinarCity = userDetails.VeterinarCity;
+                        veterinarTbl.VeterinarEmail = userDetails.VeterinarEmail;
+                        veterinarTbl.VeterinarName = userDetails.VeterinarName;
+                        veterinarTbl.VeterinarPhone1 = userDetails.VeterinarPhone1;
 
-                            context.veterinarTbl.Add(veterinarTbl);
-                            context.SaveChanges();
-
-                        }
-                        user.UserVeterinarId = vet.VeterinarId;
+                        context.veterinarTbl.Add(veterinarTbl);
+                        context.SaveChanges();
+                        // vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                        //userDetails.UserVeterinarId = vet.VeterinarId;
                     }
-                    
-                   
+                    //}
+                    //if (user.UserVeterinarId != userDetails.UserVeterinarId) //שינה את הוטרינר
+                    //{
+                        vet = veterinarService.GetVet(userDetails.VeterinarName, userDetails.VeterinarPhone1);
+                        userDetails.UserVeterinarId = vet.VeterinarId;
+                    //}
+
                     context.Entry(user).CurrentValues.SetValues(userDetails);
                     context.SaveChanges();
 
@@ -497,7 +502,7 @@ namespace WebApiMTModel.Models.Models.View
                 {
                     UsersTbl usersTbl = new UsersTbl();
                     usersTbl.UserAddress = userDetails.UserAddress;
-                    usersTbl.UserCity = userDetails.UserCityName;
+                    usersTbl.UserCity = userDetails.UserCity;
                     usersTbl.UserComments = userDetails.UserComments;
                     usersTbl.UserEmail = userDetails.UserEmail;
                     usersTbl.UserFirstName = userDetails.UserFirstName;
