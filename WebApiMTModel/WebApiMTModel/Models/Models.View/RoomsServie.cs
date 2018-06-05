@@ -13,7 +13,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
 
                 List<RoomsDetailsView> list = context.RoomsTbl.
                      Join(context.StatusTbl,
@@ -55,7 +55,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 List<DogInRoomDetailsView> list = context.RoomSetting.
                     Join(context.OrdersTbl,
                      u => u.OrderNumber, v => v.OrderNumber,
@@ -144,7 +144,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 RoomSetting roomSetting = new RoomSetting();
                 roomSetting.Comments = dog.Comments;
                 roomSetting.DogNumber = dog.DogNumber;
@@ -171,7 +171,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     foreach (RoomsDetailsView  room in listRoomsDetails)
                     {
@@ -221,7 +221,7 @@ namespace WebApiMTModel.Models.Models.View
             try
             {
 
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     var dogt = context.Set<RoomSetting>().Find(dog.id);
                     
@@ -259,7 +259,7 @@ namespace WebApiMTModel.Models.Models.View
         public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
         {
             List<DogInRoomDetailsView> dogsInRoom = new List<DogInRoomDetailsView>();
-            using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+            using (Entities context = new Entities())
             {
                 
                 int rooms = context.RoomsTbl.Count();

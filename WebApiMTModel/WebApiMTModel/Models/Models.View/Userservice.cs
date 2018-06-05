@@ -18,7 +18,7 @@ namespace WebApiMTModel.Models.Models.View
             try
             {
 
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 //  List<UserDetailsView> list = new List<UserDetailsView>();
 
                 List<UserDetailsView> list = context.UsersTbl.
@@ -101,7 +101,7 @@ namespace WebApiMTModel.Models.Models.View
             {
                 UserDetailsView userDetails = null;
 
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
 
 
                 var User = context.UsersTbl
@@ -134,7 +134,7 @@ namespace WebApiMTModel.Models.Models.View
             {
                 // UserDetailsView userDetails = null;
                
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
 
 
                 var User = context.UsersTbl
@@ -157,7 +157,7 @@ namespace WebApiMTModel.Models.Models.View
             {
                 UserDetailsView userDetails = null;
 
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
 
 
                 var User = context.UsersTbl
@@ -178,7 +178,7 @@ namespace WebApiMTModel.Models.Models.View
 
         }
 
-        private static UserDetailsView getUserDetails(DatabaseEntitiesMT context, UsersTbl User)
+        private static UserDetailsView getUserDetails(Entities context, UsersTbl User)
         {
             try
             {
@@ -226,7 +226,7 @@ namespace WebApiMTModel.Models.Models.View
 
 
 
-            //  DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+            //  Entities context = new Entities();
 
 
             //  var User = context.UsersTbl
@@ -279,7 +279,7 @@ namespace WebApiMTModel.Models.Models.View
             {
                 UserDetailsView userDetails = null;
 
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
 
 
                 var User = context.UsersTbl
@@ -359,7 +359,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 var dogs = context.UserDogs.Where(p => p.DogUserID == userDetails.UserID && p.DogStatus == 21);
                 if (dogs != null)
                 {
@@ -403,7 +403,7 @@ namespace WebApiMTModel.Models.Models.View
             DogsForManagerView dogsForManagerView = new DogsForManagerView();
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
         var dogs = context.UserDogs.Where(p => p.DogUserID == userid && p.DogStatus==21);
                 if (dogs != null)
                 {
@@ -450,7 +450,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     var user = context.Set<UsersTbl>().Find(userDetails.UserID);
                     userDetails.UserPaswrd = user.UserPaswrd;
@@ -498,7 +498,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     UsersTbl usersTbl = new UsersTbl();
                     usersTbl.UserAddress = userDetails.UserAddress;
@@ -565,7 +565,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 
                for (int i = 0; i < userDetails.UserarrayDogs.Count; i++)
                     {
@@ -607,7 +607,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 UserDogs userDogs = new UserDogs();
                 userDogs.DogBirthDate = dog.DogBirthDate;
                 userDogs.DogComments = dog.DogComments;
@@ -647,7 +647,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     foreach (DogDetailsViewManager dog in list)
                     {
@@ -683,7 +683,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     
                         var dogt = context.Set<UserDogs>().Find(dog.DogNumber);
@@ -715,7 +715,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
 
                     var dogt = context.Set<UserDogs>().Find(dog.DogNumber);

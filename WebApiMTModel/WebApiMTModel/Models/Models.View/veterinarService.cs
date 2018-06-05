@@ -15,7 +15,7 @@ namespace WebApiMTModel.Models.Models.View
 
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 VeterinarDetailsView veterinarD = null;
 
                 var veterinar = context.veterinarTbl

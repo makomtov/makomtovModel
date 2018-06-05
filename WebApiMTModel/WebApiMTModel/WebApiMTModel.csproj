@@ -265,26 +265,32 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\XMLController.cs" />
+    <Compile Include="DogsInOrder.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetUserDogs_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetUsers_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DogsInOrder.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ModelMT.Context.cs">
+    <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelMT.Context.tt</DependentUpon>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModelMT.cs">
+    <Compile Include="Model1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelMT.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModelMT.Designer.cs">
+    <Compile Include="Model1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelMT.edmx</DependentUpon>
+      <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Models.View\DogDetailsViewManager.cs" />
     <Compile Include="Models\Models.View\DogInRoomDetailsView.cs" />
@@ -312,35 +318,17 @@
     <Compile Include="Models\Models.View\VeterinarDetailsView.cs" />
     <Compile Include="Models\Models.View\veterinarService.cs" />
     <Compile Include="Models\Models.View\XmlService.cs" />
-    <Compile Include="Models\OpenHours.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
+    <Compile Include="OpenHours.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\OrdersTbl.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
+    <Compile Include="OrdersTbl.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\OrderTypes.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
+    <Compile Include="OrderTypes.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PricesTbl.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RoomSetting.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RoomsTbl.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\StatusTbl.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserDogs.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UsersTbl.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\veterinarTbl.cs">
-      <DependentUpon>ModelMT.tt</DependentUpon>
+    <Compile Include="PricesTbl.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Providers\OAuthProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -349,14 +337,28 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RoomSetting.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoomsTbl.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="StatusTbl.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserDogs.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UsersTbl.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="veterinarTbl.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\cities.xml" />
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\DogsTypes.xml" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Areas\RouteDebugger\Content\rdstyle.css" />
@@ -372,15 +374,15 @@
     <Content Include="Global.asax" />
     <Content Include="Images\20160803_173555.jpg" />
     <Content Include="Images\IMG-20171019-WA0030.jpg" />
-    <Content Include="Models\ModelMT.Context.tt">
+    <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ModelMT.Context.cs</LastGenOutput>
-      <DependentUpon>ModelMT.edmx</DependentUpon>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ModelMT.tt">
+    <Content Include="Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelMT.edmx</DependentUpon>
-      <LastGenOutput>ModelMT.cs</LastGenOutput>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -406,15 +408,15 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\ModelMT.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelMT.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ModelMT.edmx.diagram">
-      <DependentUpon>ModelMT.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\RouteDebugger\Views\Web.config" />
     <Content Include="Areas\RouteDebugger\Views\RouteDebugger\Index.cshtml" />
+    <EntityDeploy Include="Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

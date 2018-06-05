@@ -13,13 +13,13 @@ namespace WebApiMTModel.Models.Models.View
     public class OrderService
     {
 
-        DatabaseEntitiesMT context;
+        Entities context;
 
 
         public OrderService()
         {
 
-            context = new DatabaseEntitiesMT();
+            context = new Entities();
         }
         //שליפת כל ההזמנות של כל המשתמשים
         private List<OrderDetailsView> GetOrdersFromDB()
@@ -44,7 +44,7 @@ namespace WebApiMTModel.Models.Models.View
                            o.ToDate,
                            ot.OrderTypeName,
                            o.ManagerComments,
-                           o.Discount
+                           o.discount
 
 
 
@@ -66,7 +66,7 @@ namespace WebApiMTModel.Models.Models.View
                                    a.OrderType,
                                    a.OrderTypeName,
                                    a.ManagerComments,
-                                   a.Discount
+                                   a.discount
 
                                }).Join(context.UsersTbl,
                                o => o.Userid, u => u.UserID,
@@ -89,7 +89,7 @@ namespace WebApiMTModel.Models.Models.View
                                    OrderType = o.OrderType,
                                    OrderTypeName = o.OrderTypeName,
                                    ManagerComments = o.ManagerComments,
-                                   Discount=(decimal)o.Discount
+                                   Discount=(decimal)o.discount
                                }
 
                                ).Distinct()
@@ -127,7 +127,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 List<OrderDetailsView> orderslist = GetOrdersFromDB();
 
 
@@ -149,7 +149,7 @@ namespace WebApiMTModel.Models.Models.View
             try
             {
 
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 List<OrderDetailsView> orderslist = GetOrdersFromDB();
                 if (orderslist != null)
                 {
@@ -185,7 +185,7 @@ namespace WebApiMTModel.Models.Models.View
             try
             {
 
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 List<OrderDetailsViewManager> orderslist = GetOrdersFromDBManager();
                 if (orderslist != null)
                 {
@@ -260,9 +260,9 @@ namespace WebApiMTModel.Models.Models.View
                         ordersTbl.Price = result;
                 }
                 if (orderDetailsView.Discount > 0)
-                    ordersTbl.Discount = orderDetailsView.Discount;
+                    ordersTbl.discount = orderDetailsView.Discount;
                 else
-                    ordersTbl.Discount = 0;
+                    ordersTbl.discount = 0;
                 // List<OrderDetailsView> list = checkForAnotherParallelOrder(orderDetailsView);
 
 
@@ -322,7 +322,7 @@ namespace WebApiMTModel.Models.Models.View
             List<OrderDetailsView> list = new List<OrderDetailsView>();
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     //List<OrdersTbl> orders = context.OrdersTbl.Where(p => p.OrderUserId == orderDetailsView.Userid && (p.OrderStatus==12 || p.OrderStatus==11 || p.OrderStatus==15)
                     //                                                  &&( (orderDetailsView.FromDate >= p.FromDate && orderDetailsView.FromDate <= p.ToDate)
@@ -398,7 +398,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     var orderNumber =
                         from p in context.OrdersTbl
@@ -423,7 +423,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     foreach (OrderDetailsViewManager order in OrdersList)
                     {
@@ -490,7 +490,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                using (DatabaseEntitiesMT context = new DatabaseEntitiesMT())
+                using (Entities context = new Entities())
                 {
                     var ordert = context.Set<OrdersTbl>().Find(orderDetails.OrderNumber);
                     //ניתן לשנות הזמנה בסטטוס חדש בלבד
@@ -517,7 +517,7 @@ namespace WebApiMTModel.Models.Models.View
         private bool EqualsOrders(OrderDetailsViewManager order, OrdersTbl ordert)
         {
             bool equal = true;
-            equal=equal && order.Discount == ordert.Discount;
+            equal=equal && order.Discount == ordert.discount;
             equal = equal && order.FromDate == ordert.FromDate;
             equal = equal && order.ToDate == ordert.ToDate;
             equal = equal && order.ManagerComments == ordert.ManagerComments;
@@ -542,7 +542,7 @@ namespace WebApiMTModel.Models.Models.View
         //שליפת סטטוסים של הזמנה
         public IQueryable GetOrderStatusList()
         {
-            DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+            Entities context = new Entities();
 
             var data = context.StatusTbl
             .Select(o => new StatusView
@@ -557,7 +557,7 @@ namespace WebApiMTModel.Models.Models.View
         //שליפת שעות פתיחה
         public List<ShiftView> GetOpenHoursList()
         {
-            DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+            Entities context = new Entities();
 
             List<ShiftView> data = context.OpenHours
             .Select(o => new ShiftView
@@ -580,7 +580,7 @@ namespace WebApiMTModel.Models.Models.View
         //    order.mDogs[0].ToDate = new DateTime(2018, 1, 15);
         //    order.mDogs[1].FromDate = new DateTime(2018, 1, 20);
         //    order.mDogs[1].ToDate = new DateTime(2018, 2, 20);
-        //    DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+        //    Entities context = new Entities();
 
         //    Decimal price = 0;
         //    var prices = context.PricesTbl
@@ -689,7 +689,7 @@ namespace WebApiMTModel.Models.Models.View
             //order.mDogs[0].ToDate = new DateTime(2018, 1, 15);
             //order.mDogs[1].FromDate = new DateTime(2018, 1, 20);
             //order.mDogs[1].ToDate = new DateTime(2018, 2, 20);
-            DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+            Entities context = new Entities();
 
             Decimal price = 0;
             var prices = context.PricesTbl
@@ -762,7 +762,7 @@ namespace WebApiMTModel.Models.Models.View
                 if (arr[i] == 1) dog1++;
             }
 
-            DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+            Entities context = new Entities();
             var prices = context.PricesTbl
            .OrderBy(px => px.Days).Select(np => new PricesView
            {
@@ -879,7 +879,7 @@ namespace WebApiMTModel.Models.Models.View
           
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                
                     List<OrderDetailsView> orderslist = GetOrdersFromDB();
                     OrdersForUserView ordersForUser = null;
@@ -909,7 +909,7 @@ namespace WebApiMTModel.Models.Models.View
         {
             try
             {
-                DatabaseEntitiesMT context = new DatabaseEntitiesMT();
+                Entities context = new Entities();
                 List<DogsInOrderView> dogsInOrderList = new List<DogsInOrderView>();
                 var dogsInOrder = context.DogsInOrder.Join(context.UserDogs,
                          d => d.DogNumber, ud => ud.DogNumber,

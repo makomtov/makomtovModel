@@ -23,7 +23,7 @@ namespace WebApiMTModel
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            using (var db = new DatabaseEntitiesMT())
+            using (var db = new Entities())
             {
                 if (db != null)
                 {
