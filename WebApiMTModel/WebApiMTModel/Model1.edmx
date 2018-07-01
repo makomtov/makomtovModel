@@ -1,0 +1,1189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DogsInOrder">
+          <Key>
+            <PropertyRef Name="OrderNumber" />
+            <PropertyRef Name="DogNumber" />
+          </Key>
+          <Property Name="OrderNumber" Type="int" Nullable="false" />
+          <Property Name="DogNumber" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="DogTraining" Type="bit" />
+          <Property Name="HomeFood" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OpenHours">
+          <Key>
+            <PropertyRef Name="ShiftNumber" />
+          </Key>
+          <Property Name="ShiftNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrdersTbl">
+          <Key>
+            <PropertyRef Name="OrderNumber" />
+          </Key>
+          <Property Name="OrderNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderUserId" Type="int" Nullable="false" />
+          <Property Name="OrderStatus" Type="int" Nullable="false" />
+          <Property Name="OrderconfirmationNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrderType" Type="int" Nullable="false" />
+          <Property Name="FromDate" Type="date" />
+          <Property Name="ShiftNumberFrom" Type="int" />
+          <Property Name="ToDate" Type="date" />
+          <Property Name="ShiftNumberTo" Type="int" />
+          <Property Name="Price" Type="money" />
+          <Property Name="OrderCreateDate" Type="date" Nullable="false" />
+          <Property Name="ManagerComments" Type="nvarchar(max)" />
+          <Property Name="discount" Type="money" />
+        </EntityType>
+        <EntityType Name="OrderTypes">
+          <Key>
+            <PropertyRef Name="OrderTypeId" />
+          </Key>
+          <Property Name="OrderTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderTypeName" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PricesTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Days" Type="int" Nullable="false" />
+          <Property Name="Dogs" Type="int" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomNumber" Type="int" Nullable="false" />
+          <Property Name="OrderNumber" Type="int" />
+          <Property Name="DogNumber" Type="int" Nullable="false" />
+          <Property Name="RoomFromDate" Type="date" Nullable="false" />
+          <Property Name="RoomToDate" Type="date" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoomShiftFrom" Type="int" />
+          <Property Name="RoomShiftTo" Type="int" />
+        </EntityType>
+        <EntityType Name="RoomsTbl">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoomStatus" Type="int" Nullable="false" />
+          <Property Name="RoomCapacity" Type="int" />
+          <Property Name="RoomComments" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StatusTbl">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="StatusName" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="StatusGroup" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserDogs">
+          <Key>
+            <PropertyRef Name="DogNumber" />
+          </Key>
+          <Property Name="DogNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DogName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DogShvav" Type="nvarchar" MaxLength="50" />
+          <Property Name="DogType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DogStatus" Type="int" Nullable="false" />
+          <Property Name="DogComments" Type="nvarchar(max)" />
+          <Property Name="DogUserID" Type="int" Nullable="false" />
+          <Property Name="DogGender" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="DogNeuter" Type="bit" Nullable="false" />
+          <Property Name="DogRabiesVaccine" Type="date" Nullable="false" />
+          <Property Name="DogJump" Type="bit" />
+          <Property Name="DogBirthDate" Type="date" Nullable="false" />
+          <Property Name="DogFriendlyWith" Type="int" />
+          <Property Name="DogDig" Type="bit" />
+          <Property Name="ManagerComments" Type="nvarchar(max)" />
+          <Property Name="DogImage" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UsersTbl">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserCity" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserStatusCode" Type="int" Nullable="false" />
+          <Property Name="UserComments" Type="nvarchar(max)" />
+          <Property Name="UserFirstName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserLastName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserPaswrd" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserPhone1" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserPhone2" Type="nvarchar" MaxLength="15" />
+          <Property Name="DaysSumForDiscount" Type="int" Nullable="false" />
+          <Property Name="Acceptmessages" Type="bit" Nullable="false" />
+          <Property Name="UserVeterinarId" Type="int" Nullable="false" />
+          <Property Name="UserRole" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="veterinarTbl">
+          <Key>
+            <PropertyRef Name="VeterinarId" />
+          </Key>
+          <Property Name="VeterinarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VeterinarName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="VeterinarEmail" Type="char" MaxLength="50" />
+          <Property Name="VeterinarAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="VeterinarCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="VeterinarPhone1" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_DogsInOrder_ToOrdersTbl">
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
+          <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTbl">
+              <PropertyRef Name="OrderNumber" />
+            </Principal>
+            <Dependent Role="DogsInOrder">
+              <PropertyRef Name="OrderNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DogsInOrder_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="DogsInOrder">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DogsInOrder_ToUserDogsTbl">
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="1" />
+          <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDogs">
+              <PropertyRef Name="DogNumber" />
+            </Principal>
+            <Dependent Role="DogsInOrder">
+              <PropertyRef Name="DogNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToOrderTypesTbl">
+          <End Role="OrderTypes" Type="Self.OrderTypes" Multiplicity="1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderTypes">
+              <PropertyRef Name="OrderTypeId" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="OrderType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToShiftNumberFrom">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="ShiftNumberFrom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToShiftNumberTo">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="ShiftNumberTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="OrderStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToUsersTbl">
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsersTbl">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="OrderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToOrdersTbl">
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="0..1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTbl">
+              <PropertyRef Name="OrderNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="OrderNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToRoomsTbl">
+          <End Role="RoomsTbl" Type="Self.RoomsTbl" Multiplicity="1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomsTbl">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="RoomNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToShiftNumberFrom">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="RoomShiftFrom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToShiftNumberTo">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="RoomShiftTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToUserDogs">
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDogs">
+              <PropertyRef Name="DogNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="DogNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomsTbl_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="RoomsTbl" Type="Self.RoomsTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="RoomsTbl">
+              <PropertyRef Name="RoomStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDogs_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="UserDogs">
+              <PropertyRef Name="DogStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDogs_ToUsersTbl">
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsersTbl">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserDogs">
+              <PropertyRef Name="DogUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTbl_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTbl_VeterinarTbl">
+          <End Role="veterinarTbl" Type="Self.veterinarTbl" Multiplicity="1" />
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="veterinarTbl">
+              <PropertyRef Name="VeterinarId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserVeterinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetUserDogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="DogsInOrder" EntityType="Self.DogsInOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OpenHours" EntityType="Self.OpenHours" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrdersTbl" EntityType="Self.OrdersTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderTypes" EntityType="Self.OrderTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PricesTbl" EntityType="Self.PricesTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomSetting" EntityType="Self.RoomSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomsTbl" EntityType="Self.RoomsTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusTbl" EntityType="Self.StatusTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDogs" EntityType="Self.UserDogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersTbl" EntityType="Self.UsersTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="veterinarTbl" EntityType="Self.veterinarTbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DogsInOrder_ToOrdersTbl" Association="Self.FK_DogsInOrder_ToOrdersTbl">
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+            <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DogsInOrder_ToStatusTbl" Association="Self.FK_DogsInOrder_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DogsInOrder_ToUserDogsTbl" Association="Self.FK_DogsInOrder_ToUserDogsTbl">
+            <End Role="UserDogs" EntitySet="UserDogs" />
+            <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToOrderTypesTbl" Association="Self.FK_OrdersTbl_ToOrderTypesTbl">
+            <End Role="OrderTypes" EntitySet="OrderTypes" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToShiftNumberFrom" Association="Self.FK_OrdersTbl_ToShiftNumberFrom">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToShiftNumberTo" Association="Self.FK_OrdersTbl_ToShiftNumberTo">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToStatusTbl" Association="Self.FK_OrdersTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToUsersTbl" Association="Self.FK_OrdersTbl_ToUsersTbl">
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToOrdersTbl" Association="Self.FK_RoomSetting_ToOrdersTbl">
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToRoomsTbl" Association="Self.FK_RoomSetting_ToRoomsTbl">
+            <End Role="RoomsTbl" EntitySet="RoomsTbl" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToShiftNumberFrom" Association="Self.FK_RoomSetting_ToShiftNumberFrom">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToShiftNumberTo" Association="Self.FK_RoomSetting_ToShiftNumberTo">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToUserDogs" Association="Self.FK_RoomSetting_ToUserDogs">
+            <End Role="UserDogs" EntitySet="UserDogs" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomsTbl_ToStatusTbl" Association="Self.FK_RoomsTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="RoomsTbl" EntitySet="RoomsTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDogs_ToStatusTbl" Association="Self.FK_UserDogs_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="UserDogs" EntitySet="UserDogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDogs_ToUsersTbl" Association="Self.FK_UserDogs_ToUsersTbl">
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+            <End Role="UserDogs" EntitySet="UserDogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTbl_ToStatusTbl" Association="Self.FK_UsersTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTbl_VeterinarTbl" Association="Self.FK_UsersTbl_VeterinarTbl">
+            <End Role="veterinarTbl" EntitySet="veterinarTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DogsInOrder">
+          <Key>
+            <PropertyRef Name="OrderNumber" />
+            <PropertyRef Name="DogNumber" />
+          </Key>
+          <Property Name="OrderNumber" Type="Int32" Nullable="false" />
+          <Property Name="DogNumber" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="DogTraining" Type="Boolean" />
+          <Property Name="HomeFood" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_DogsInOrder_ToOrdersTbl" FromRole="DogsInOrder" ToRole="OrdersTbl" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_DogsInOrder_ToStatusTbl" FromRole="DogsInOrder" ToRole="StatusTbl" />
+          <NavigationProperty Name="UserDogs" Relationship="Self.FK_DogsInOrder_ToUserDogsTbl" FromRole="DogsInOrder" ToRole="UserDogs" />
+        </EntityType>
+        <EntityType Name="OpenHours">
+          <Key>
+            <PropertyRef Name="ShiftNumber" />
+          </Key>
+          <Property Name="ShiftNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToShiftNumberFrom" FromRole="OpenHours" ToRole="OrdersTbl" />
+          <NavigationProperty Name="OrdersTbl1" Relationship="Self.FK_OrdersTbl_ToShiftNumberTo" FromRole="OpenHours" ToRole="OrdersTbl" />
+          <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToShiftNumberFrom" FromRole="OpenHours" ToRole="RoomSetting" />
+          <NavigationProperty Name="RoomSetting1" Relationship="Self.FK_RoomSetting_ToShiftNumberTo" FromRole="OpenHours" ToRole="RoomSetting" />
+        </EntityType>
+        <EntityType Name="OrdersTbl">
+          <Key>
+            <PropertyRef Name="OrderNumber" />
+          </Key>
+          <Property Name="OrderNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderUserId" Type="Int32" Nullable="false" />
+          <Property Name="OrderStatus" Type="Int32" Nullable="false" />
+          <Property Name="OrderconfirmationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderType" Type="Int32" Nullable="false" />
+          <Property Name="FromDate" Type="DateTime" Precision="0" />
+          <Property Name="ShiftNumberFrom" Type="Int32" />
+          <Property Name="ToDate" Type="DateTime" Precision="0" />
+          <Property Name="ShiftNumberTo" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OrderCreateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ManagerComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="discount" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="DogsInOrder" Relationship="Self.FK_DogsInOrder_ToOrdersTbl" FromRole="OrdersTbl" ToRole="DogsInOrder" />
+          <NavigationProperty Name="OpenHours" Relationship="Self.FK_OrdersTbl_ToShiftNumberFrom" FromRole="OrdersTbl" ToRole="OpenHours" />
+          <NavigationProperty Name="OpenHours1" Relationship="Self.FK_OrdersTbl_ToShiftNumberTo" FromRole="OrdersTbl" ToRole="OpenHours" />
+          <NavigationProperty Name="OrderTypes" Relationship="Self.FK_OrdersTbl_ToOrderTypesTbl" FromRole="OrdersTbl" ToRole="OrderTypes" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_OrdersTbl_ToStatusTbl" FromRole="OrdersTbl" ToRole="StatusTbl" />
+          <NavigationProperty Name="UsersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="OrdersTbl" ToRole="UsersTbl" />
+          <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="OrdersTbl" ToRole="RoomSetting" />
+        </EntityType>
+        <EntityType Name="OrderTypes">
+          <Key>
+            <PropertyRef Name="OrderTypeId" />
+          </Key>
+          <Property Name="OrderTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderTypeName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToOrderTypesTbl" FromRole="OrderTypes" ToRole="OrdersTbl" />
+        </EntityType>
+        <EntityType Name="PricesTbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Days" Type="Int32" Nullable="false" />
+          <Property Name="Dogs" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomNumber" Type="Int32" Nullable="false" />
+          <Property Name="OrderNumber" Type="Int32" />
+          <Property Name="DogNumber" Type="Int32" Nullable="false" />
+          <Property Name="RoomFromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RoomToDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Comments" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoomShiftFrom" Type="Int32" />
+          <Property Name="RoomShiftTo" Type="Int32" />
+          <NavigationProperty Name="OpenHours" Relationship="Self.FK_RoomSetting_ToShiftNumberFrom" FromRole="RoomSetting" ToRole="OpenHours" />
+          <NavigationProperty Name="OpenHours1" Relationship="Self.FK_RoomSetting_ToShiftNumberTo" FromRole="RoomSetting" ToRole="OpenHours" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_RoomSetting_ToOrdersTbl" FromRole="RoomSetting" ToRole="OrdersTbl" />
+          <NavigationProperty Name="RoomsTbl" Relationship="Self.FK_RoomSetting_ToRoomsTbl" FromRole="RoomSetting" ToRole="RoomsTbl" />
+          <NavigationProperty Name="UserDogs" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="RoomSetting" ToRole="UserDogs" />
+        </EntityType>
+        <EntityType Name="RoomsTbl">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoomStatus" Type="Int32" Nullable="false" />
+          <Property Name="RoomCapacity" Type="Int32" />
+          <Property Name="RoomComments" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToRoomsTbl" FromRole="RoomsTbl" ToRole="RoomSetting" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_RoomsTbl_ToStatusTbl" FromRole="RoomsTbl" ToRole="StatusTbl" />
+        </EntityType>
+        <EntityType Name="StatusTbl">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="StatusName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StatusGroup" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DogsInOrder" Relationship="Self.FK_DogsInOrder_ToStatusTbl" FromRole="StatusTbl" ToRole="DogsInOrder" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="OrdersTbl" />
+          <NavigationProperty Name="RoomsTbl" Relationship="Self.FK_RoomsTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="RoomsTbl" />
+          <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="StatusTbl" ToRole="UserDogs" />
+          <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="StatusTbl" ToRole="UsersTbl" />
+        </EntityType>
+        <EntityType Name="UserDogs">
+          <Key>
+            <PropertyRef Name="DogNumber" />
+          </Key>
+          <Property Name="DogNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DogName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DogShvav" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DogType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DogStatus" Type="Int32" Nullable="false" />
+          <Property Name="DogComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DogUserID" Type="Int32" Nullable="false" />
+          <Property Name="DogGender" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DogNeuter" Type="Boolean" Nullable="false" />
+          <Property Name="DogRabiesVaccine" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DogJump" Type="Boolean" />
+          <Property Name="DogBirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DogFriendlyWith" Type="Int32" />
+          <Property Name="DogDig" Type="Boolean" />
+          <Property Name="ManagerComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DogImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DogsInOrder" Relationship="Self.FK_DogsInOrder_ToUserDogsTbl" FromRole="UserDogs" ToRole="DogsInOrder" />
+          <NavigationProperty Name="RoomSetting" Relationship="Self.FK_RoomSetting_ToUserDogs" FromRole="UserDogs" ToRole="RoomSetting" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UserDogs_ToStatusTbl" FromRole="UserDogs" ToRole="StatusTbl" />
+          <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UserDogs" ToRole="UsersTbl" />
+        </EntityType>
+        <EntityType Name="UsersTbl">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserStatusCode" Type="Int32" Nullable="false" />
+          <Property Name="UserComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserFirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserLastName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPaswrd" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPhone1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPhone2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="DaysSumForDiscount" Type="Int32" Nullable="false" />
+          <Property Name="Acceptmessages" Type="Boolean" Nullable="false" />
+          <Property Name="UserVeterinarId" Type="Int32" Nullable="false" />
+          <Property Name="UserRole" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrdersTbl" Relationship="Self.FK_OrdersTbl_ToUsersTbl" FromRole="UsersTbl" ToRole="OrdersTbl" />
+          <NavigationProperty Name="StatusTbl" Relationship="Self.FK_UsersTbl_ToStatusTbl" FromRole="UsersTbl" ToRole="StatusTbl" />
+          <NavigationProperty Name="UserDogs" Relationship="Self.FK_UserDogs_ToUsersTbl" FromRole="UsersTbl" ToRole="UserDogs" />
+          <NavigationProperty Name="veterinarTbl" Relationship="Self.FK_UsersTbl_VeterinarTbl" FromRole="UsersTbl" ToRole="veterinarTbl" />
+        </EntityType>
+        <EntityType Name="veterinarTbl">
+          <Key>
+            <PropertyRef Name="VeterinarId" />
+          </Key>
+          <Property Name="VeterinarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VeterinarName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VeterinarEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="false" />
+          <Property Name="VeterinarAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VeterinarCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VeterinarPhone1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UsersTbl" Relationship="Self.FK_UsersTbl_VeterinarTbl" FromRole="veterinarTbl" ToRole="UsersTbl" />
+        </EntityType>
+        <Association Name="FK_DogsInOrder_ToOrdersTbl">
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="1" />
+          <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTbl">
+              <PropertyRef Name="OrderNumber" />
+            </Principal>
+            <Dependent Role="DogsInOrder">
+              <PropertyRef Name="OrderNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DogsInOrder_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="DogsInOrder">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DogsInOrder_ToUserDogsTbl">
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="1" />
+          <End Role="DogsInOrder" Type="Self.DogsInOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDogs">
+              <PropertyRef Name="DogNumber" />
+            </Principal>
+            <Dependent Role="DogsInOrder">
+              <PropertyRef Name="DogNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToShiftNumberFrom">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="ShiftNumberFrom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToShiftNumberTo">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="ShiftNumberTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToShiftNumberFrom">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="RoomShiftFrom" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToShiftNumberTo">
+          <End Role="OpenHours" Type="Self.OpenHours" Multiplicity="0..1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OpenHours">
+              <PropertyRef Name="ShiftNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="RoomShiftTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToOrderTypesTbl">
+          <End Role="OrderTypes" Type="Self.OrderTypes" Multiplicity="1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderTypes">
+              <PropertyRef Name="OrderTypeId" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="OrderType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="OrderStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersTbl_ToUsersTbl">
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsersTbl">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="OrdersTbl">
+              <PropertyRef Name="OrderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToOrdersTbl">
+          <End Role="OrdersTbl" Type="Self.OrdersTbl" Multiplicity="0..1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdersTbl">
+              <PropertyRef Name="OrderNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="OrderNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToRoomsTbl">
+          <End Role="RoomsTbl" Type="Self.RoomsTbl" Multiplicity="1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomsTbl">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="RoomNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomSetting_ToUserDogs">
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="1" />
+          <End Role="RoomSetting" Type="Self.RoomSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDogs">
+              <PropertyRef Name="DogNumber" />
+            </Principal>
+            <Dependent Role="RoomSetting">
+              <PropertyRef Name="DogNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomsTbl_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="RoomsTbl" Type="Self.RoomsTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="RoomsTbl">
+              <PropertyRef Name="RoomStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDogs_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="UserDogs">
+              <PropertyRef Name="DogStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTbl_ToStatusTbl">
+          <End Role="StatusTbl" Type="Self.StatusTbl" Multiplicity="1" />
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusTbl">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDogs_ToUsersTbl">
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="1" />
+          <End Role="UserDogs" Type="Self.UserDogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UsersTbl">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserDogs">
+              <PropertyRef Name="DogUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersTbl_VeterinarTbl">
+          <End Role="veterinarTbl" Type="Self.veterinarTbl" Multiplicity="1" />
+          <End Role="UsersTbl" Type="Self.UsersTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="veterinarTbl">
+              <PropertyRef Name="VeterinarId" />
+            </Principal>
+            <Dependent Role="UsersTbl">
+              <PropertyRef Name="UserVeterinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DogsInOrder" EntityType="Self.DogsInOrder" />
+          <EntitySet Name="OpenHours" EntityType="Self.OpenHours" />
+          <EntitySet Name="OrdersTbl" EntityType="Self.OrdersTbl" />
+          <EntitySet Name="OrderTypes" EntityType="Self.OrderTypes" />
+          <EntitySet Name="PricesTbl" EntityType="Self.PricesTbl" />
+          <EntitySet Name="RoomSetting" EntityType="Self.RoomSetting" />
+          <EntitySet Name="RoomsTbl" EntityType="Self.RoomsTbl" />
+          <EntitySet Name="StatusTbl" EntityType="Self.StatusTbl" />
+          <EntitySet Name="UserDogs" EntityType="Self.UserDogs" />
+          <EntitySet Name="UsersTbl" EntityType="Self.UsersTbl" />
+          <EntitySet Name="veterinarTbl" EntityType="Self.veterinarTbl" />
+          <AssociationSet Name="FK_DogsInOrder_ToOrdersTbl" Association="Self.FK_DogsInOrder_ToOrdersTbl">
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+            <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DogsInOrder_ToStatusTbl" Association="Self.FK_DogsInOrder_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DogsInOrder_ToUserDogsTbl" Association="Self.FK_DogsInOrder_ToUserDogsTbl">
+            <End Role="UserDogs" EntitySet="UserDogs" />
+            <End Role="DogsInOrder" EntitySet="DogsInOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToShiftNumberFrom" Association="Self.FK_OrdersTbl_ToShiftNumberFrom">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToShiftNumberTo" Association="Self.FK_OrdersTbl_ToShiftNumberTo">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToShiftNumberFrom" Association="Self.FK_RoomSetting_ToShiftNumberFrom">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToShiftNumberTo" Association="Self.FK_RoomSetting_ToShiftNumberTo">
+            <End Role="OpenHours" EntitySet="OpenHours" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToOrderTypesTbl" Association="Self.FK_OrdersTbl_ToOrderTypesTbl">
+            <End Role="OrderTypes" EntitySet="OrderTypes" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToStatusTbl" Association="Self.FK_OrdersTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersTbl_ToUsersTbl" Association="Self.FK_OrdersTbl_ToUsersTbl">
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToOrdersTbl" Association="Self.FK_RoomSetting_ToOrdersTbl">
+            <End Role="OrdersTbl" EntitySet="OrdersTbl" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToRoomsTbl" Association="Self.FK_RoomSetting_ToRoomsTbl">
+            <End Role="RoomsTbl" EntitySet="RoomsTbl" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomSetting_ToUserDogs" Association="Self.FK_RoomSetting_ToUserDogs">
+            <End Role="UserDogs" EntitySet="UserDogs" />
+            <End Role="RoomSetting" EntitySet="RoomSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomsTbl_ToStatusTbl" Association="Self.FK_RoomsTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="RoomsTbl" EntitySet="RoomsTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDogs_ToStatusTbl" Association="Self.FK_UserDogs_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="UserDogs" EntitySet="UserDogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTbl_ToStatusTbl" Association="Self.FK_UsersTbl_ToStatusTbl">
+            <End Role="StatusTbl" EntitySet="StatusTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDogs_ToUsersTbl" Association="Self.FK_UserDogs_ToUsersTbl">
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+            <End Role="UserDogs" EntitySet="UserDogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersTbl_VeterinarTbl" Association="Self.FK_UsersTbl_VeterinarTbl">
+            <End Role="veterinarTbl" EntitySet="veterinarTbl" />
+            <End Role="UsersTbl" EntitySet="UsersTbl" />
+          </AssociationSet>
+          <FunctionImport Name="GetUserDogs" ReturnType="Collection(Model.GetUserDogs_Result)">
+            <Parameter Name="Userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetUsers" ReturnType="Collection(Model.GetUsers_Result)" />
+        </EntityContainer>
+        <ComplexType Name="GetUserDogs_Result">
+          <Property Type="Int32" Name="DogNumber" Nullable="false" />
+          <Property Type="String" Name="DogName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DogShvav" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="DogType" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="DogStatus" Nullable="false" />
+          <Property Type="String" Name="DogComments" Nullable="true" />
+          <Property Type="Int32" Name="DogUserID" Nullable="false" />
+          <Property Type="String" Name="DogGender" Nullable="false" MaxLength="4" />
+          <Property Type="Boolean" Name="DogNeuter" Nullable="false" />
+          <Property Type="DateTime" Name="DogRabiesVaccine" Nullable="false" />
+          <Property Type="Boolean" Name="DogJump" Nullable="true" />
+          <Property Type="DateTime" Name="DogBirthDate" Nullable="false" />
+          <Property Type="Int32" Name="DogFriendlyWith" Nullable="true" />
+          <Property Type="Boolean" Name="DogDig" Nullable="true" />
+          <Property Type="String" Name="ManagerComments" Nullable="true" />
+          <Property Type="String" Name="DogImage" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetUsers_Result">
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="UserEmail" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="UserAddress" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="UserCity" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="UserStatusCode" Nullable="false" />
+          <Property Type="String" Name="UserComments" Nullable="true" />
+          <Property Type="String" Name="UserFirstName" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="UserLastName" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="UserPaswrd" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="UserPhone1" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="UserPhone2" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="DaysSumForDiscount" Nullable="false" />
+          <Property Type="Boolean" Name="Acceptmessages" Nullable="false" />
+          <Property Type="Int32" Name="UserVeterinarId" Nullable="false" />
+          <Property Type="String" Name="UserRole" Nullable="true" MaxLength="10" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="DogsInOrder">
+            <EntityTypeMapping TypeName="Model.DogsInOrder">
+              <MappingFragment StoreEntitySet="DogsInOrder">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DogTraining" ColumnName="DogTraining" />
+                <ScalarProperty Name="HomeFood" ColumnName="HomeFood" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OpenHours">
+            <EntityTypeMapping TypeName="Model.OpenHours">
+              <MappingFragment StoreEntitySet="OpenHours">
+                <ScalarProperty Name="ShiftNumber" ColumnName="ShiftNumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdersTbl">
+            <EntityTypeMapping TypeName="Model.OrdersTbl">
+              <MappingFragment StoreEntitySet="OrdersTbl">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="OrderconfirmationNumber" ColumnName="OrderconfirmationNumber" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ShiftNumberFrom" ColumnName="ShiftNumberFrom" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="ShiftNumberTo" ColumnName="ShiftNumberTo" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="OrderCreateDate" ColumnName="OrderCreateDate" />
+                <ScalarProperty Name="ManagerComments" ColumnName="ManagerComments" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderTypes">
+            <EntityTypeMapping TypeName="Model.OrderTypes">
+              <MappingFragment StoreEntitySet="OrderTypes">
+                <ScalarProperty Name="OrderTypeId" ColumnName="OrderTypeId" />
+                <ScalarProperty Name="OrderTypeName" ColumnName="OrderTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PricesTbl">
+            <EntityTypeMapping TypeName="Model.PricesTbl">
+              <MappingFragment StoreEntitySet="PricesTbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="Dogs" ColumnName="Dogs" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomSetting">
+            <EntityTypeMapping TypeName="Model.RoomSetting">
+              <MappingFragment StoreEntitySet="RoomSetting">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+                <ScalarProperty Name="RoomFromDate" ColumnName="RoomFromDate" />
+                <ScalarProperty Name="RoomToDate" ColumnName="RoomToDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="RoomShiftFrom" ColumnName="RoomShiftFrom" />
+                <ScalarProperty Name="RoomShiftTo" ColumnName="RoomShiftTo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomsTbl">
+            <EntityTypeMapping TypeName="Model.RoomsTbl">
+              <MappingFragment StoreEntitySet="RoomsTbl">
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="RoomDescription" ColumnName="RoomDescription" />
+                <ScalarProperty Name="RoomStatus" ColumnName="RoomStatus" />
+                <ScalarProperty Name="RoomCapacity" ColumnName="RoomCapacity" />
+                <ScalarProperty Name="RoomComments" ColumnName="RoomComments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusTbl">
+            <EntityTypeMapping TypeName="Model.StatusTbl">
+              <MappingFragment StoreEntitySet="StatusTbl">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="StatusGroup" ColumnName="StatusGroup" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDogs">
+            <EntityTypeMapping TypeName="Model.UserDogs">
+              <MappingFragment StoreEntitySet="UserDogs">
+                <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+                <ScalarProperty Name="DogName" ColumnName="DogName" />
+                <ScalarProperty Name="DogShvav" ColumnName="DogShvav" />
+                <ScalarProperty Name="DogType" ColumnName="DogType" />
+                <ScalarProperty Name="DogStatus" ColumnName="DogStatus" />
+                <ScalarProperty Name="DogComments" ColumnName="DogComments" />
+                <ScalarProperty Name="DogUserID" ColumnName="DogUserID" />
+                <ScalarProperty Name="DogGender" ColumnName="DogGender" />
+                <ScalarProperty Name="DogNeuter" ColumnName="DogNeuter" />
+                <ScalarProperty Name="DogRabiesVaccine" ColumnName="DogRabiesVaccine" />
+                <ScalarProperty Name="DogJump" ColumnName="DogJump" />
+                <ScalarProperty Name="DogBirthDate" ColumnName="DogBirthDate" />
+                <ScalarProperty Name="DogFriendlyWith" ColumnName="DogFriendlyWith" />
+                <ScalarProperty Name="DogDig" ColumnName="DogDig" />
+                <ScalarProperty Name="ManagerComments" ColumnName="ManagerComments" />
+                <ScalarProperty Name="DogImage" ColumnName="DogImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersTbl">
+            <EntityTypeMapping TypeName="Model.UsersTbl">
+              <MappingFragment StoreEntitySet="UsersTbl">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="UserCity" ColumnName="UserCity" />
+                <ScalarProperty Name="UserStatusCode" ColumnName="UserStatusCode" />
+                <ScalarProperty Name="UserComments" ColumnName="UserComments" />
+                <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
+                <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+                <ScalarProperty Name="UserPaswrd" ColumnName="UserPaswrd" />
+                <ScalarProperty Name="UserPhone1" ColumnName="UserPhone1" />
+                <ScalarProperty Name="UserPhone2" ColumnName="UserPhone2" />
+                <ScalarProperty Name="DaysSumForDiscount" ColumnName="DaysSumForDiscount" />
+                <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
+                <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="veterinarTbl">
+            <EntityTypeMapping TypeName="Model.veterinarTbl">
+              <MappingFragment StoreEntitySet="veterinarTbl">
+                <ScalarProperty Name="VeterinarId" ColumnName="VeterinarId" />
+                <ScalarProperty Name="VeterinarName" ColumnName="VeterinarName" />
+                <ScalarProperty Name="VeterinarEmail" ColumnName="VeterinarEmail" />
+                <ScalarProperty Name="VeterinarAddress" ColumnName="VeterinarAddress" />
+                <ScalarProperty Name="VeterinarCity" ColumnName="VeterinarCity" />
+                <ScalarProperty Name="VeterinarPhone1" ColumnName="VeterinarPhone1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetUserDogs" FunctionName="Model.Store.GetUserDogs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetUserDogs_Result">
+                <ScalarProperty Name="DogNumber" ColumnName="DogNumber" />
+                <ScalarProperty Name="DogName" ColumnName="DogName" />
+                <ScalarProperty Name="DogShvav" ColumnName="DogShvav" />
+                <ScalarProperty Name="DogType" ColumnName="DogType" />
+                <ScalarProperty Name="DogStatus" ColumnName="DogStatus" />
+                <ScalarProperty Name="DogComments" ColumnName="DogComments" />
+                <ScalarProperty Name="DogUserID" ColumnName="DogUserID" />
+                <ScalarProperty Name="DogGender" ColumnName="DogGender" />
+                <ScalarProperty Name="DogNeuter" ColumnName="DogNeuter" />
+                <ScalarProperty Name="DogRabiesVaccine" ColumnName="DogRabiesVaccine" />
+                <ScalarProperty Name="DogJump" ColumnName="DogJump" />
+                <ScalarProperty Name="DogBirthDate" ColumnName="DogBirthDate" />
+                <ScalarProperty Name="DogFriendlyWith" ColumnName="DogFriendlyWith" />
+                <ScalarProperty Name="DogDig" ColumnName="DogDig" />
+                <ScalarProperty Name="ManagerComments" ColumnName="ManagerComments" />
+                <ScalarProperty Name="DogImage" ColumnName="DogImage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUsers" FunctionName="Model.Store.GetUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.GetUsers_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="UserCity" ColumnName="UserCity" />
+                <ScalarProperty Name="UserStatusCode" ColumnName="UserStatusCode" />
+                <ScalarProperty Name="UserComments" ColumnName="UserComments" />
+                <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
+                <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+                <ScalarProperty Name="UserPaswrd" ColumnName="UserPaswrd" />
+                <ScalarProperty Name="UserPhone1" ColumnName="UserPhone1" />
+                <ScalarProperty Name="UserPhone2" ColumnName="UserPhone2" />
+                <ScalarProperty Name="DaysSumForDiscount" ColumnName="DaysSumForDiscount" />
+                <ScalarProperty Name="Acceptmessages" ColumnName="Acceptmessages" />
+                <ScalarProperty Name="UserVeterinarId" ColumnName="UserVeterinarId" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

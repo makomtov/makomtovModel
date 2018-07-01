@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="982083a3e361466a86df118ded386ea4" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.DogsInOrder" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.OpenHours" Width="1.5" PointX="3.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.OrdersTbl" Width="1.5" PointX="6" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.OrderTypes" Width="1.5" PointX="3.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PricesTbl" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.RoomSetting" Width="1.5" PointX="11.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.RoomsTbl" Width="1.5" PointX="3" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.StatusTbl" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.UserDogs" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.UsersTbl" Width="1.5" PointX="9" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.veterinarTbl" Width="1.5" PointX="6.75" PointY="7" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_DogsInOrder_ToOrdersTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_DogsInOrder_ToStatusTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_DogsInOrder_ToUserDogsTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_OrdersTbl_ToShiftNumberFrom" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_OrdersTbl_ToShiftNumberTo" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RoomSetting_ToShiftNumberFrom" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RoomSetting_ToShiftNumberTo" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_OrdersTbl_ToOrderTypesTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_OrdersTbl_ToStatusTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_OrdersTbl_ToUsersTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RoomSetting_ToOrdersTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RoomSetting_ToRoomsTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RoomSetting_ToUserDogs" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_RoomsTbl_ToStatusTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_UserDogs_ToStatusTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_UsersTbl_ToStatusTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_UserDogs_ToUsersTbl" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_UsersTbl_VeterinarTbl" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
