@@ -77,50 +77,90 @@ namespace WebApiMTModel.Controllers
         /// מכניס כלב לחדר
         /// </summary>
         /// <param name="dog"></param>
-      //  /// <param name="roomNumber"></param>
-      //  [System.Web.Http.Authorize(Roles = "admin")]
-      //  [System.Web.Http.Route("AddDogToRoom")]
-      ////[AllowAnonymous]
-      //  [HttpPost]
-      //  public void AddDogToRoom([FromBody]DogInRoomDetailsView dog, int roomNumber)
-      //  {
-      //      RoomsServie roomsServie = new RoomsServie();
-      //      roomsServie.AddDogToRoom(dog, roomNumber);
-      //  }
+        //  /// <param name="roomNumber"></param>
+        //  [System.Web.Http.Authorize(Roles = "admin")]
+        //  [System.Web.Http.Route("AddDogToRoom")]
+        ////[AllowAnonymous]
+        //  [HttpPost]
+        //  public void AddDogToRoom([FromBody]DogInRoomDetailsView dog, int roomNumber)
+        //  {
+        //      RoomsServie roomsServie = new RoomsServie();
+        //      roomsServie.AddDogToRoom(dog, roomNumber);
+        //  }
         /// <summary>
         /// מוציא כלב מחדר
         /// </summary>
         /// <param name="dogNumber"></param>
         /// <param name="RoomNumber"></param>
         /// 
-      //  [System.Web.Http.Authorize(Roles = "admin")]
-      //  [System.Web.Http.Route("RemoveDogFromRoom")]
-      ////  [AllowAnonymous]
-      //  [HttpGet]
-      //  public void RemoveDogFromRoom(DogInRoomDetailsView dog, int RoomNumber)
-      //  {
-      //      RoomsServie roomsServie = new RoomsServie();
-      //      roomsServie.RemoveDogFromRoom(dog, RoomNumber);
-      //  }
-        
-      //  /// <summary>
-      //  /// שליפת כל הכלבים לפי תאריכי הגעה שעאין להם שיבוץ לחדר
-      //  /// </summary>
-      //  /// <param name="fromDate"></param>
-      //  /// <param name="toDate"></param>
-      //  /// <returns></returns>
+        //  [System.Web.Http.Authorize(Roles = "admin")]
+        //  [System.Web.Http.Route("RemoveDogFromRoom")]
+        ////  [AllowAnonymous]
+        //  [HttpGet]
+        //  public void RemoveDogFromRoom(DogInRoomDetailsView dog, int RoomNumber)
+        //  {
+        //      RoomsServie roomsServie = new RoomsServie();
+        //      roomsServie.RemoveDogFromRoom(dog, RoomNumber);
+        //  }
+
+        //  /// <summary>
+        //  /// שליפת כל הכלבים לפי תאריכי הגעה שעאין להם שיבוץ לחדר
+        //  /// </summary>
+        //  /// <param name="fromDate"></param>
+        //  /// <param name="toDate"></param>
+        //  /// <returns></returns>
 
 
-      //  public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
-      //  {
-      //      RoomsServie roomsServie = new RoomsServie();
-      //      return roomsServie.GetDogsNoSetting(fromDate, toDate);
-      //  }
-      //  /// <summary>
-      //  /// מעדכנת איכלוס חדרים לפי הרשימה
-      //  /// </summary>
-      //  /// <param name="listRoomsDetails"></param>
+        //  public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
+        //  {
+        //      RoomsServie roomsServie = new RoomsServie();
+        //      return roomsServie.GetDogsNoSetting(fromDate, toDate);
+        //  }
+        //  /// <summary>
+        //  /// מעדכנת איכלוס חדרים לפי הרשימה
+        //  /// </summary>
+        //  /// <param name="listRoomsDetails"></param>
 
-       
+        [System.Web.Http.Authorize(Roles = "admin")]
+        [System.Web.Http.Route("AddRoom")]
+        [HttpPost]
+        public HttpResponseMessage AddRoom([FromBody]RoomsDetailsView roomsDetails)
+        {
+
+            try
+            {
+                //var jsonString = userNew.Content.ReadAsStringAsync().Result;
+                // UserDetailsView user = JsonConvert.DeserializeObject<UserDetailsView>(userNew);
+                RoomValidator validator = new RoomValidator();
+                ValidationResult results = validator.Validate(roomsDetails);
+                if (results.IsValid)
+                {
+
+                    RoomsServie roomsServie = new RoomsServie();
+                    roomsServie.AddRoom(roomsDetails);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+
+                    //  return Ok();
+                }
+                else
+                {
+                    //List<string> errorlist = new List<string>();
+                    //foreach (var value in results.Errors)
+                    //{
+                    //    errorlist.Add(value.ErrorMessage);
+                    //}
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                // throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest,
+                //                           badInputValidationException.Result));
+                //Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+        }
     }
-}
+
+   
+        }

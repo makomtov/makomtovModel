@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,34 @@ namespace WebApiMTModel.Models.Models.View
 {
     public class RoomsServie
     {
+        public void AddRoom(RoomsDetailsView roomsDetailsView)
+        {
+            try
+            {
+                using (Entities context = new Entities())
+                {
+                    RoomsTbl roomsTbl = new RoomsTbl();
+                    if (roomsDetailsView.RoomCapacity > 0)
+                        roomsTbl.RoomCapacity = roomsDetailsView.RoomCapacity;
+                    else
+                        roomsTbl.RoomCapacity = 10;
+                    if (roomsDetailsView.RoomComments != "")
+                        roomsTbl.RoomComments = roomsDetailsView.RoomComments;
+                    if(roomsDetailsView.RoomDescription!="")
+                    roomsTbl.RoomDescription = roomsDetailsView.RoomDescription;
+                    roomsTbl.RoomStatus = 21;
+                    
+                 
+                    context.RoomsTbl.Add(roomsTbl);
+                    context.SaveChanges();
 
+                }
+
+            }
+            catch (SqlException ex)
+            { throw ex; }
+
+        }
         public List<RoomsDetailsView> GetRoomsSetting(DateTime date, int  shift)
         {
             try
