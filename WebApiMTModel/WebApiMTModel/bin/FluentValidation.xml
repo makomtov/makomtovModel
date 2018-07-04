@@ -2037,6 +2037,13 @@
             <param name="valueToCompare">The value being compared</param>
             <returns></returns>
         </member>
+        <member name="M:FluentValidation.Internal.Extensions.IsAsync(FluentValidation.ValidationContext)">
+            <summary>
+            Checks whether this is an asynchronous validation run.
+            </summary>
+            <param name="ctx"></param>
+            <returns></returns>
+        </member>
         <member name="T:FluentValidation.Internal.IConfigurable`2">
             <summary>
             Represents an object that is configurable.
@@ -2424,6 +2431,7 @@
             <param name="cascadeModeThunk"></param>
             <param name="typeToValidate"></param>
             <param name="containerType"></param>
+            <param name="validatorType"></param>
         </member>
         <member name="M:FluentValidation.Internal.IncludeRule.Create``1(FluentValidation.IValidator,System.Func{FluentValidation.CascadeMode})">
             <summary>
@@ -2438,7 +2446,7 @@
             <summary>
             Creates a new include rule from an existing validator
             </summary>
-            <param name="validator"></param>
+            <param name="func"></param>
             <param name="cascadeModeThunk"></param>
             <typeparam name="T"></typeparam>
             <typeparam name="TValidator"></typeparam>
@@ -2782,6 +2790,19 @@
             Every caller is responsible for not adding <c>null</c> to the list.
             </remarks>
         </member>
+        <member name="M:FluentValidation.Results.ValidationResult.ToString">
+            <summary>
+            Generates a string representation of the error messages separated by new lines.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FluentValidation.Results.ValidationResult.ToString(System.String)">
+            <summary>
+            Generates a string representation of the error messages separated by the specified character.
+            </summary>
+            <param name="separator">The character to separate the error messages.</param>
+            <returns></returns>
+        </member>
         <member name="T:FluentValidation.IRuleBuilderInitial`2">
             <summary>
             Rule builder that starts the chain
@@ -3100,15 +3121,14 @@
             Pluggable logic for resolving display names
             </summary>
         </member>
-        <member name="P:FluentValidation.ValidatorOptions.ErrorCodeResolver">
-            <summary>
-            Defines how the error codes for validators are constructed.
-            By default this is the class name of the property validator.
-            </summary>
-        </member>
         <member name="P:FluentValidation.ValidatorOptions.DisableAccessorCache">
             <summary>
             Disables the expression accessor cache. Not recommended.
+            </summary>
+        </member>
+        <member name="P:FluentValidation.ValidatorOptions.ErrorCodeResolver">
+            <summary>
+            Pluggable resolver for default error codes
             </summary>
         </member>
         <member name="T:FluentValidation.ValidatorSelectorOptions">
@@ -3277,6 +3297,18 @@
             This interface should not be implemented directly in your code as it is subject to change.
             Please inherit from <see cref="T:FluentValidation.Validators.PropertyValidator">PropertyValidator</see> instead.
             </summary>
+        </member>
+        <member name="T:FluentValidation.Validators.IShouldValidateAsync">
+            <summary>
+            Indicates that a validator can support asynchronous operation.
+            </summary>
+        </member>
+        <member name="M:FluentValidation.Validators.IShouldValidateAsync.ShouldValidateAsync(FluentValidation.ValidationContext)">
+            <summary>
+            Determines whether this validator should be run asynchronously or not.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
         </member>
         <member name="M:FluentValidation.Validators.PropertyValidator.PrepareMessageFormatterForValidationError(FluentValidation.Validators.PropertyValidatorContext)">
             <summary>

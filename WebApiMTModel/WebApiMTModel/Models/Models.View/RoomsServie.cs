@@ -158,7 +158,7 @@ namespace WebApiMTModel.Models.Models.View
                          v.OrderNumber,
                          u.RoomShiftFrom,
                          u.RoomShiftTo,
-                     }).Where(u => ((u.RoomFromDate < date.Date && u.RoomToDate > date.Date && u.RoomNumber == roomNumber) || ((u.RoomFromDate == date.Date && u.RoomShiftFrom == shift && u.RoomNumber == roomNumber) || (u.RoomToDate == date.Date && u.RoomShiftTo == shift && u.RoomNumber == roomNumber))))
+                     }).Where(u => ((u.RoomFromDate < date.Date && u.RoomToDate > date.Date && u.RoomNumber == roomNumber) || ((u.RoomFromDate == date.Date && u.RoomShiftFrom <= shift && u.RoomNumber == roomNumber) || (u.RoomToDate == date.Date && u.RoomShiftTo >= shift && u.RoomNumber == roomNumber))))
                     .Join(context.UsersTbl,
                     o => o.OrderUserId, u => u.UserID,
                     (o, u) => new
@@ -220,10 +220,10 @@ namespace WebApiMTModel.Models.Models.View
 
                     }).Distinct().ToList();
 
-                if (shift != 0)
-                { 
-                list= list.FindAll(item => item.RoomShiftFrom==shift);
-            }
+            //    if (shift != 0)
+            //    { 
+            //    list= list.FindAll(item => item.RoomShiftFrom==shift);
+            //}
 
                 return list;
 
@@ -411,7 +411,10 @@ namespace WebApiMTModel.Models.Models.View
 
                 using (Entities context = new Entities())
                 {
-                    var dogt = context.Set<RoomSetting>().Find(dog.id);
+                    //context.Blogs
+                    //.Where(b => b.Name == "ADO.NET Blog")
+                    //.FirstOrDefault();
+                    var dogt = context.RoomSetting.Where(d => d.RoomNumber == RoomNumber && d.DogNumber==dog.DogNumber && d.OrderNumber==dog.OrderNumber).First();
                     dog.RoomShiftTo =(int) dogt.RoomShiftTo;
                     dog.ToDateInRoom = (DateTime)dogt.RoomToDate;
 
@@ -455,6 +458,22 @@ namespace WebApiMTModel.Models.Models.View
             }
             return -1;
         }
+
+        public void RemoveDogFromFutureRoomSetting(DogDetailsView dog)
+        {
+            try
+            {
+                using (Entities context = new Entities())
+                {
+                    context.RoomSetting.RemoveRange(context.RoomSetting.Where(x => x.DogNumber == dog.DogNumber && x.RoomFromDate>DateTime.Now));
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         //כל הכלבים בכל ההזמנות בתאריך והמשמרת המבוקשים
         public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime date, int shift)
        
@@ -466,7 +485,7 @@ namespace WebApiMTModel.Models.Models.View
                     int rooms = context.RoomsTbl.Count();
                     //כל הכלבים המשובצים לחדרים בתאריכים המבןקשים
 
-                    for (int i = 0; i < rooms; i++)
+                    for (int i = 1; i <= rooms; i++)
                     {
                         dogsInRoom.AddRange(GetDogsInRoom(i, date,shift));
                     }
@@ -538,88 +557,90 @@ namespace WebApiMTModel.Models.Models.View
                 }
 
             }
-            //public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
-            //{
-            //    List<DogInRoomDetailsView> dogsInRoom = new List<DogInRoomDetailsView>();
-            //    using (Entities context = new Entities())
-            //    {
+        //public List<DogInRoomDetailsView> GetDogsNoSetting(DateTime fromDate, DateTime toDate)
+        //{
+        //    List<DogInRoomDetailsView> dogsInRoom = new List<DogInRoomDetailsView>();
+        //    using (Entities context = new Entities())
+        //    {
 
-            //        int rooms = context.RoomsTbl.Count();
-            //        //כל הכלבים המשובצים לחדרים בתאריכים המבןקשים
+        //        int rooms = context.RoomsTbl.Count();
+        //        //כל הכלבים המשובצים לחדרים בתאריכים המבןקשים
 
-            //        for (int i = 0; i < rooms; i++)
-            //        {
-            //            dogsInRoom.AddRange(GetDogsInRoom(i, fromDate, toDate));
-            //        }
+        //        for (int i = 0; i < rooms; i++)
+        //        {
+        //            dogsInRoom.AddRange(GetDogsInRoom(i, fromDate, toDate));
+        //        }
 
-            //        OrderService orderService = new OrderService();
-            //        //כל ההזמנות
-            //        List<OrderDetailsViewManager> listOrders= orderService.GetAllOrdersAndDogsManager();
-            //        // כל ההזמנות בתאריכים המבוקשים
-            //        List<OrderDetailsViewManager> listOrderInDates = listOrders.Where(
-            //                                                               p=>(p.OrderStatus == 12 || p.OrderStatus == 11 || p.OrderStatus == 15)
-            //                                                              && (p.FromDate >= fromDate &&  p.ToDate<= fromDate)
-            //                                                               || (p.ToDate >= fromDate && p.ToDate <= toDate)
-            //                                                              || (p.FromDate <= fromDate && p.ToDate > toDate)
+        //        OrderService orderService = new OrderService();
+        //        //כל ההזמנות
+        //        List<OrderDetailsViewManager> listOrders= orderService.GetAllOrdersAndDogsManager();
+        //        // כל ההזמנות בתאריכים המבוקשים
+        //        List<OrderDetailsViewManager> listOrderInDates = listOrders.Where(
+        //                                                               p=>(p.OrderStatus == 12 || p.OrderStatus == 11 || p.OrderStatus == 15)
+        //                                                              && (p.FromDate >= fromDate &&  p.ToDate<= fromDate)
+        //                                                               || (p.ToDate >= fromDate && p.ToDate <= toDate)
+        //                                                              || (p.FromDate <= fromDate && p.ToDate > toDate)
 
-            //                                                             ).ToList();
+        //                                                             ).ToList();
 
 
-            //        List<DogsInOrderView> dogsInOrders = new List<DogsInOrderView>();
-            //        //כל הכלבים בכל ההזמנות בתאריכים המבוקשים
-            //        for (int i = 0; i < listOrderInDates.Count; i++)
-            //        {
-            //            dogsInOrders.AddRange(orderService.GetDogsForOrder(listOrderInDates[i].OrderNumber));
-            //        }
-            //        List<DogInRoomDetailsView> outOfRoomsList = new List<DogInRoomDetailsView>();
-            //    foreach (DogsInOrderView dogInOrder in dogsInOrders)
-            //    {
-            //        if(isExist(dogInOrder.DogNumber,dogsInRoom)==-1) //כלב בהזמנה ולא משובץ בחדר
-            //        {
-            //            DogInRoomDetailsView dogOutOfRoom = new DogInRoomDetailsView();
-            //            dogOutOfRoom.DogComments = dogInOrder.DogComments;
-            //            dogOutOfRoom.DogBirthDate = dogInOrder.DogBirthDate;
-            //            dogOutOfRoom.DogDig = dogInOrder.DogDig;
-            //            // dogOutOfRoom.DogFood=dogInOrder.
-            //            dogOutOfRoom.DogFriendlyWith = dogInOrder.DogFriendlyWith;
-            //            dogOutOfRoom.DogGender = dogInOrder.DogGender;
-            //            dogOutOfRoom.DogImage = dogInOrder.DogImage;
-            //            dogOutOfRoom.DogJump = dogInOrder.DogJump;
-            //            dogOutOfRoom.DogName = dogInOrder.DogName;
-            //            dogOutOfRoom.DogNeuter = dogInOrder.DogNeuter;
-            //            dogOutOfRoom.DogNumber = dogInOrder.DogNumber;
-            //            dogOutOfRoom.DogorderNumber = dogInOrder.OrderNumber;
-            //            dogOutOfRoom.DogRabiesVaccine = dogInOrder.DogRabiesVaccine;
-            //            dogOutOfRoom.DogShvav = dogInOrder.DogShvav;
-            //            dogOutOfRoom.DogStatus = dogInOrder.DogStatus;
-            //            dogOutOfRoom.DogTraining = dogInOrder.DogTraining;
-            //            dogOutOfRoom.DogType = dogInOrder.DogType;
-            //            dogOutOfRoom.DogUserID = dogInOrder.DogUserID;
-            //            dogOutOfRoom.OrderNumber = dogInOrder.OrderNumber;
+        //        List<DogsInOrderView> dogsInOrders = new List<DogsInOrderView>();
+        //        //כל הכלבים בכל ההזמנות בתאריכים המבוקשים
+        //        for (int i = 0; i < listOrderInDates.Count; i++)
+        //        {
+        //            dogsInOrders.AddRange(orderService.GetDogsForOrder(listOrderInDates[i].OrderNumber));
+        //        }
+        //        List<DogInRoomDetailsView> outOfRoomsList = new List<DogInRoomDetailsView>();
+        //    foreach (DogsInOrderView dogInOrder in dogsInOrders)
+        //    {
+        //        if(isExist(dogInOrder.DogNumber,dogsInRoom)==-1) //כלב בהזמנה ולא משובץ בחדר
+        //        {
+        //            DogInRoomDetailsView dogOutOfRoom = new DogInRoomDetailsView();
+        //            dogOutOfRoom.DogComments = dogInOrder.DogComments;
+        //            dogOutOfRoom.DogBirthDate = dogInOrder.DogBirthDate;
+        //            dogOutOfRoom.DogDig = dogInOrder.DogDig;
+        //            // dogOutOfRoom.DogFood=dogInOrder.
+        //            dogOutOfRoom.DogFriendlyWith = dogInOrder.DogFriendlyWith;
+        //            dogOutOfRoom.DogGender = dogInOrder.DogGender;
+        //            dogOutOfRoom.DogImage = dogInOrder.DogImage;
+        //            dogOutOfRoom.DogJump = dogInOrder.DogJump;
+        //            dogOutOfRoom.DogName = dogInOrder.DogName;
+        //            dogOutOfRoom.DogNeuter = dogInOrder.DogNeuter;
+        //            dogOutOfRoom.DogNumber = dogInOrder.DogNumber;
+        //            dogOutOfRoom.DogorderNumber = dogInOrder.OrderNumber;
+        //            dogOutOfRoom.DogRabiesVaccine = dogInOrder.DogRabiesVaccine;
+        //            dogOutOfRoom.DogShvav = dogInOrder.DogShvav;
+        //            dogOutOfRoom.DogStatus = dogInOrder.DogStatus;
+        //            dogOutOfRoom.DogTraining = dogInOrder.DogTraining;
+        //            dogOutOfRoom.DogType = dogInOrder.DogType;
+        //            dogOutOfRoom.DogUserID = dogInOrder.DogUserID;
+        //            dogOutOfRoom.OrderNumber = dogInOrder.OrderNumber;
 
-            //            OrderDetailsViewManager orderDetailsViewManager = listOrderInDates.Find(o => o.OrderNumber == dogOutOfRoom.OrderNumber);
-            //            dogOutOfRoom.DogUserID = orderDetailsViewManager.Userid;
-            //            dogOutOfRoom.FromDateInPension = orderDetailsViewManager.FromDate;
-            //            dogOutOfRoom.ToDateInPension = orderDetailsViewManager.ToDate;
-            //            dogOutOfRoom.ToDateInRoom= orderDetailsViewManager.ToDate;
-            //            dogOutOfRoom.RoomShiftTo = orderDetailsViewManager.ShiftNumberTo;
-            //            dogOutOfRoom.UserFirstName = orderDetailsViewManager.userFirstName;
-            //            dogOutOfRoom.UserLastName = orderDetailsViewManager.userLastName;
-            //            var user = context.UsersTbl.Find(dogOutOfRoom.DogUserID);
-            //           dogOutOfRoom.UserPhone1 = user.UserPhone1;
-            //                dogOutOfRoom.UserPhone2 = user.UserPhone2;
-            //                var vet= context.veterinarTbl.Find(user.UserVeterinarId);
-            //                dogOutOfRoom.VeterinarName = vet.VeterinarName;
-            //                dogOutOfRoom.VeterinarPhone1 = vet.VeterinarPhone1;
-            //                dogOutOfRoom.RoomNumberDB = 0;
-            //                outOfRoomsList.Add(dogOutOfRoom);
+        //            OrderDetailsViewManager orderDetailsViewManager = listOrderInDates.Find(o => o.OrderNumber == dogOutOfRoom.OrderNumber);
+        //            dogOutOfRoom.DogUserID = orderDetailsViewManager.Userid;
+        //            dogOutOfRoom.FromDateInPension = orderDetailsViewManager.FromDate;
+        //            dogOutOfRoom.ToDateInPension = orderDetailsViewManager.ToDate;
+        //            dogOutOfRoom.ToDateInRoom= orderDetailsViewManager.ToDate;
+        //            dogOutOfRoom.RoomShiftTo = orderDetailsViewManager.ShiftNumberTo;
+        //            dogOutOfRoom.UserFirstName = orderDetailsViewManager.userFirstName;
+        //            dogOutOfRoom.UserLastName = orderDetailsViewManager.userLastName;
+        //            var user = context.UsersTbl.Find(dogOutOfRoom.DogUserID);
+        //           dogOutOfRoom.UserPhone1 = user.UserPhone1;
+        //                dogOutOfRoom.UserPhone2 = user.UserPhone2;
+        //                var vet= context.veterinarTbl.Find(user.UserVeterinarId);
+        //                dogOutOfRoom.VeterinarName = vet.VeterinarName;
+        //                dogOutOfRoom.VeterinarPhone1 = vet.VeterinarPhone1;
+        //                dogOutOfRoom.RoomNumberDB = 0;
+        //                outOfRoomsList.Add(dogOutOfRoom);
 
-            //        }
-            //    }
-            //        return outOfRoomsList;
-            //    }
+        //        }
+        //    }
+        //        return outOfRoomsList;
+        //    }
 
-            //    }
+        //    }
+
+       
             public void UpdateRoomsSetting(List<RoomsDetailsView> list)
         {
 

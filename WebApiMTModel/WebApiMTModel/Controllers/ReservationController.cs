@@ -35,6 +35,31 @@ namespace WebApiMTModel.Controllers
             return orderService.GetOrders();
 
         }
+
+        /// <summary>
+        ///  שליפת כל ההזמנות העתידיות למשתמש שבהן מופיע כלב מסוים
+        /// </summary>
+        /// <returns></returns>
+        //api/Reservation/GetFutureOrders/8/orders/3
+       
+        [Route("GetFutureOrders")]
+       [System.Web.Http.Authorize(Roles = "admin")]
+        [HttpPost]
+        // [AllowAnonymous]
+        public HttpResponseMessage GetFutureOrders([FromBody]DogDetailsView dogDetailsView)//int user,int dogID)
+        {
+
+            OrderService orderService = new OrderService();
+            List<OrderDetailsView> list = orderService.GetOrders(dogDetailsView);
+            if (list == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, list);
+            }
+        }
         /// <summary>
         /// get open hours
         /// </summary>

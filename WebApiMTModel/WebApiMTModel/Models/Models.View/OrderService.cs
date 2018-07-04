@@ -142,6 +142,39 @@ namespace WebApiMTModel.Models.Models.View
 
         }
 
+        //שליפת כל ההזמנות העתידיות של לקוח מסוים עם כלב מסוים
+        public List<OrderDetailsView> GetOrders(DogDetailsView dogDetailsView)
+
+        {
+            try
+            {
+                Entities context = new Entities();
+                List<OrderDetailsView> orderslist = GetAllOrdersAndDogs();
+                for (int i= orderslist.Count-1; i>=0;i--)
+                {
+                    if (orderslist[i].Userid != dogDetailsView.DogUserID || orderslist[i].FromDate.CompareTo(DateTime.Now.Date)<0)
+                    {
+                        orderslist.RemoveAt(i);
+
+                    }
+                    else
+                    {
+                        List<DogsInOrderView> l = orderslist[i].mDogs.Where(d => d.DogNumber == dogDetailsView.DogNumber).ToList();
+                        if (l.Count == 0)
+                            orderslist.RemoveAt(i);
+                    }
+                }
+
+                return orderslist;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         //שליפת כל ההזמנות וכל הכלבים בהזמנות
         public List<OrderDetailsView> GetAllOrdersAndDogs()
         {
@@ -421,6 +454,7 @@ namespace WebApiMTModel.Models.Models.View
         /// <param name="OrdersList"></param>
         public void UpdateOrdersByManager(List<OrderDetailsViewManager> OrdersList)
         {
+            int update = 0;
             try
             {
                 using (Entities context = new Entities())
@@ -434,7 +468,7 @@ namespace WebApiMTModel.Models.Models.View
                             if (!EqualsOrders(order, ordert))
                             {
                                 context.Entry(ordert).CurrentValues.SetValues(order);
-                               
+                                
                                 foreach (DogsInOrderView dog in order.mDogs)
                                 {
                                     var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber, dog.DogNumber);
@@ -442,7 +476,20 @@ namespace WebApiMTModel.Models.Models.View
                                         context.Entry(dogt).CurrentValues.SetValues(dog);
                                     else
                                         if (dog.Status == 23)
+                                    {
                                         context.DogsInOrder.Remove(dogt);
+                                        RoomsServie roomsServie = new RoomsServie();
+                                        roomsServie.RemoveDogFromFutureRoomSetting(dog); //הוצאת כלב שבוטל מהחדרים בהזמנות עתידיות
+                                        if (ordert.DogsInOrder.Count == 0)
+                                        {
+                                            context.OrdersTbl.Remove(ordert);
+                                            update = 1; //ההזמנה בוטלה בגלל שאין כלבים בהזמנה
+                                        }
+                                        else
+                                            update = 2;
+
+                                    }
+
                                 }
                                 context.SaveChanges();
                                 //שליחת מייל למשתמש
@@ -451,7 +498,15 @@ namespace WebApiMTModel.Models.Models.View
                                 mailRequest.recipient = order.UserEmail;
                                 
                                     mailRequest.subject = "מצב הזמנה - " + order.OrderNumber + "מקום טוב- יוסף טוויטו";
-                                if (order.OrderStatus == 12)
+                                if(update==1)
+                                {
+                                    mailRequest.body = " ההזמנה בוטלה בגלל שאין כלבים בהזמנה";
+                                }
+                                else if (update == 2)
+                                {
+                                    mailRequest.body = " ביטול הכלב מההזמנה בוצע";
+                                }
+                                else if (order.OrderStatus == 12)
                                 {
                                     mailRequest.body = " הזמנתך אושרה";
                                 }

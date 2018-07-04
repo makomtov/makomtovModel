@@ -21,12 +21,12 @@ namespace WebApiMTModel.Models.Models.View
             RuleFor(x => x.UserLastName).NotEmpty();
             RuleFor(x => x.UserCity).Must(checkCityExist);
             RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{8}");
-            RuleFor(x => x.UserPhone2).Matches(@"0\d{8}");
+            RuleFor(x => x.UserPhone2).Matches(@"^\+?(972|0)(\-)?0?(([23489]{ 1}\d{7})|[5]{1}\d{8})$").When(x => x.UserPhone2 != ""); 
             RuleFor(x => x.UserAddress).NotEmpty();
             RuleFor(x => x.UserPaswrd).NotEmpty();
             RuleFor(x => x.UserStatusCode).NotEmpty();
             RuleFor(x => x.VeterinarName).NotEmpty();
-            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^ 0\d{8}$|^0[5,7]{1}\d{8}$");
+            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$");
 
            // RuleFor(x => x.UserPaswrd).Matches();
           // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
