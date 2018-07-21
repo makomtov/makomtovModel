@@ -152,7 +152,7 @@ namespace WebApiMTModel.Models.Models.View
                 List<OrderDetailsView> orderslist = GetAllOrdersAndDogs();
                 for (int i= orderslist.Count-1; i>=0;i--)
                 {
-                    if (orderslist[i].Userid != dogDetailsView.DogUserID || orderslist[i].FromDate.CompareTo(DateTime.Now.Date)<0)
+                    if (orderslist[i].Userid != dogDetailsView.DogUserID || orderslist[i].FromDate.CompareTo(DateTime.Now.Date)<0 || orderslist[i].OrderStatus==13 || orderslist[i].OrderStatus==14)
                     {
                         orderslist.RemoveAt(i);
 

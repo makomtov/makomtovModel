@@ -495,7 +495,7 @@ namespace WebApiMTModel.Models.Models.View
                     List<OrderDetailsViewManager> listOrders = orderService.GetAllOrdersAndDogsManager();
                     // כל ההזמנות בתאריך והמשמרת המבוקשים
                     List<OrderDetailsViewManager> listOrderInDates = listOrders.Where(
-                                                                           p => (p.OrderStatus == 12 || p.OrderStatus == 11 || p.OrderStatus == 15)
+                                                                           p => (p.OrderStatus == 12 || p.OrderStatus == 15)
                                                                           && (p.FromDate < date && p.ToDate > date)
                                                                            || (p.FromDate == date && p.ShiftNumberFrom<=shift)
                                                                           || (p.ToDate == date && p.ShiftNumberTo >= shift)

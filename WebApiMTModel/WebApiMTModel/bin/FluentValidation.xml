@@ -184,11 +184,14 @@
             </summary>
             <param name="instanceToValidate"></param>
         </member>
-        <member name="T:FluentValidation.DependentRules`1">
+        <member name="M:FluentValidation.AbstractValidator`1.PreValidate(FluentValidation.ValidationContext{`0},FluentValidation.Results.ValidationResult)">
             <summary>
-            Container class for dependent rule definitions
+            Determines if validation should occur and provides a means to modify the context and ValidationResult prior to execution.
+            If this method returns false, then the ValidationResult is immediately returned from Validate/ValidateAsync.
             </summary>
-            <typeparam name="T"></typeparam>
+            <param name="context"></param>
+            <param name="result"></param>
+            <returns></returns>
         </member>
         <member name="T:FluentValidation.AssemblyScanner">
             <summary>
@@ -424,6 +427,12 @@
             <summary>
             Remove all validators for the given property.
             </summary>
+        </member>
+        <member name="T:FluentValidation.DependentRules`1">
+            <summary>
+            Container class for dependent rule definitions
+            </summary>
+            <typeparam name="T"></typeparam>
         </member>
         <member name="T:FluentValidation.Resources.IResourceAccessorBuilder">
             <summary>
@@ -2058,6 +2067,49 @@
             <param name="configurator">Action to configure the object.</param>
             <returns></returns>
         </member>
+        <member name="T:FluentValidation.Internal.IncludeRule">
+            <summary>
+            Include rule
+            </summary>
+        </member>
+        <member name="M:FluentValidation.Internal.IncludeRule.#ctor(FluentValidation.IValidator,System.Func{FluentValidation.CascadeMode},System.Type,System.Type)">
+            <summary>
+            Creates a new IncludeRule
+            </summary>
+            <param name="validator"></param>
+            <param name="cascadeModeThunk"></param>
+            <param name="typeToValidate"></param>
+            <param name="containerType"></param>
+        </member>
+        <member name="M:FluentValidation.Internal.IncludeRule.#ctor(System.Func{System.Object,FluentValidation.IValidator},System.Func{FluentValidation.CascadeMode},System.Type,System.Type,System.Type)">
+            <summary>
+            Creates a new IncludeRule
+            </summary>
+            <param name="func"></param>
+            <param name="cascadeModeThunk"></param>
+            <param name="typeToValidate"></param>
+            <param name="containerType"></param>
+            <param name="validatorType"></param>
+        </member>
+        <member name="M:FluentValidation.Internal.IncludeRule.Create``1(FluentValidation.IValidator,System.Func{FluentValidation.CascadeMode})">
+            <summary>
+            Creates a new include rule from an existing validator
+            </summary>
+            <param name="validator"></param>
+            <param name="cascadeModeThunk"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:FluentValidation.Internal.IncludeRule.Create``2(System.Func{``0,``1},System.Func{FluentValidation.CascadeMode})">
+            <summary>
+            Creates a new include rule from an existing validator
+            </summary>
+            <param name="func"></param>
+            <param name="cascadeModeThunk"></param>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TValidator"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:FluentValidation.Internal.IValidatorSelector">
             <summary>
             Determines whether or not a rule should execute.
@@ -2408,49 +2460,6 @@
             </summary>
             <param name="predicate"></param>
             <param name="applyConditionTo"></param>
-        </member>
-        <member name="T:FluentValidation.Internal.IncludeRule">
-            <summary>
-            Include rule
-            </summary>
-        </member>
-        <member name="M:FluentValidation.Internal.IncludeRule.#ctor(FluentValidation.IValidator,System.Func{FluentValidation.CascadeMode},System.Type,System.Type)">
-            <summary>
-            Creates a new IncludeRule
-            </summary>
-            <param name="validator"></param>
-            <param name="cascadeModeThunk"></param>
-            <param name="typeToValidate"></param>
-            <param name="containerType"></param>
-        </member>
-        <member name="M:FluentValidation.Internal.IncludeRule.#ctor(System.Func{System.Object,FluentValidation.IValidator},System.Func{FluentValidation.CascadeMode},System.Type,System.Type,System.Type)">
-            <summary>
-            Creates a new IncludeRule
-            </summary>
-            <param name="func"></param>
-            <param name="cascadeModeThunk"></param>
-            <param name="typeToValidate"></param>
-            <param name="containerType"></param>
-            <param name="validatorType"></param>
-        </member>
-        <member name="M:FluentValidation.Internal.IncludeRule.Create``1(FluentValidation.IValidator,System.Func{FluentValidation.CascadeMode})">
-            <summary>
-            Creates a new include rule from an existing validator
-            </summary>
-            <param name="validator"></param>
-            <param name="cascadeModeThunk"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:FluentValidation.Internal.IncludeRule.Create``2(System.Func{``0,``1},System.Func{FluentValidation.CascadeMode})">
-            <summary>
-            Creates a new include rule from an existing validator
-            </summary>
-            <param name="func"></param>
-            <param name="cascadeModeThunk"></param>
-            <typeparam name="T"></typeparam>
-            <typeparam name="TValidator"></typeparam>
-            <returns></returns>
         </member>
         <member name="T:FluentValidation.Internal.RuleBuilder`2">
             <summary>

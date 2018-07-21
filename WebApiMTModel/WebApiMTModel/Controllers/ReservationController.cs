@@ -94,6 +94,12 @@ namespace WebApiMTModel.Controllers
         //    return orderService.CalculateOrderPrice();
         //}
 
+        [HttpGet]
+        public string tryy()
+        {
+            return "hi";
+        }
+
         /// <summary>
         ///  יצירת הזמנה חדשה
         /// </summary>
@@ -225,6 +231,8 @@ namespace WebApiMTModel.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, list);
             }
         }
+
+
         // /api/Reservation/UpdateOrdersByManager/Manager
 
         /// <summary>
