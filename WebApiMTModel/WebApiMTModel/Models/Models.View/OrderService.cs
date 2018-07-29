@@ -321,26 +321,28 @@ namespace WebApiMTModel.Models.Models.View
                 context.SaveChanges();
                 //שליפת מספר ההזמנה שנוצרה
                 result = GetLastOrder(orderDetailsView.Userid);
-                //שליחת מייל למשתמש
-                SendMailService sendMailService = new SendMailService();
-                SendMailRequest mailRequest = new SendMailRequest();
-                mailRequest.recipient = orderDetailsView.UserEmail;
-                mailRequest.subject = "קליטת הזמנה - " + (int)result + "מקום טוב- יוסף טוויטו";
-                mailRequest.body = " הזמנתך נקלטה";
+                if (orderDetailsView.UserEmail != string.Empty)
+                {
+                    //שליחת מייל למשתמש
+                    SendMailService sendMailService = new SendMailService();
+                    SendMailRequest mailRequest = new SendMailRequest();
+                    mailRequest.recipient = orderDetailsView.UserEmail;
+                    mailRequest.subject = "קליטת הזמנה - " + (int)result + "מקום טוב- יוסף טוויטו";
+                    mailRequest.body = " הזמנתך נקלטה";
 
-                sendMailService.SendMail(mailRequest);
-                //שליחת מייל ליוסף
-                SendMailService sendMailServiceMT = new SendMailService();
-                SendMailRequest mailRequestMT = new SendMailRequest();
-                mailRequest.recipient = "makomtovapp@gmail.com";
-                mailRequest.subject = " קליטת הזמנה  - " + (int)result + "מקום טוב- יוסף טוויטו";
-                mailRequest.body =string.Format(" הזמנה מלקוח {0} נקלטה במערכת ", orderDetailsView.userFirstName+" "+orderDetailsView.userLastName);
-                mailRequest.body += "\n";
-                mailRequest.body += string.Format("מתאריך {0} , משמרת {1} עד תאריך {2} , משמרת {3}", ((DateTime)ordersTbl.FromDate).ToShortDateString(), ordersTbl.ShiftNumberFrom, ((DateTime)ordersTbl.ToDate).ToShortDateString(), ordersTbl.ShiftNumberTo);
-                mailRequest.body += "\n";
-                mailRequest.body += string.Format("מספר כלבים בהזמנה - {0}",ordersTbl.DogsInOrder.Count);
-                sendMailService.SendMail(mailRequest);
-
+                    sendMailService.SendMail(mailRequest);
+                    //שליחת מייל ליוסף
+                    SendMailService sendMailServiceMT = new SendMailService();
+                    SendMailRequest mailRequestMT = new SendMailRequest();
+                    mailRequest.recipient = "makomtovapp@gmail.com";
+                    mailRequest.subject = " קליטת הזמנה  - " + (int)result + "מקום טוב- יוסף טוויטו";
+                    mailRequest.body = string.Format(" הזמנה מלקוח {0} נקלטה במערכת ", orderDetailsView.userFirstName + " " + orderDetailsView.userLastName);
+                    mailRequest.body += "\n";
+                    mailRequest.body += string.Format("מתאריך {0} , משמרת {1} עד תאריך {2} , משמרת {3}", ((DateTime)ordersTbl.FromDate).ToShortDateString(), ordersTbl.ShiftNumberFrom, ((DateTime)ordersTbl.ToDate).ToShortDateString(), ordersTbl.ShiftNumberTo);
+                    mailRequest.body += "\n";
+                    mailRequest.body += string.Format("מספר כלבים בהזמנה - {0}", ordersTbl.DogsInOrder.Count);
+                    sendMailService.SendMail(mailRequest);
+                }
             }
             return (int)result;
         }
@@ -468,7 +470,7 @@ namespace WebApiMTModel.Models.Models.View
                             if (!EqualsOrders(order, ordert))
                             {
                                 context.Entry(ordert).CurrentValues.SetValues(order);
-                                
+
                                 foreach (DogsInOrderView dog in order.mDogs)
                                 {
                                     var dogt = context.Set<DogsInOrder>().Find(order.OrderNumber, dog.DogNumber);
@@ -492,34 +494,37 @@ namespace WebApiMTModel.Models.Models.View
 
                                 }
                                 context.SaveChanges();
-                                //שליחת מייל למשתמש
-                                SendMailService sendMailService = new SendMailService();
-                                SendMailRequest mailRequest = new SendMailRequest();
-                                mailRequest.recipient = order.UserEmail;
-                                
-                                    mailRequest.subject = "מצב הזמנה - " + order.OrderNumber + "מקום טוב- יוסף טוויטו";
-                                if(update==1)
+                                if (order.UserEmail != string.Empty)
                                 {
-                                    mailRequest.body = " ההזמנה בוטלה בגלל שאין כלבים בהזמנה";
-                                }
-                                else if (update == 2)
-                                {
-                                    mailRequest.body = " ביטול הכלב מההזמנה בוצע";
-                                }
-                                else if (order.OrderStatus == 12)
-                                {
-                                    mailRequest.body = " הזמנתך אושרה";
-                                }
-                                else if(order.OrderStatus == 15)
-                                {
-                                    mailRequest.body = "לצערינו לא נוכל לבצע אילוף, ולכן הזמנתך אושרה ללא אילוף";
-                                }
-                                else if (order.OrderStatus == 13)
-                                {
-                                    mailRequest.body = "לצערינו לא נוכל לאשר את ההזמנה , לפרטים נוספים פנה למנהל הפנסיון";
-                                }
+                                    //שליחת מייל למשתמש
+                                    SendMailService sendMailService = new SendMailService();
+                                    SendMailRequest mailRequest = new SendMailRequest();
+                                    mailRequest.recipient = order.UserEmail;
 
-                                sendMailService.SendMail(mailRequest);
+                                    mailRequest.subject = "מצב הזמנה - " + order.OrderNumber + "מקום טוב- יוסף טוויטו";
+                                    if (update == 1)
+                                    {
+                                        mailRequest.body = " ההזמנה בוטלה בגלל שאין כלבים בהזמנה";
+                                    }
+                                    else if (update == 2)
+                                    {
+                                        mailRequest.body = " ביטול הכלב מההזמנה בוצע";
+                                    }
+                                    else if (order.OrderStatus == 12)
+                                    {
+                                        mailRequest.body = " הזמנתך אושרה";
+                                    }
+                                    else if (order.OrderStatus == 15)
+                                    {
+                                        mailRequest.body = "לצערינו לא נוכל לבצע אילוף, ולכן הזמנתך אושרה ללא אילוף";
+                                    }
+                                    else if (order.OrderStatus == 13)
+                                    {
+                                        mailRequest.body = "לצערינו לא נוכל לאשר את ההזמנה , לפרטים נוספים פנה למנהל הפנסיון";
+                                    }
+
+                                    sendMailService.SendMail(mailRequest);
+                                }
                             }
                         }
                        
@@ -549,19 +554,21 @@ namespace WebApiMTModel.Models.Models.View
                 {
                     var ordert = context.Set<OrdersTbl>().Find(orderDetails.OrderNumber);
                     //ניתן לשנות הזמנה בסטטוס חדש בלבד
-                if (ordert.OrderStatus != 11) throw new Exception("לא ניתן לשנות את ההזמנה. אנא פנה למנהל הכלביה");
+                    if (ordert.OrderStatus != 11) throw new Exception("לא ניתן לשנות את ההזמנה. אנא פנה למנהל הכלביה");
 
 
                     context.Entry(ordert).CurrentValues.SetValues(orderDetails);
                     context.SaveChanges();
-                    //שליחת מייל למשתמש
-                    SendMailService sendMailService = new SendMailService();
-                    SendMailRequest mailRequest = new SendMailRequest();
-                    mailRequest.recipient = orderDetails.UserEmail;
+                    if (orderDetails.UserEmail!=string.Empty)
+                    {
+                        //שליחת מייל למשתמש
+                        SendMailService sendMailService = new SendMailService();
+                        SendMailRequest mailRequest = new SendMailRequest();
+                        mailRequest.recipient = orderDetails.UserEmail;
 
-                    mailRequest.subject = "מצב הזמנה - " + orderDetails.OrderNumber + "מקום טוב- יוסף טוויטו";
+                        mailRequest.subject = "מצב הזמנה - " + orderDetails.OrderNumber + "מקום טוב- יוסף טוויטו";
+                    }
                 }
-
             }
             catch (SqlException ex)
             { throw ex; }

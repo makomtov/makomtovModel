@@ -7,8 +7,50 @@ using System.Web;
 
 namespace WebApiMTModel.Models.Models.View
 {
-    public class UserValidator: AbstractValidator<UserDetailsView>
+    public class UserValidatorManager : AbstractValidator<UserDetailsView>
     {
+        public UserValidatorManager()
+    {
+        RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק");
+        //RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק")
+        //                            .Length(0, 20).WithMessage("שם פרטי אינו יכול להיות יותר מ 20 תווים");
+
+        RuleFor(x => x.UserLastName).NotEmpty().WithMessage("שם משפחה אינו יכול להיות ריק");
+        // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
+        RuleFor(x => x.UserEmail).EmailAddress().When(x => x.UserEmail != ""); ;
+        //  RuleFor(x => x.UserLastName).NotEmpty();
+        //   RuleFor(x => x.UserCity).Must(checkCityExist);
+        RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("מספר טלפון לא תקין");
+        RuleFor(x => x.UserPhone2).Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").When(x => x.UserPhone2 != "").WithMessage("מספר טלפון לא תקין");
+        //  RuleFor(x => x.UserAddress).NotEmpty();
+        //  RuleFor(x => x.UserPaswrd).NotEmpty();
+        RuleFor(x => x.UserStatusCode).NotEmpty();
+        RuleFor(x => x.VeterinarName).NotEmpty().WithMessage("שם וטרינר אינו יכול להיות ריק");
+        RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("טלפון וטרינר אינו יכול להיות ריק");
+
+        // RuleFor(x => x.UserPaswrd).Matches();
+        // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
+
+        //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
+    }
+
+
+    private bool checkUserExist(UserDetailsView user, string mail)
+    {
+        Userservice userservice = new Userservice();
+        return !userservice.GetUserByMail(mail);
+
+    }
+    private bool checkCityExist(UserDetailsView user, string City)
+    {
+        XmlService xmlService = new XmlService();
+        return !xmlService.CheckCity(City);
+
+    }
+}
+public class UserValidator: AbstractValidator<UserDetailsView>
+    {
+
         public UserValidator()
         {
             RuleFor(x => x.UserFirstName).NotEmpty().WithErrorCode("Empty");
@@ -203,15 +245,15 @@ namespace WebApiMTModel.Models.Models.View
     {
         public dogValidator()
         {
-            RuleFor(x => x.DogBirthDate).NotEmpty().LessThan(DateTime.Today);
-            RuleFor(x => x.DogFriendlyWith).NotEmpty();
-            RuleFor(x => x.DogGender).Must(checkGenderValues);
-            RuleFor(x => x.DogName).NotEmpty();
-            RuleFor(x => x.DogRabiesVaccine).NotEmpty().LessThan(DateTime.Today);
+            RuleFor(x => x.DogBirthDate).NotEmpty().LessThanOrEqualTo(DateTime.Today).WithMessage("תאריך לידה לא חוקי");
+            RuleFor(x => x.DogFriendlyWith).NotEmpty().WithMessage("מסתדר עם...לא חוקי");
+            RuleFor(x => x.DogGender).Must(checkGenderValues).WithMessage("מין כלב לא חוקי");
+            RuleFor(x => x.DogName).NotEmpty().WithMessage("שם כלב אינו יכול להיות ריק");
+            RuleFor(x => x.DogRabiesVaccine).NotEmpty().LessThanOrEqualTo(DateTime.Today).WithMessage("תאריך חיסון לא חוקי");
             RuleFor(x => x.DogStatus).NotEmpty();
             RuleFor(x => x.DogType).NotEmpty();
             RuleFor(x => x.DogUserID).Must(checkUserExist);
-           
+
         }
         private bool checkGenderValues(DogDetailsView dog, string gender)
         {

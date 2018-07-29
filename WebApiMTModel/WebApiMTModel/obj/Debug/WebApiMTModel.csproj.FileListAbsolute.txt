@@ -434,3 +434,5 @@ C:\debugMT\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.dll
 C:\debugMT\makomtovModel\WebApiMTModel\WebApiMTModel\obj\Debug\WebApiMTModel.pdb
 C:\debugMT\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.ValueTuple.dll
 C:\debugMT\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.ValueTuple.xml
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.ValueTuple.dll
+C:\git_ws\makomtovModel\WebApiMTModel\WebApiMTModel\bin\System.ValueTuple.xml
