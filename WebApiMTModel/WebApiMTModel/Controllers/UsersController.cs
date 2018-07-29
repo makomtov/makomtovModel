@@ -366,12 +366,15 @@ namespace WebApiMTModel.Controllers
                 }
                 else
                 {
-                    //List<string> errorlist = new List<string>();
-                    //foreach (var value in results.Errors)
-                    //{
-                    //    errorlist.Add(value.ErrorMessage);
-                    //}
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    List<string> errorlist = new List<string>();
+                    foreach (var value in results.Errors)
+                    {
+                        errorlist.Add(value.ErrorMessage);
+                    }
+                    var response = Request.CreateResponse(HttpStatusCode.BadRequest);
+                    response.Content = new StringContent(errorlist[0]);
+                    return response;
+                  //  return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
             }
             catch (HttpRequestException ex)

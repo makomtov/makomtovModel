@@ -19,7 +19,7 @@ namespace WebApiMTModel.Models.Models.View
         // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
         RuleFor(x => x.UserEmail).EmailAddress().When(x => x.UserEmail != ""); ;
         //  RuleFor(x => x.UserLastName).NotEmpty();
-        //   RuleFor(x => x.UserCity).Must(checkCityExist);
+        RuleFor(x => x.UserCity).Must(checkCityExist);
         RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("מספר טלפון לא תקין");
         RuleFor(x => x.UserPhone2).Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").When(x => x.UserPhone2 != "").WithMessage("מספר טלפון לא תקין");
         //  RuleFor(x => x.UserAddress).NotEmpty();
@@ -53,25 +53,25 @@ public class UserValidator: AbstractValidator<UserDetailsView>
 
         public UserValidator()
         {
-            RuleFor(x => x.UserFirstName).NotEmpty().WithErrorCode("Empty");
+            RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק");
             //RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק")
             //                            .Length(0, 20).WithMessage("שם פרטי אינו יכול להיות יותר מ 20 תווים");
 
-            RuleFor(x => x.UserLastName).NotEmpty().WithErrorCode("Empty"); //.WithMessage("שם משפחה אינו יכול להיות ריק");
-           // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
+            RuleFor(x => x.UserLastName).NotEmpty().WithMessage("שם משפחה אינו יכול להיות ריק");
+            // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
             RuleFor(x => x.UserEmail).EmailAddress();
-            RuleFor(x => x.UserLastName).NotEmpty();
-            RuleFor(x => x.UserCity).Must(checkCityExist);
-            RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{8}");
-            RuleFor(x => x.UserPhone2).Matches(@"^\+?(972|0)(\-)?0?(([23489]{ 1}\d{7})|[5]{1}\d{8})$").When(x => x.UserPhone2 != ""); 
-            RuleFor(x => x.UserAddress).NotEmpty();
-            RuleFor(x => x.UserPaswrd).NotEmpty();
+            //  RuleFor(x => x.UserLastName).NotEmpty();
+               RuleFor(x => x.UserCity).Must(checkCityExist);
+            RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("מספר טלפון לא תקין");
+            RuleFor(x => x.UserPhone2).Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").When(x => x.UserPhone2 != "").WithMessage("מספר טלפון לא תקין");
+            //  RuleFor(x => x.UserAddress).NotEmpty();
+            //  RuleFor(x => x.UserPaswrd).NotEmpty();
             RuleFor(x => x.UserStatusCode).NotEmpty();
-            RuleFor(x => x.VeterinarName).NotEmpty();
-            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$");
+            RuleFor(x => x.VeterinarName).NotEmpty().WithMessage("שם וטרינר אינו יכול להיות ריק");
+            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("טלפון וטרינר אינו יכול להיות ריק");
 
-           // RuleFor(x => x.UserPaswrd).Matches();
-          // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
+            // RuleFor(x => x.UserPaswrd).Matches();
+            // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
 
             //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
         }
@@ -133,28 +133,22 @@ public class UserValidator: AbstractValidator<UserDetailsView>
     {
         public UpdateUserValidator()
         {
-            RuleFor(x => x.UserFirstName).NotEmpty().WithErrorCode("Empty");
-            //RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק")
-            //                            .Length(0, 20).WithMessage("שם פרטי אינו יכול להיות יותר מ 20 תווים");
-
-            RuleFor(x => x.UserLastName).NotEmpty().WithErrorCode("Empty"); //.WithMessage("שם משפחה אינו יכול להיות ריק");
-                                                                            // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
-            RuleFor(x => x.UserEmail).EmailAddress();
-            RuleFor(x => x.UserLastName).NotEmpty();
-            RuleFor(x => x.UserCity).Must(checkCityExist);
-            RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"0\d{8}");
+            RuleFor(x => x.UserFirstName).NotEmpty().WithMessage("שם פרטי אינו יכול להיות ריק");
+           
+            RuleFor(x => x.UserLastName).NotEmpty().WithMessage("שם משפחה אינו יכול להיות ריק");
+            // RuleFor(x => x.UserEmail).Must(checkUserExist).WithErrorCode("112");
+            RuleFor(x => x.UserEmail).EmailAddress().When(x => x.UserEmail != ""); ;
+           
+            RuleFor(x => x.UserPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("מספר טלפון לא תקין");
+            RuleFor(x => x.UserPhone2).Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").When(x => x.UserPhone2 != "").WithMessage("מספר טלפון לא תקין");
             
-            RuleFor(x => x.UserPhone2).Matches(@"0\d{8}").When(x=>x.UserPhone2 !="");
-            RuleFor(x => x.UserAddress).NotEmpty();
-          
             RuleFor(x => x.UserStatusCode).NotEmpty();
-            RuleFor(x => x.VeterinarName).NotEmpty();
-            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^0\d{8}$|^0[5,7]{1}\d{8}$");
+            RuleFor(x => x.VeterinarName).NotEmpty().WithMessage("שם וטרינר אינו יכול להיות ריק");
+            RuleFor(x => x.VeterinarPhone1).NotEmpty().Matches(@"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$").WithMessage("טלפון וטרינר אינו יכול להיות ריק");
 
-            // RuleFor(x => x.UserPaswrd).Matches();
-            // RuleFor(x => x.).LessThan(DateTime.Today).WithMessage("You cannot enter a birth date in the future.");
-
-            //RuleFor(x => x.Username).Length(8, 999).WithMessage("The user name must be at least 8 characters long.");
+            RuleFor(x => x.UserCity).Must(checkCityExist);
+           
+           
         }
 
         private bool checkUserExist(UserDetailsView user, string mail)
